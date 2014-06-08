@@ -1,5 +1,15 @@
 #include <stdio.h>
 #include <vector.h>
+#include <algorithm.h>
+#include <string.h>
+
+int compare(const void *x, const void *y)
+{
+    const char **lhs = (const char **)x;
+    const char **rhs = (const char **)y;
+
+    return strcmp(*lhs, *rhs);
+}
 
 int main(const int argc, const char *argv[])
 {
@@ -7,8 +17,11 @@ int main(const int argc, const char *argv[])
 
     vector_push_back(vector, "Hello");
     vector_push_back(vector, "World");
-    vector_push_back(vector, "This is simple STL");
     vector_push_back(vector, "Very simple");
+    vector_push_back(vector, "This is simple STL");
+    vector_push_back(vector, "OTZ");
+
+    printf("--------------- Before ----------------\n");
 
     void **iterator;
 
@@ -16,11 +29,16 @@ int main(const int argc, const char *argv[])
         printf("%s\n", (char *)(*iterator));
     }
 
-    vector_pop_back(vector);
-    vector_pop_back(vector);
+    printf("--------------- After -----------------\n");
 
-    for (iterator = vector_begin(vector); iterator != vector_end(vector); ++iterator) {
-        printf("%s\n", (char *)(*iterator));
+    sort(vector_begin(vector), vector_size(vector), compare);
+
+    unsigned int index;
+
+    for (index = 0; index < vector_size(vector); ++index) {
+        void *element = vector_at(vector, index);
+
+        printf("%s\n", (char *)element);
     }
 
     vector_destroy(vector);
