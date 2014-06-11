@@ -16,6 +16,7 @@ Vector * vector_create()
 
 void vector_destroy(Vector *vector)
 {
+    free(vector->data);
     free(vector);
 }
 
