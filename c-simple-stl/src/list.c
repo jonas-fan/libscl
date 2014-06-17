@@ -66,20 +66,20 @@ void * list_back(const List *list)
 
 void list_push_back(List *list, void *element)
 {
-    ListElement *e = (ListElement *)malloc(sizeof(ListElement));
+    ListElement *new_element = (ListElement *)malloc(sizeof(ListElement));
 
-    e->data = element;
-    e->previous = NULL;
-    e->next = NULL;
+    new_element->data = element;
+    new_element->previous = NULL;
+    new_element->next = NULL;
 
     if (list->tail) {
-        e->previous = list->tail;
-        list->tail->next = e;
-        list->tail = e;
+        new_element->previous = list->tail;
+        list->tail->next = new_element;
+        list->tail = new_element;
     }
     else {
-        list->head = e;
-        list->tail = e;
+        list->head = new_element;
+        list->tail = new_element;
     }
 
     ++list->size;
