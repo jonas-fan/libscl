@@ -18,6 +18,8 @@ void list_destroy(List *list)
     while (list->size) {
         list_pop_back(list);
     }
+
+    free(list);
 }
 
 unsigned int list_size(const List *list)
