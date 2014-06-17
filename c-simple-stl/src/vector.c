@@ -1,7 +1,7 @@
 #include <vector.h>
 #include <string.h>
 
-Vector * vector_create()
+Vector * vector_create(void)
 {
     Vector *vector = (Vector *)malloc(sizeof(Vector));
 

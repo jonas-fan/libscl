@@ -1,5 +1,5 @@
-#include <stdio.h>
 #include <vector.h>
+#include <stdio.h>
 #include <string.h>
 
 int compare(const void *x, const void *y)

@@ -18,7 +18,7 @@ typedef struct
     unsigned int capacity;
 } Vector;
 
-Vector * vector_create();
+Vector * vector_create(void);
 void vector_destroy(Vector *vector);
 
 unsigned int vector_size(const Vector *vector);
