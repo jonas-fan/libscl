@@ -1,4 +1,5 @@
 #include <vector.h>
+#include <list.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -43,6 +44,23 @@ int main(const int argc, const char *argv[])
     vector_destroy(vector);
 
     vector = NULL;
+
+    List *list = list_create();
+
+    list_push_back(list, "a");
+    list_push_back(list, "b");
+    list_push_back(list, "c");
+    list_push_back(list, "d");
+    list_push_back(list, "e");
+    list_push_back(list, "f");
+
+    printf("%s\n", (const char *)list_back(list));
+
+    list_pop_back(list);
+
+    printf("%s\n", (const char *)list_back(list));
+
+    list_destroy(list);
 
     return 0;
 }

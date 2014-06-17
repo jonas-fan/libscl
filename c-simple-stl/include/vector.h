@@ -11,7 +11,7 @@
  *    @author  Jian <jianfan.tw@gmail.com>
  */
 
-typedef struct
+typedef struct vector_t
 {
     void **data;
     unsigned int size;
