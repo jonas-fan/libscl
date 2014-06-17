@@ -1,13 +1,13 @@
-#ifndef VECTOR_H_
-#define VECTOR_H_
+#ifndef SIMPLE_VECTOR_H_
+#define SIMPLE_VECTOR_H_
 
 #include <stdlib.h>
 
 /**
  *    Simple Vector
  *
- *    @version 0.0.1
- *    @date    2014/06/08
+ *    @version 0.0.2
+ *    @date    2014/06/17
  *    @author  Jian <jianfan.tw@gmail.com>
  */
 
@@ -27,10 +27,12 @@ unsigned int vector_capacity(const Vector *vector);
 void * vector_at(const Vector *vector, unsigned int index);
 void * vector_front(const Vector *vector);
 void * vector_back(const Vector *vector);
-void ** vector_begin(Vector *vector);
-void ** vector_end(Vector *vector);
+void ** vector_begin(const Vector *vector);
+void ** vector_end(const Vector *vector);
 
 void vector_push_back(Vector *vector, void *element);
 void vector_pop_back(Vector *vector);
 
-#endif  // VECTOR_H_
+void vector_sort(Vector *vector, int (*compare)(const void *, const void *));
+
+#endif  // SIMPLE_VECTOR_H_

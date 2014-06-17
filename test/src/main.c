@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <vector.h>
-#include <algorithm.h>
 #include <string.h>
 
 int compare(const void *x, const void *y)
@@ -31,7 +30,7 @@ int main(const int argc, const char *argv[])
 
     printf("--------------- After -----------------\n");
 
-    sort(vector_begin(vector), vector_size(vector), compare);
+    vector_sort(vector, compare);
 
     unsigned int index;
 

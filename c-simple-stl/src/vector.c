@@ -49,12 +49,12 @@ void * vector_back(const Vector *vector)
     return vector_at(vector, vector->size - 1);
 }
 
-void ** vector_begin(Vector *vector)
+void ** vector_begin(const Vector *vector)
 {
     return vector->data;
 }
 
-void ** vector_end(Vector *vector)
+void ** vector_end(const Vector *vector)
 {
     return vector->data + vector->size;
 }
@@ -82,4 +82,9 @@ void vector_pop_back(Vector *vector)
     if (vector->size) {
         vector->data[vector->size--] = NULL;
     }
+}
+
+void vector_sort(Vector *vector, int (*compare)(const void *, const void *))
+{
+    qsort(vector->data, vector_size(vector), sizeof(void *), compare);
 }
