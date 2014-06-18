@@ -1,6 +1,32 @@
 #include <list.h>
 #include <stdlib.h>
 
+/**
+ *    Private functions
+ */
+
+ListElement * list_at_(const List *list, unsigned int index);
+
+ListElement * list_at_(const List *list, unsigned int index)
+{
+    if (index >= list->size) {
+        return NULL;
+    }
+
+    ListElement *element = list->head;
+
+    while (index--) {
+        element = element->next;
+    }
+
+    return element;
+}
+
+
+/**
+ *    Public functions
+ */
+
 List * list_create(void)
 {
     List *list = (List *)malloc(sizeof(List));
@@ -30,58 +56,34 @@ unsigned int list_size(const List *list)
 
 void * list_at(const List *list, unsigned int index)
 {
-    if (index >= list->size) {
-        return NULL;
+    ListElement *element = list_at_(list, index);
+
+    if (element) {
+        return element->data;
     }
 
-    ListElement *element = list->head;
-
-    while (index--) {
-        element = element->next;
-    }
-
-    return element->data;
+    return NULL;
 }
 
 void * list_front(const List *list)
 {
-    ListElement *head = list->head;
-
-    if (head) {
-        return head->data;
-    }
-
-    return NULL;
+    return list_at(list, 0);
 }
 
 void * list_back(const List *list)
 {
-    ListElement *tail = list->tail;
-
-    if (tail) {
-        return tail->data;
-    }
-
-    return NULL;
+    return list_at(list, list->size - 1);
 }
 
-void list_insert(List *list, unsigned int index, void *element)
+void list_insert(List *list, unsigned int index, void *data)
 {
-    if (index >= list->size) {
+    ListElement *current_element = list_at_(list, index);
+
+    if (!current_element) {
         return;
     }
 
-    ListElement *new_element = (ListElement *)malloc(sizeof(ListElement));
-
-    new_element->data = element;
-    new_element->previous = NULL;
-    new_element->next = NULL;
-
-    ListElement *current_element = list->head;
-
-    while (index--) {
-        current_element = current_element->next;
-    }
+    ListElement *new_element = list_element_create(data);
 
     new_element->next = current_element;
     new_element->previous = current_element->previous;
@@ -100,14 +102,10 @@ void list_insert(List *list, unsigned int index, void *element)
 
 void list_erase(List *list, unsigned int index)
 {
-    if (index >= list->size) {
+    ListElement *current_element = list_at_(list, index);
+
+    if (!current_element) {
         return;
-    }
-
-    ListElement *current_element = list->head;
-
-    while (index--) {
-        current_element = current_element->next;
     }
 
     if (list->head == list->tail) {
@@ -129,16 +127,12 @@ void list_erase(List *list, unsigned int index)
 
     --list->size;
 
-    free(current_element);
+    list_element_destroy(current_element);
 }
 
-void list_push_front(List *list, void *element)
+void list_push_front(List *list, void *data)
 {
-    ListElement *new_element = (ListElement *)malloc(sizeof(ListElement));
-
-    new_element->data = element;
-    new_element->previous = NULL;
-    new_element->next = NULL;
+    ListElement *new_element = list_element_create(data);
 
     if (list->head) {
         new_element->next = list->head;
@@ -172,16 +166,12 @@ void list_pop_front(List *list)
 
     --list->size;
 
-    free(element);
+    list_element_destroy(element);
 }
 
-void list_push_back(List *list, void *element)
+void list_push_back(List *list, void *data)
 {
-    ListElement *new_element = (ListElement *)malloc(sizeof(ListElement));
-
-    new_element->data = element;
-    new_element->previous = NULL;
-    new_element->next = NULL;
+    ListElement *new_element = list_element_create(data);
 
     if (list->tail) {
         new_element->previous = list->tail;
@@ -215,5 +205,5 @@ void list_pop_back(List *list)
 
     --list->size;
 
-    free(element);
+    list_element_destroy(element);
 }
