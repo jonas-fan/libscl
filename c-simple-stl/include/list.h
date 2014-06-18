@@ -1,13 +1,11 @@
 #ifndef SIMPLE_LIST_H_
 #define SIMPLE_LIST_H_
 
-#include <stdlib.h>
-
 /**
  *    Simple List
  *
- *    @version 0.0.1
- *    @date    2014/06/17
+ *    @version 0.0.2
+ *    @date    2014/06/18
  *    @author  Jian <jianfan.tw@gmail.com>
  */
 
@@ -34,6 +32,10 @@ void * list_at(const List *list, unsigned int index);
 void * list_front(const List *list);
 void * list_back(const List *list);
 
+void list_insert(List *list, unsigned int index, void *element);
+void list_erase(List *list, unsigned int index);
+void list_push_front(List *list, void *element);
+void list_pop_fornt(List *list);
 void list_push_back(List *list, void *element);
 void list_pop_back(List *list);
 

@@ -56,6 +56,7 @@ int main(const int argc, const char *argv[])
 
     printf("%s\n", (const char *)list_back(list));
 
+    list_erase(list, 4);
     list_pop_back(list);
 
     printf("%s\n", (const char *)list_back(list));

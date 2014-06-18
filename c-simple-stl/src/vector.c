@@ -1,4 +1,5 @@
 #include <vector.h>
+#include <stdlib.h>
 #include <string.h>
 
 Vector * vector_create(void)

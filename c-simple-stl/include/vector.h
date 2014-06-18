@@ -1,8 +1,6 @@
 #ifndef SIMPLE_VECTOR_H_
 #define SIMPLE_VECTOR_H_
 
-#include <stdlib.h>
-
 /**
  *    Simple Vector
  *
