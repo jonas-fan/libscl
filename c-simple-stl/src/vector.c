@@ -81,7 +81,7 @@ void vector_push_back(Vector *vector, void *element)
 void vector_pop_back(Vector *vector)
 {
     if (vector->size) {
-        vector->data[vector->size--] = NULL;
+        vector->data[--vector->size] = NULL;
     }
 }
 
