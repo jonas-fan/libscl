@@ -1,6 +1,23 @@
 #include <vector.h>
+
 #include <stdlib.h>
 #include <string.h>
+
+/**
+ *    Private
+ */
+
+struct vector_t
+{
+    void **data;
+    unsigned int size;
+    unsigned int capacity;
+}; 
+
+
+/**
+ *    Public
+ */
 
 Vector * vector_create(void)
 {
@@ -68,11 +85,18 @@ void vector_push_back(Vector *vector, void *element)
         size_t data_size = sizeof(void *) * vector->capacity;
 
         if (vector->data) {
-            vector->data = realloc(vector->data, data_size);
+            vector->data = (void **)realloc(vector->data, data_size);
         }
         else {
-            vector->data = malloc(data_size);
+            vector->data = (void **)malloc(data_size);
         }
+    }
+
+    if (!vector->data) {
+        vector->size = 0;
+        vector->capacity = 0;
+
+        return;
     }
 
     vector->data[vector->size++] = element;

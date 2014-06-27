@@ -1,20 +1,15 @@
-#ifndef SIMPLE_VECTOR_H_
-#define SIMPLE_VECTOR_H_
+#ifndef C_SIMPLE_STL_VECTOR_H_
+#define C_SIMPLE_STL_VECTOR_H_
 
 /**
  *    Simple Vector
  *
- *    @version 0.0.2
+ *    @version 0.0.3
  *    @date    2014/06/17
  *    @author  Jian <jianfan.tw@gmail.com>
  */
 
-typedef struct vector_t
-{
-    void **data;
-    unsigned int size;
-    unsigned int capacity;
-} Vector;
+typedef struct vector_t Vector;
 
 Vector * vector_create(void);
 void vector_destroy(Vector *vector);
@@ -33,4 +28,4 @@ void vector_pop_back(Vector *vector);
 
 void vector_sort(Vector *vector, int (*compare)(const void *, const void *));
 
-#endif  // SIMPLE_VECTOR_H_
+#endif  // C_SIMPLE_STL_VECTOR_H_

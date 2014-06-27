@@ -4,7 +4,7 @@ project(test C)
 
 set(CMAKE_C_FLAGS "-Wall -g -O2")
 
-include_directories(${CMAKE_SOURCE_DIR}/c-simple-stl/include)
+include_directories(${CMAKE_SOURCE_DIR}/include)
 
 add_executable(test src/main.c)
 

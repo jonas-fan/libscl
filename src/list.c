@@ -2,29 +2,21 @@
 #include <stdlib.h>
 
 /**
- *    Private functions
+ *    Private
  */
 
-ListElement * list_at_(const List *list, unsigned int index);
-
-ListElement * list_at_(const List *list, unsigned int index)
+struct list_t
 {
-    if (index >= list->size) {
-        return NULL;
-    }
+    unsigned int size;
+    ListElement *head;
+    ListElement *tail;
+};
 
-    ListElement *element = list->head;
-
-    while (index--) {
-        element = element->next;
-    }
-
-    return element;
-}
+static ListElement * list_at_(const List *list, unsigned int index);
 
 
 /**
- *    Public functions
+ *    Public
  */
 
 List * list_create(void)
@@ -85,6 +77,10 @@ void list_insert(List *list, unsigned int index, void *data)
 
     ListElement *new_element = list_element_create(data);
 
+    if (!new_element) {
+        return;
+    }
+
     new_element->next = current_element;
     new_element->previous = current_element->previous;
 
@@ -134,6 +130,10 @@ void list_push_front(List *list, void *data)
 {
     ListElement *new_element = list_element_create(data);
 
+    if (!new_element) {
+        return;
+    }
+
     if (list->head) {
         new_element->next = list->head;
         list->head->previous = new_element;
@@ -173,6 +173,10 @@ void list_push_back(List *list, void *data)
 {
     ListElement *new_element = list_element_create(data);
 
+    if (!new_element) {
+        return;
+    }
+
     if (list->tail) {
         new_element->previous = list->tail;
         list->tail->next = new_element;
@@ -206,4 +210,24 @@ void list_pop_back(List *list)
     --list->size;
 
     list_element_destroy(element);
+}
+
+
+/**
+ *    Private
+ */
+
+static ListElement * list_at_(const List *list, unsigned int index)
+{
+    if (index >= list->size) {
+        return NULL;
+    }
+
+    ListElement *element = list->head;
+
+    while (index--) {
+        element = element->next;
+    }
+
+    return element;
 }

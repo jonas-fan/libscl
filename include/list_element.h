@@ -1,5 +1,5 @@
-#ifndef SIMPLE_LIST_ELEMENT_H_
-#define SIMPLE_LIST_ELEMENT_H_
+#ifndef C_SIMPLE_STL_LIST_ELEMENT_H_
+#define C_SIMPLE_STL_LIST_ELEMENT_H_
 
 /**
  *    Simple ListElement
@@ -19,4 +19,4 @@ typedef struct list_element_t
 ListElement * list_element_create(void *data);
 void list_element_destroy(ListElement *list_element);
 
-#endif  // SIMPLE_LIST_ELEMENT_H_
+#endif  // C_SIMPLE_STL_LIST_ELEMENT_H_
