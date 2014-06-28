@@ -25,7 +25,7 @@ void * list_back(const List *list);
 void list_insert(List *list, unsigned int index, void *data);
 void list_erase(List *list, unsigned int index);
 void list_push_front(List *list, void *data);
-void list_pop_fornt(List *list);
+void list_pop_front(List *list);
 void list_push_back(List *list, void *data);
 void list_pop_back(List *list);
 
