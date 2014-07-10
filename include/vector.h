@@ -1,6 +1,10 @@
 #ifndef C_SIMPLE_STL_VECTOR_H_
 #define C_SIMPLE_STL_VECTOR_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  *    Simple Vector
  *
@@ -28,4 +32,8 @@ void vector_pop_back(Vector *vector);
 
 void vector_sort(Vector *vector, int (*compare)(const void *, const void *));
 
-#endif  // C_SIMPLE_STL_VECTOR_H_
+#ifdef __cplusplus
+}
+#endif
+
+#endif  /* C_SIMPLE_STL_VECTOR_H_ */

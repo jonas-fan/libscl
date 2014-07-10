@@ -1,6 +1,10 @@
 #ifndef C_SIMPLE_STL_LIST_H_
 #define C_SIMPLE_STL_LIST_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <list_element.h>
 
 /**
@@ -29,4 +33,8 @@ void list_pop_front(List *list);
 void list_push_back(List *list, void *data);
 void list_pop_back(List *list);
 
-#endif  // C_SIMPLE_STL_LIST_H_
+#ifdef __cplusplus
+}
+#endif
+
+#endif  /* C_SIMPLE_STL_LIST_H_ */
