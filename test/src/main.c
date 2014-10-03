@@ -3,12 +3,12 @@
 #include <stdio.h>
 #include <string.h>
 
-int compare(const void *x, const void *y)
+bool equal(const void *element, const void *object)
 {
-    const char **lhs = (const char **)x;
-    const char **rhs = (const char **)y;
+    const char *lhs = (const char *)element;
+    const char *rhs = (const char *)object;
 
-    return strcmp(*lhs, *rhs);
+    return !strcmp(lhs, rhs);
 }
 
 int main(const int argc, const char *argv[])
@@ -21,6 +21,9 @@ int main(const int argc, const char *argv[])
     vector_push_back(vector, "This is simple STL");
     vector_push_back(vector, "OTZ");
 
+    printf("%d\n", vector_index_of(vector, "OTZ", equal));
+    printf("%d\n", vector_index_of(vector, "OTz", equal));
+
     printf("--------------- Before ----------------\n");
 
     void **iterator;
@@ -30,8 +33,6 @@ int main(const int argc, const char *argv[])
     }
 
     printf("--------------- After -----------------\n");
-
-    vector_sort(vector, compare);
 
     unsigned int index;
 

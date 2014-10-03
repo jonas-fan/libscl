@@ -5,11 +5,13 @@
 extern "C" {
 #endif
 
+#include <stdbool.h>
+
 /**
  *    Simple Vector
  *
- *    @version 0.0.3
- *    @date    2014/06/17
+ *    @version 0.1.0
+ *    @date    2014/10/03
  *    @author  Jian <jianfan.tw@gmail.com>
  */
 
@@ -30,7 +32,9 @@ void ** vector_end(const Vector *vector);
 void vector_push_back(Vector *vector, void *element);
 void vector_pop_back(Vector *vector);
 
-void vector_sort(Vector *vector, int (*compare)(const void *, const void *));
+int vector_index_of(Vector *vector,
+                    void *object,
+                    bool (*compare)(const void *element, const void *object));
 
 #ifdef __cplusplus
 }

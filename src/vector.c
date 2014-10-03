@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+
 /**
  *    Private
  */
@@ -16,7 +17,7 @@ struct vector_t
 
 
 /**
- *    Public
+ *    Public methods
  */
 
 Vector * vector_create(void)
@@ -24,6 +25,8 @@ Vector * vector_create(void)
     Vector *vector = (Vector *)malloc(sizeof(Vector));
 
     if (vector) {
+        memset(vector, 0, sizeof(*vector));
+
         vector->data = NULL;
         vector->size = 0;
         vector->capacity = 0;
@@ -82,7 +85,7 @@ void vector_push_back(Vector *vector, void *element)
     if (vector->size >= vector->capacity) {
         vector->capacity = (vector->capacity)?  vector->capacity << 1 : 1;
 
-        size_t data_size = sizeof(void *) * vector->capacity;
+        const size_t data_size = sizeof(void *) * vector->capacity;
 
         if (vector->data) {
             vector->data = (void **)realloc(vector->data, data_size);
@@ -109,7 +112,25 @@ void vector_pop_back(Vector *vector)
     }
 }
 
-void vector_sort(Vector *vector, int (*compare)(const void *, const void *))
+int vector_index_of(Vector *vector,
+                    void *object,
+                    bool (*compare)(const void *element, const void *object))
 {
-    qsort(vector->data, vector_size(vector), sizeof(void *), compare);
+    if (!object ||
+        !compare)
+    {
+        return -1;
+    }
+
+    int index;
+
+    for (index = 0; index < vector->size; ++index) {
+        void *element = vector_at(vector, index);
+
+        if (compare(element, object)) {
+            return index;
+        }
+    }
+
+    return -1;
 }

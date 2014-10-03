@@ -1,5 +1,5 @@
 # c-simple-stl
-Simple STL C implementation
+Implement Simple STL in C
 
 ## Build
 ```
