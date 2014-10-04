@@ -1,5 +1,7 @@
 #include <vector.h>
 #include <list.h>
+#include <queue.h>
+
 #include <stdio.h>
 #include <string.h>
 
@@ -134,11 +136,39 @@ void list_test()
     printf("\n");
 }
 
+void queue_test()
+{
+    printf("--------------- Queue ----------------\n");
+
+    Queue *queue = queue_create();
+
+    queue_push(queue, "Hello");
+    queue_push(queue, "AAA");
+    queue_push(queue, "BBB");
+    queue_push(queue, "CCC");
+
+    while (queue_size(queue)) {
+        char *data = (char *)queue_front(queue);
+
+        printf("%s\n", data);
+
+        queue_pop(queue);
+    }
+
+    queue_destroy(queue);
+
+    queue = NULL;
+
+    printf("\n");
+}
+
 int main(const int argc, const char *argv[])
 {
     vector_test();
 
     list_test();
+
+    queue_test();
 
     return 0;
 }

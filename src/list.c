@@ -218,7 +218,7 @@ void list_pop_back(List *list)
     list_element_destroy(element);
 }
 
-void * list_find(List *list, void *item)
+void * list_find(const List *list, void *item)
 {
     unsigned int index;
 
@@ -233,7 +233,7 @@ void * list_find(List *list, void *item)
     return NULL;
 }
 
-void * list_find_if(List *list, void *item, bool (*predicate)(void *item, void *element))
+void * list_find_if(const List *list, void *item, bool (*predicate)(void *item, void *element))
 {
     unsigned int index;
 

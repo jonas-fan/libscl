@@ -112,7 +112,7 @@ void vector_pop_back(Vector *vector)
     }
 }
 
-void * vector_find(Vector *vector, void *item)
+void * vector_find(const Vector *vector, void *item)
 {
     unsigned int index;
 
@@ -127,7 +127,7 @@ void * vector_find(Vector *vector, void *item)
     return NULL;
 }
 
-void * vector_find_if(Vector *vector, void *item, bool (*predicate)(void *item, void *element))
+void * vector_find_if(const Vector *vector, void *item, bool (*predicate)(void *item, void *element))
 {
     unsigned int index;
 

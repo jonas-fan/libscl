@@ -32,8 +32,8 @@ void ** vector_end(const Vector *vector);
 void vector_push_back(Vector *vector, void *element);
 void vector_pop_back(Vector *vector);
 
-void * vector_find(Vector *vector, void *item);
-void * vector_find_if(Vector *vector, void *item, bool (*predicate)(void *item, void *element));
+void * vector_find(const Vector *vector, void *item);
+void * vector_find_if(const Vector *vector, void *item, bool (*predicate)(void *item, void *element));
 
 #ifdef __cplusplus
 }

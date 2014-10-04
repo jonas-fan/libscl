@@ -10,6 +10,7 @@ add_library(csstl STATIC
     ./src/vector.c
     ./src/list.c
     ./src/list_element.c
+    ./src/queue.c
 )
 
 add_subdirectory(test)

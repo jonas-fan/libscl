@@ -33,8 +33,8 @@ void list_pop_front(List *list);
 void list_push_back(List *list, void *data);
 void list_pop_back(List *list);
 
-void * list_find(List *list, void *item);
-void * list_find_if(List *list, void *item, bool (*predicate)(void *item, void *element));
+void * list_find(const List *list, void *item);
+void * list_find_if(const List *list, void *item, bool (*predicate)(void *item, void *element));
 
 #ifdef __cplusplus
 }
