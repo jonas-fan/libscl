@@ -11,8 +11,10 @@ bool equal(void *item, void *element)
     return !strcasecmp(lhs, rhs);
 }
 
-int main(const int argc, const char *argv[])
+void vector_test()
 {
+    printf("--------------- Vector ----------------\n");
+
     Vector *vector = vector_create();
 
     vector_push_back(vector, "Hello");
@@ -21,56 +23,122 @@ int main(const int argc, const char *argv[])
     vector_push_back(vector, "This is simple STL");
     vector_push_back(vector, "OTZ");
 
+    printf("Vector = [");
+
+    unsigned int index;
+
+    for (index = 0; index < vector_size(vector); ++index) {
+        const char *delimiter = (!index)?  "" : ", ";
+
+        void *element = vector_at(vector, index);
+
+        printf("%s\"%s\"", delimiter, (char *)element);
+    }
+
+    printf("]\n\n");
+
     const char *dummy = "OTz";
 
     void *element = vector_find(vector, (void *)dummy);
 
-    printf("vector_find: %s %s\n", dummy, (element)?  "Found" : "Not found");
+    printf("vector_find: \"%s\" %s\n", dummy, (element)?  "Found" : "Not found");
 
     element = vector_find_if(vector, (void *)dummy, equal);
 
-    printf("vector_find_if: %s %s\n", dummy, (element)?  "Found" : "Not found");
+    printf("vector_find_if (strcasecmp): \"%s\" %s\n", dummy, (element)?  "Found" : "Not found");
 
-    // printf("--------------- Before ----------------\n");
+    vector_destroy(vector);
 
-    // void **iterator;
+    vector = NULL;
 
-    // for (iterator = vector_begin(vector); iterator != vector_end(vector); ++iterator) {
-    //     printf("%s\n", (char *)(*iterator));
-    // }
+    printf("\n");
+}
 
-    // printf("--------------- After -----------------\n");
+void list_test()
+{
+    printf("--------------- List ----------------\n");
 
-    // unsigned int index;
+    List *list = list_create();
 
-    // for (index = 0; index < vector_size(vector); ++index) {
-    //     void *element = vector_at(vector, index);
+    list_push_back(list, "aaa");
+    list_push_back(list, "bbb");
+    list_push_back(list, "ccc");
+    list_push_back(list, "dddd");
+    list_push_back(list, "eeee");
+    list_push_back(list, "fff");
 
-    //     printf("%s\n", (char *)element);
-    // }
+    unsigned int index;
 
-    // vector_destroy(vector);
+    printf("List = [");
 
-    // vector = NULL;
+    for (index = 0; index < list_size(list); ++index) {
+        const char *delimiter = (!index)?  "" : ", ";
 
-    // List *list = list_create();
+        void *element = list_at(list, index);
 
-    // list_push_back(list, "a");
-    // list_push_back(list, "b");
-    // list_push_back(list, "c");
-    // list_push_back(list, "d");
-    // list_push_back(list, "e");
-    // list_push_back(list, "f");
+        printf("%s\"%s\"", delimiter, (char *)element);
+    }
 
-    // printf("%s\n", (const char *)list_back(list));
+    printf("]\n");
 
-    // list_insert(list, 2, "test");
-    // list_erase(list, 4);
-    // list_pop_back(list);
+    list_insert(list, 2, "123");
 
-    // printf("%s\n", (const char *)list_back(list));
+    printf("list_insert (index: %d) : %s\n", 2, "123");
 
-    // list_destroy(list);
+    list_insert(list, 2, "test");
+
+    printf("list_insert (index: %d) : %s\n", 2, "test");
+
+    printf("List = [");
+
+    for (index = 0; index < list_size(list); ++index) {
+        const char *delimiter = (!index)?  "" : ", ";
+
+        void *element = list_at(list, index);
+
+        printf("%s\"%s\"", delimiter, (char *)element);
+    }
+
+    printf("]\n");
+
+    list_erase(list, 4);
+
+    printf("list_erase (index: %d)\n", 4);
+
+    printf("List = [");
+
+    for (index = 0; index < list_size(list); ++index) {
+        const char *delimiter = (!index)?  "" : ", ";
+
+        void *element = list_at(list, index);
+
+        printf("%s\"%s\"", delimiter, (char *)element);
+    }
+
+    printf("]\n\n");
+
+    const char *dummy = "Test";
+
+    void *element = list_find(list, (void *)dummy);
+
+    printf("list_find: \"%s\" %s\n", dummy, (element)?  "Found" : "Not found");
+
+    element = list_find_if(list, (void *)dummy, equal);
+
+    printf("list_find_if (strcasecmp): \"%s\" %s\n", dummy, (element)?  "Found" : "Not found");
+
+    list_destroy(list);
+
+    list = NULL;
+
+    printf("\n");
+}
+
+int main(const int argc, const char *argv[])
+{
+    vector_test();
+
+    list_test();
 
     return 0;
 }

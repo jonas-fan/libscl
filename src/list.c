@@ -1,5 +1,9 @@
 #include <list.h>
+#include <list_element.h>
+
 #include <stdlib.h>
+#include <string.h>
+
 
 /**
  *    Private
@@ -16,7 +20,7 @@ static ListElement * list_at_(const List *list, unsigned int index);
 
 
 /**
- *    Public
+ *    Public methods
  */
 
 List * list_create(void)
@@ -24,6 +28,8 @@ List * list_create(void)
     List *list = (List *)malloc(sizeof(List));
 
     if (list) {
+        memset(list, 0, sizeof(*list));
+
         list->size = 0;
         list->head = NULL;
         list->tail = NULL;
@@ -212,9 +218,39 @@ void list_pop_back(List *list)
     list_element_destroy(element);
 }
 
+void * list_find(List *list, void *item)
+{
+    unsigned int index;
+
+    for (index = 0; index < list->size; ++index) {
+        void *element = list_at(list, index);
+
+        if (item == element) {
+            return element;
+        }
+    }
+
+    return NULL;
+}
+
+void * list_find_if(List *list, void *item, bool (*predicate)(void *item, void *element))
+{
+    unsigned int index;
+
+    for (index = 0; index < list->size; ++index) {
+        void *element = list_at(list, index);
+
+        if (predicate(item, element)) {
+            return element;
+        }
+    }
+
+    return NULL;
+}
+
 
 /**
- *    Private
+ *    Private methods
  */
 
 static ListElement * list_at_(const List *list, unsigned int index)

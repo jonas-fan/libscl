@@ -5,13 +5,13 @@
 extern "C" {
 #endif
 
-#include <list_element.h>
+#include <stdbool.h>
 
 /**
  *    Simple List
  *
- *    @version 0.0.3
- *    @date    2014/06/18
+ *    @version 0.1.0
+ *    @date    2014/10/04
  *    @author  Jian <jianfan.tw@gmail.com>
  */
 
@@ -32,6 +32,9 @@ void list_push_front(List *list, void *data);
 void list_pop_front(List *list);
 void list_push_back(List *list, void *data);
 void list_pop_back(List *list);
+
+void * list_find(List *list, void *item);
+void * list_find_if(List *list, void *item, bool (*predicate)(void *item, void *element));
 
 #ifdef __cplusplus
 }

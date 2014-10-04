@@ -1,21 +1,24 @@
 #include <list_element.h>
 
 #include <stdlib.h>
+#include <string.h>
 
 ListElement * list_element_create(void *data)
 {
-    ListElement *list_element = (ListElement *)malloc(sizeof(ListElement));
+    ListElement *element = (ListElement *)malloc(sizeof(ListElement));
 
-    if (list_element) {
-        list_element->data = data;
-        list_element->previous = NULL;
-        list_element->next = NULL;
+    if (element) {
+        memset(element, 0, sizeof(*element));
+
+        element->data = data;
+        element->previous = NULL;
+        element->next = NULL;
     }
 
-    return list_element;
+    return element;
 }
 
-void list_element_destroy(ListElement *list_element)
+void list_element_destroy(ListElement *element)
 {
-    free(list_element);
+    free(element);
 }
