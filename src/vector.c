@@ -1,5 +1,5 @@
 #include <vector.h>
-
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -83,7 +83,7 @@ void ** vector_end(const Vector *vector)
 void vector_push_back(Vector *vector, void *element)
 {
     if (vector->size >= vector->capacity) {
-        vector->capacity = (vector->capacity)?  vector->capacity << 1 : 1;
+        vector->capacity = (vector->capacity)?  (vector->capacity << 1) : 1;
 
         const size_t data_size = sizeof(void *) * vector->capacity;
 
@@ -112,25 +112,32 @@ void vector_pop_back(Vector *vector)
     }
 }
 
-int vector_index_of(Vector *vector,
-                    void *object,
-                    bool (*compare)(const void *element, const void *object))
+void * vector_find(Vector *vector, void *item)
 {
-    if (!object ||
-        !compare)
-    {
-        return -1;
-    }
-
-    int index;
+    unsigned int index;
 
     for (index = 0; index < vector->size; ++index) {
         void *element = vector_at(vector, index);
 
-        if (compare(element, object)) {
-            return index;
+        if (item == element) {
+            return element;
         }
     }
 
-    return -1;
+    return NULL;
+}
+
+void * vector_find_if(Vector *vector, void *item, bool (*predicate)(void *item, void *element))
+{
+    unsigned int index;
+
+    for (index = 0; index < vector->size; ++index) {
+        void *element = vector_at(vector, index);
+
+        if (predicate(item, element)) {
+            return element;
+        }
+    }
+
+    return NULL;
 }

@@ -3,12 +3,12 @@
 #include <stdio.h>
 #include <string.h>
 
-bool equal(const void *element, const void *object)
+bool equal(void *item, void *element)
 {
-    const char *lhs = (const char *)element;
-    const char *rhs = (const char *)object;
+    const char *lhs = (const char *)item;
+    const char *rhs = (const char *)element;
 
-    return !strcmp(lhs, rhs);
+    return !strcasecmp(lhs, rhs);
 }
 
 int main(const int argc, const char *argv[])
@@ -21,49 +21,56 @@ int main(const int argc, const char *argv[])
     vector_push_back(vector, "This is simple STL");
     vector_push_back(vector, "OTZ");
 
-    printf("%d\n", vector_index_of(vector, "OTZ", equal));
-    printf("%d\n", vector_index_of(vector, "OTz", equal));
+    const char *dummy = "OTz";
 
-    printf("--------------- Before ----------------\n");
+    void *element = vector_find(vector, (void *)dummy);
 
-    void **iterator;
+    printf("vector_find: %s %s\n", dummy, (element)?  "Found" : "Not found");
 
-    for (iterator = vector_begin(vector); iterator != vector_end(vector); ++iterator) {
-        printf("%s\n", (char *)(*iterator));
-    }
+    element = vector_find_if(vector, (void *)dummy, equal);
 
-    printf("--------------- After -----------------\n");
+    printf("vector_find_if: %s %s\n", dummy, (element)?  "Found" : "Not found");
 
-    unsigned int index;
+    // printf("--------------- Before ----------------\n");
 
-    for (index = 0; index < vector_size(vector); ++index) {
-        void *element = vector_at(vector, index);
+    // void **iterator;
 
-        printf("%s\n", (char *)element);
-    }
+    // for (iterator = vector_begin(vector); iterator != vector_end(vector); ++iterator) {
+    //     printf("%s\n", (char *)(*iterator));
+    // }
 
-    vector_destroy(vector);
+    // printf("--------------- After -----------------\n");
 
-    vector = NULL;
+    // unsigned int index;
 
-    List *list = list_create();
+    // for (index = 0; index < vector_size(vector); ++index) {
+    //     void *element = vector_at(vector, index);
 
-    list_push_back(list, "a");
-    list_push_back(list, "b");
-    list_push_back(list, "c");
-    list_push_back(list, "d");
-    list_push_back(list, "e");
-    list_push_back(list, "f");
+    //     printf("%s\n", (char *)element);
+    // }
 
-    printf("%s\n", (const char *)list_back(list));
+    // vector_destroy(vector);
 
-    list_insert(list, 2, "test");
-    list_erase(list, 4);
-    list_pop_back(list);
+    // vector = NULL;
 
-    printf("%s\n", (const char *)list_back(list));
+    // List *list = list_create();
 
-    list_destroy(list);
+    // list_push_back(list, "a");
+    // list_push_back(list, "b");
+    // list_push_back(list, "c");
+    // list_push_back(list, "d");
+    // list_push_back(list, "e");
+    // list_push_back(list, "f");
+
+    // printf("%s\n", (const char *)list_back(list));
+
+    // list_insert(list, 2, "test");
+    // list_erase(list, 4);
+    // list_pop_back(list);
+
+    // printf("%s\n", (const char *)list_back(list));
+
+    // list_destroy(list);
 
     return 0;
 }
