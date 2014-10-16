@@ -7,13 +7,34 @@ $ git clone https://github.com/yjfan/c-simple-stl.git
 $ cd c-simple-stl/build
 $ cmake ..
 $ make
-$ ./test/test
 ```
 
 ## Container
 - Vector
 - List
 - Queue
+
+## Example
+### Vector
+```
+Vector *vector = vector_create();
+
+vector_push_back(vector, "Hello");
+vector_push_back(vector, "World");
+vector_push_back(vector, "Very simple");
+vector_push_back(vector, "This is simple STL");
+vector_push_back(vector, "OTZ");
+
+unsigned int index;
+
+for (index = 0; index < vector_size(vector); ++index) {
+    void *element = vector_at(vector, index);
+
+    printf("%s", (char *)element);
+}
+
+vector_destroy(vector);
+```
 
 ## License
 The MIT License (MIT)
