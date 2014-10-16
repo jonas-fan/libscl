@@ -1,8 +1,6 @@
 # c-simple-stl
 Implement Simple STL in C
 
------
-
 ## Build
 ```
 $ git clone https://github.com/yjfan/c-simple-stl.git
@@ -16,8 +14,6 @@ $ ./test/test
 - Vector
 - List
 - Queue
-
-----
 
 ## License
 The MIT License (MIT)
