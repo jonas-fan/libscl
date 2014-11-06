@@ -10,8 +10,8 @@ extern "C" {
 /**
  *    Simple List
  *
- *    @version 0.1.0
- *    @date    2014/10/04
+ *    @version 0.1.1
+ *    @date    2014/11/06
  *    @author  Jian <jianfan.tw@gmail.com>
  */
 

@@ -240,7 +240,9 @@ void * list_find_if(const List *list, void *item, bool (*predicate)(void *item, 
     for (index = 0; index < list->size; ++index) {
         void *element = list_at(list, index);
 
-        if (predicate(item, element)) {
+        if (predicate &&
+            predicate(item, element))
+        {
             return element;
         }
     }

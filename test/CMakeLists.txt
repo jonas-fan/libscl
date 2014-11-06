@@ -13,3 +13,19 @@ add_executable(vector_test
 target_link_libraries(vector_test
     csstl
 )
+
+add_executable(list_test
+    ./list_test.c
+)
+
+target_link_libraries(list_test
+    csstl
+)
+
+add_executable(queue_test
+    ./queue_test.c
+)
+
+target_link_libraries(queue_test
+    csstl
+)
