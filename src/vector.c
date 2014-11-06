@@ -13,7 +13,7 @@ struct vector_t
     void **data;
     unsigned int size;
     unsigned int capacity;
-}; 
+};
 
 
 /**
@@ -114,14 +114,15 @@ void vector_pop_back(Vector *vector)
 
 void * vector_find(const Vector *vector, void *item)
 {
-    unsigned int index;
+    void **end = vector_end(vector);
+    void **iterator = vector_begin(vector);
 
-    for (index = 0; index < vector->size; ++index) {
-        void *element = vector_at(vector, index);
-
-        if (item == element) {
-            return element;
+    while (iterator != end) {
+        if (item == *iterator) {
+            return *iterator;
         }
+
+        ++iterator;
     }
 
     return NULL;
@@ -129,14 +130,17 @@ void * vector_find(const Vector *vector, void *item)
 
 void * vector_find_if(const Vector *vector, void *item, bool (*predicate)(void *item, void *element))
 {
-    unsigned int index;
+    void **end = vector_end(vector);
+    void **iterator = vector_begin(vector);
 
-    for (index = 0; index < vector->size; ++index) {
-        void *element = vector_at(vector, index);
-
-        if (predicate(item, element)) {
-            return element;
+    while (iterator != end) {
+        if (predicate &&
+            predicate(item, *iterator))
+        {
+            return *iterator;
         }
+
+        ++iterator;
     }
 
     return NULL;

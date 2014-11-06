@@ -1,8 +1,12 @@
 #include <vector.h>
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+
+#define TEST_SIZE 10
+#define MAX_BUFFER_SIZE 64
 
 bool equal(void *item, void *element)
 {
@@ -12,23 +16,15 @@ bool equal(void *item, void *element)
     return !strcasecmp(lhs, rhs);
 }
 
-void vector_test()
+void dump(Vector *vector)
 {
-    Vector *vector = vector_create();
+    printf("Vector => [");
 
-    vector_push_back(vector, "Hello");
-    vector_push_back(vector, "World");
-    vector_push_back(vector, "Very simple");
-    vector_push_back(vector, "This is simple STL");
-    vector_push_back(vector, "OTZ");
-
-    assert(vector_size(vector) == 5);
-
-    printf("Vector = [");
+    const unsigned int size = vector_size(vector);
 
     unsigned int index;
 
-    for (index = 0; index < vector_size(vector); ++index) {
+    for (index = 0; index < size; ++index) {
         const char *delimiter = (!index)?  "" : ", ";
 
         void *element = vector_at(vector, index);
@@ -37,37 +33,73 @@ void vector_test()
     }
 
     printf("]\n");
+}
 
-    const char *dummy = "OTz";
+char * int2string(int number)
+{
+    char buffer[MAX_BUFFER_SIZE];
 
-    void *element = vector_find(vector, (void *)dummy);
+    snprintf(buffer, sizeof(buffer), "%d", number);
+
+    return strdup(buffer);
+}
+
+void test()
+{
+    Vector *vector = vector_create();
+
+    unsigned int index;
+
+    for (index = 0; index < TEST_SIZE; ++index) {
+        vector_push_back(vector, int2string(index));
+    }
+
+    assert(vector_size(vector) == TEST_SIZE);
+
+    dump(vector);
+
+    const char *search = "3";
+
+    void *element = vector_find(vector, (void *)search);
 
     assert(!element);
 
-    printf("vector_find: \"%s\" %s\n", dummy, (element)?  "Found" : "Not found");
-
-    element = vector_find_if(vector, (void *)dummy, equal);
+    element = vector_find_if(vector, (void *)search, equal);
 
     assert(element);
 
-    printf("vector_find_if (strcasecmp): \"%s\" %s\n", dummy, (element)?  "Found" : "Not found");
+    element = vector_find_if(vector, (void *)search, NULL);
+
+    assert(!element);
+
+    char *last_element = (char *)vector_back(vector);
+
+    assert(atoi(last_element) == (TEST_SIZE - 1));
+
+    free(last_element);
 
     vector_pop_back(vector);
 
-    assert(vector_size(vector) == 4);
+    assert(vector_size(vector) == (TEST_SIZE - 1));
 
-    assert(!strcmp(vector_at(vector, 2), "Very simple"));
+    while (vector_size(vector)) {
+        char *element = (char *)vector_back(vector);
+
+        free(element);
+
+        vector_pop_back(vector);
+    }
+
+    assert(vector_size(vector) == 0);
 
     vector_destroy(vector);
 
-    vector = NULL;
-
-    printf("OK\n");
+    printf("[\033[32mOK\033[m]\n");
 }
 
 int main(const int argc, const char *argv[])
 {
-    vector_test();
+    test();
 
     return 0;
 }

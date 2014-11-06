@@ -11,7 +11,7 @@ extern "C" {
  *    Simple Vector
  *
  *    @version 0.1.1
- *    @date    2014/10/04
+ *    @date    2014/11/06
  *    @author  Jian <jianfan.tw@gmail.com>
  */
 
