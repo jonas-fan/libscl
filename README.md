@@ -7,6 +7,9 @@ $ git clone https://github.com/yjfan/c-simple-stl.git
 $ cd c-simple-stl/build
 $ cmake ..
 $ make
+$ ./test/vector_test
+$ ./test/list_test
+$ ./test/queue_test
 ```
 
 ## Container
