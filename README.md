@@ -1,4 +1,6 @@
 # c-simple-stl
+[![Build Status](https://travis-ci.org/yjfan/c-simple-stl.svg)](https://travis-ci.org/yjfan/c-simple-stl)
+
 Implement Simple STL in C
 
 ## Build

@@ -1,0 +1,20 @@
+language: c
+
+compiler: gcc
+
+before_script:
+    - cd build/
+    - cmake ..
+
+script: make
+
+after_script:
+    - ./test/vector_test
+    - ./test/list_test
+    - ./test/queue_test
+
+notifications:
+    email:
+        - jianfan.tw@gmail.com
+    on_success: change
+    on_failure: always
