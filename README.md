@@ -20,8 +20,7 @@ $ ./test/queue_test
 - Queue
 
 ## Example
-### Vector
-```
+```cpp
 Vector *vector = vector_create();
 
 vector_push_back(vector, "Hello");
