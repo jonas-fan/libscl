@@ -1,5 +1,10 @@
 #include <queue.h>
 
+
+/**
+ *    Public methods
+ */
+
 Queue * queue_create(void)
 {
     return list_create();
@@ -30,7 +35,7 @@ void * queue_back(const Queue *queue)
     return list_back(queue);
 }
 
-void queue_push(Queue *queue, void *data)
+void queue_push(Queue *queue, const void *data)
 {
     list_push_back(queue, data);
 }
@@ -40,12 +45,14 @@ void queue_pop(Queue *queue)
     list_pop_front(queue);
 }
 
-void * queue_find(const Queue *queue, void *item)
+void * queue_find(const Queue *queue, const void *item)
 {
     return list_find(queue, item);
 }
 
-void * queue_find_if(const Queue *queue, void *item, bool (*predicate)(void *item, void *element))
+void * queue_find_if(const Queue *queue,
+                     const void *item,
+                     bool (*predicate)(const void *item, const void *element))
 {
     return list_find_if(queue, item, predicate);
 }

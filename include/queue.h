@@ -10,8 +10,8 @@ extern "C" {
 /**
  *    Simple Queue (List based)
  *
- *    @version 0.1.0
- *    @date    2014/10/04
+ *    @version 0.1.1
+ *    @date    2015/03/13
  *    @author  Jian <jianfan.tw@gmail.com>
  */
 
@@ -28,11 +28,13 @@ void * queue_at(const Queue *queue, unsigned int index);
 void * queue_front(const Queue *queue);
 void * queue_back(const Queue *queue);
 
-void queue_push(Queue *queue, void *data);
+void queue_push(Queue *queue, const void *data);
 void queue_pop(Queue *queue);
 
-void * queue_find(const Queue *queue, void *item);
-void * queue_find_if(const Queue *queue, void *item, bool (*predicate)(void *item, void *element));
+void * queue_find(const Queue *queue, const void *item);
+void * queue_find_if(const Queue *queue,
+                     const void *item,
+                     bool (*predicate)(const void *item, const void *element));
 
 #ifdef __cplusplus
 }

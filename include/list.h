@@ -10,8 +10,8 @@ extern "C" {
 /**
  *    Simple List
  *
- *    @version 0.1.1
- *    @date    2014/11/06
+ *    @version 0.1.2
+ *    @date    2015/03/13
  *    @author  Jian <jianfan.tw@gmail.com>
  */
 
@@ -26,15 +26,17 @@ void * list_at(const List *list, unsigned int index);
 void * list_front(const List *list);
 void * list_back(const List *list);
 
-void list_insert(List *list, unsigned int index, void *data);
+void list_insert(List *list, unsigned int index, const void *data);
 void list_erase(List *list, unsigned int index);
-void list_push_front(List *list, void *data);
+void list_push_front(List *list, const void *data);
 void list_pop_front(List *list);
-void list_push_back(List *list, void *data);
+void list_push_back(List *list, const void *data);
 void list_pop_back(List *list);
 
-void * list_find(const List *list, void *item);
-void * list_find_if(const List *list, void *item, bool (*predicate)(void *item, void *element));
+void * list_find(const List *list, const void *item);
+void * list_find_if(const List *list,
+                    const void *item,
+                    bool (*predicate)(const void *item, const void *element));
 
 #ifdef __cplusplus
 }

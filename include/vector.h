@@ -10,8 +10,8 @@ extern "C" {
 /**
  *    Simple Vector
  *
- *    @version 0.1.1
- *    @date    2014/11/06
+ *    @version 0.1.2
+ *    @date    2015/03/13
  *    @author  Jian <jianfan.tw@gmail.com>
  */
 
@@ -29,11 +29,13 @@ void * vector_back(const Vector *vector);
 void ** vector_begin(const Vector *vector);
 void ** vector_end(const Vector *vector);
 
-void vector_push_back(Vector *vector, void *element);
+void vector_push_back(Vector *vector, const void *element);
 void vector_pop_back(Vector *vector);
 
-void * vector_find(const Vector *vector, void *item);
-void * vector_find_if(const Vector *vector, void *item, bool (*predicate)(void *item, void *element));
+void * vector_find(const Vector *vector, const void *item);
+void * vector_find_if(const Vector *vector,
+                      const void *item,
+                      bool (*predicate)(const void *item, const void *element));
 
 #ifdef __cplusplus
 }

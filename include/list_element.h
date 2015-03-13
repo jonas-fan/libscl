@@ -8,19 +8,21 @@ extern "C" {
 /**
  *    Simple ListElement
  *
- *    @version 0.1.0
- *    @date    2014/10/04
+ *    @version 0.1.1
+ *    @date    2015/03/13
  *    @author  Jian <jianfan.tw@gmail.com>
  */
 
-typedef struct list_element_t
+typedef struct list_element_t ListElement;
+
+struct list_element_t
 {
     void *data;
-    struct list_element_t *previous;
-    struct list_element_t *next;
-} ListElement;
+    ListElement *previous;
+    ListElement *next;
+};
 
-ListElement * list_element_create(void *data);
+ListElement * list_element_create(const void *data);
 void list_element_destroy(ListElement *list_element);
 
 #ifdef __cplusplus

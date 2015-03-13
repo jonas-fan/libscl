@@ -80,7 +80,7 @@ void ** vector_end(const Vector *vector)
     return vector->data + vector->size;
 }
 
-void vector_push_back(Vector *vector, void *element)
+void vector_push_back(Vector *vector, const void *element)
 {
     if (vector->size >= vector->capacity) {
         vector->capacity = (vector->capacity)?  (vector->capacity << 1) : 1;
@@ -102,7 +102,7 @@ void vector_push_back(Vector *vector, void *element)
         return;
     }
 
-    vector->data[vector->size++] = element;
+    vector->data[vector->size++] = (void *)element;
 }
 
 void vector_pop_back(Vector *vector)
@@ -112,7 +112,7 @@ void vector_pop_back(Vector *vector)
     }
 }
 
-void * vector_find(const Vector *vector, void *item)
+void * vector_find(const Vector *vector, const void *item)
 {
     void **end = vector_end(vector);
     void **iterator = vector_begin(vector);
@@ -128,15 +128,19 @@ void * vector_find(const Vector *vector, void *item)
     return NULL;
 }
 
-void * vector_find_if(const Vector *vector, void *item, bool (*predicate)(void *item, void *element))
+void * vector_find_if(const Vector *vector,
+                      const void *item,
+                      bool (*predicate)(const void *item, const void *element))
 {
+    if (!predicate) {
+        return NULL;
+    }
+
     void **end = vector_end(vector);
     void **iterator = vector_begin(vector);
 
     while (iterator != end) {
-        if (predicate &&
-            predicate(item, *iterator))
-        {
+        if (predicate(item, *iterator)) {
             return *iterator;
         }
 

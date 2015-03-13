@@ -1,4 +1,5 @@
 #include <queue.h>
+#include "utils.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,15 +7,6 @@
 #include <assert.h>
 
 #define TEST_SIZE 10
-#define MAX_BUFFER_SIZE 64
-
-bool equal(void *item, void *element)
-{
-    const char *lhs = (const char *)item;
-    const char *rhs = (const char *)element;
-
-    return !strcasecmp(lhs, rhs);
-}
 
 void dump(Queue *queue)
 {
@@ -29,28 +21,17 @@ void dump(Queue *queue)
 
         void *element = queue_at(queue, index);
 
-        printf("%s\"%s\"", delimiter, (char *)element);
+        printf("%s\"%s\"", delimiter, (const char *)element);
     }
 
     printf("]\n");
 }
 
-char * int2string(int number)
-{
-    char buffer[MAX_BUFFER_SIZE];
-
-    snprintf(buffer, sizeof(buffer), "%d", number);
-
-    return strdup(buffer);
-}
-
 void test()
 {
-    Queue *queue = list_create();
+    Queue *queue = queue_create();
 
-    unsigned int index;
-
-    for (index = 0; index < TEST_SIZE; ++index) {
+    for (unsigned int index = 0; index < TEST_SIZE; ++index) {
         queue_push(queue, int2string(index));
     }
 
@@ -76,18 +57,18 @@ void test()
 
     assert(atoi(first_element) == 0);
 
-    free(first_element);
-
     queue_pop(queue);
+
+    free(first_element);
 
     assert(queue_size(queue) == (TEST_SIZE - 1));
 
     while (queue_size(queue)) {
         char *element = (char *)queue_front(queue);
 
-        free(element);
-
         queue_pop(queue);
+
+        free(element);
     }
 
     assert(queue_size(queue) == 0);

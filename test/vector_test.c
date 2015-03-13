@@ -1,4 +1,5 @@
 #include <vector.h>
+#include "utils.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,17 +7,8 @@
 #include <assert.h>
 
 #define TEST_SIZE 10
-#define MAX_BUFFER_SIZE 64
 
-bool equal(void *item, void *element)
-{
-    const char *lhs = (const char *)item;
-    const char *rhs = (const char *)element;
-
-    return !strcasecmp(lhs, rhs);
-}
-
-void dump(Vector *vector)
+static void dump(Vector *vector)
 {
     printf("Vector => [");
 
@@ -29,28 +21,17 @@ void dump(Vector *vector)
 
         void *element = vector_at(vector, index);
 
-        printf("%s\"%s\"", delimiter, (char *)element);
+        printf("%s\"%s\"", delimiter, (const char *)element);
     }
 
     printf("]\n");
 }
 
-char * int2string(int number)
-{
-    char buffer[MAX_BUFFER_SIZE];
-
-    snprintf(buffer, sizeof(buffer), "%d", number);
-
-    return strdup(buffer);
-}
-
-void test()
+static void test()
 {
     Vector *vector = vector_create();
 
-    unsigned int index;
-
-    for (index = 0; index < TEST_SIZE; ++index) {
+    for (unsigned int index = 0; index < TEST_SIZE; ++index) {
         vector_push_back(vector, int2string(index));
     }
 
@@ -60,15 +41,15 @@ void test()
 
     const char *search = "3";
 
-    void *element = vector_find(vector, (void *)search);
+    void *element = vector_find(vector, search);
 
     assert(!element);
 
-    element = vector_find_if(vector, (void *)search, equal);
+    element = vector_find_if(vector, search, equal);
 
     assert(element);
 
-    element = vector_find_if(vector, (void *)search, NULL);
+    element = vector_find_if(vector, search, NULL);
 
     assert(!element);
 
@@ -76,18 +57,18 @@ void test()
 
     assert(atoi(last_element) == (TEST_SIZE - 1));
 
-    free(last_element);
-
     vector_pop_back(vector);
+
+    free(last_element);
 
     assert(vector_size(vector) == (TEST_SIZE - 1));
 
     while (vector_size(vector)) {
         char *element = (char *)vector_back(vector);
 
-        free(element);
-
         vector_pop_back(vector);
+
+        free(element);
     }
 
     assert(vector_size(vector) == 0);

@@ -54,7 +54,7 @@ unsigned int list_size(const List *list)
 
 void * list_at(const List *list, unsigned int index)
 {
-    ListElement *element = list_at_(list, index);
+    const ListElement *element = list_at_(list, index);
 
     if (element) {
         return element->data;
@@ -73,7 +73,7 @@ void * list_back(const List *list)
     return list_at(list, list->size - 1);
 }
 
-void list_insert(List *list, unsigned int index, void *data)
+void list_insert(List *list, unsigned int index, const void *data)
 {
     ListElement *current_element = list_at_(list, index);
 
@@ -132,7 +132,7 @@ void list_erase(List *list, unsigned int index)
     list_element_destroy(current_element);
 }
 
-void list_push_front(List *list, void *data)
+void list_push_front(List *list, const void *data)
 {
     ListElement *new_element = list_element_create(data);
 
@@ -175,7 +175,7 @@ void list_pop_front(List *list)
     list_element_destroy(element);
 }
 
-void list_push_back(List *list, void *data)
+void list_push_back(List *list, const void *data)
 {
     ListElement *new_element = list_element_create(data);
 
@@ -218,11 +218,9 @@ void list_pop_back(List *list)
     list_element_destroy(element);
 }
 
-void * list_find(const List *list, void *item)
+void * list_find(const List *list, const void *item)
 {
-    unsigned int index;
-
-    for (index = 0; index < list->size; ++index) {
+    for (unsigned int index = 0; index < list->size; ++index) {
         void *element = list_at(list, index);
 
         if (item == element) {
@@ -233,16 +231,18 @@ void * list_find(const List *list, void *item)
     return NULL;
 }
 
-void * list_find_if(const List *list, void *item, bool (*predicate)(void *item, void *element))
+void * list_find_if(const List *list,
+                    const void *item,
+                    bool (*predicate)(const void *item, const void *element))
 {
-    unsigned int index;
+    if (!predicate) {
+        return NULL;
+    }
 
-    for (index = 0; index < list->size; ++index) {
+    for (unsigned int index = 0; index < list->size; ++index) {
         void *element = list_at(list, index);
 
-        if (predicate &&
-            predicate(item, element))
-        {
+        if (predicate(item, element)) {
             return element;
         }
     }
