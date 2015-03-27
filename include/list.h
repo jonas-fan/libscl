@@ -1,5 +1,5 @@
-#ifndef C_SIMPLE_STL_LIST_H_
-#define C_SIMPLE_STL_LIST_H_
+#ifndef SIMPLE_CONTAINER_LIST_H_
+#define SIMPLE_CONTAINER_LIST_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -42,4 +42,4 @@ void * list_find_if(const List *list,
 }
 #endif
 
-#endif  /* C_SIMPLE_STL_LIST_H_ */
+#endif  /* SIMPLE_CONTAINER_LIST_H_ */

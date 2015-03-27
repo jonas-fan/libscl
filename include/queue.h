@@ -1,5 +1,5 @@
-#ifndef C_SIMPLE_STL_QUEUE_H_
-#define C_SIMPLE_STL_QUEUE_H_
+#ifndef SIMPLE_CONTAINER_QUEUE_H_
+#define SIMPLE_CONTAINER_QUEUE_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -40,4 +40,4 @@ void * queue_find_if(const Queue *queue,
 }
 #endif
 
-#endif  /* C_SIMPLE_STL_QUEUE_H_ */
+#endif  /* SIMPLE_CONTAINER_QUEUE_H_ */

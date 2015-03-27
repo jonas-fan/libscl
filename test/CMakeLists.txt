@@ -13,7 +13,7 @@ add_executable(vector_test
 )
 
 target_link_libraries(vector_test
-    csstl
+    simplecontainer
 )
 
 add_executable(list_test
@@ -21,7 +21,7 @@ add_executable(list_test
 )
 
 target_link_libraries(list_test
-    csstl
+    simplecontainer
 )
 
 add_executable(queue_test
@@ -29,5 +29,13 @@ add_executable(queue_test
 )
 
 target_link_libraries(queue_test
-    csstl
+    simplecontainer
+)
+
+add_executable(stack_test
+    ./stack_test.c
+)
+
+target_link_libraries(stack_test
+    simplecontainer
 )

@@ -1,5 +1,5 @@
-#ifndef C_SIMPLE_STL_LIST_ELEMENT_H_
-#define C_SIMPLE_STL_LIST_ELEMENT_H_
+#ifndef SIMPLE_CONTAINER_LIST_ELEMENT_H_
+#define SIMPLE_CONTAINER_LIST_ELEMENT_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -29,4 +29,4 @@ void list_element_destroy(ListElement *list_element);
 }
 #endif
 
-#endif  /* C_SIMPLE_STL_LIST_ELEMENT_H_ */
+#endif  /* SIMPLE_CONTAINER_LIST_ELEMENT_H_ */

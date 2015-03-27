@@ -35,7 +35,7 @@ void test()
         queue_push(queue, int2string(index));
     }
 
-    assert(list_size(queue) == TEST_SIZE);
+    assert(queue_size(queue) == TEST_SIZE);
 
     dump(queue);
 

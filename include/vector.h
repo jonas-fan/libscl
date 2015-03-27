@@ -1,5 +1,5 @@
-#ifndef C_SIMPLE_STL_VECTOR_H_
-#define C_SIMPLE_STL_VECTOR_H_
+#ifndef SIMPLE_CONTAINER_VECTOR_H_
+#define SIMPLE_CONTAINER_VECTOR_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -41,4 +41,4 @@ void * vector_find_if(const Vector *vector,
 }
 #endif
 
-#endif  /* C_SIMPLE_STL_VECTOR_H_ */
+#endif  /* SIMPLE_CONTAINER_VECTOR_H_ */
