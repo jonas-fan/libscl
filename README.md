@@ -1,23 +1,25 @@
-# c-simple-stl
-[![Build Status](https://travis-ci.org/yjfan/c-simple-stl.svg)](https://travis-ci.org/yjfan/c-simple-stl)
+# simple-container
+[![Build Status](https://travis-ci.org/yjfan/simple-container.svg)](https://travis-ci.org/yjfan/simple-container)
 
-Implement Simple STL in C
+Implement container in C
 
 ## Build
 ```
-$ git clone https://github.com/yjfan/c-simple-stl.git
-$ cd c-simple-stl/build
+$ git clone https://github.com/yjfan/simple-container.git
+$ cd simple-container/build
 $ cmake ..
 $ make
 $ ./test/vector_test
 $ ./test/list_test
 $ ./test/queue_test
+$ ./test/stack_test
 ```
 
 ## Container
 - Vector
 - List
 - Queue
+- Stack
 
 ## Example
 ```cpp
