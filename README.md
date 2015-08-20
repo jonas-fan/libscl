@@ -34,9 +34,9 @@ vector_push_back(vector, "OTZ");
 unsigned int index;
 
 for (index = 0; index < vector_size(vector); ++index) {
-    void *element = vector_at(vector, index);
+    const char *element = (const char *)vector_at(vector, index);
 
-    printf("%s", (char *)element);
+    printf("%s\n", element);
 }
 
 vector_destroy(vector);
