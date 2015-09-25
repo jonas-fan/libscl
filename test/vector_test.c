@@ -78,7 +78,7 @@ static void test()
     printf("[\033[32mOK\033[m]\n");
 }
 
-int main(const int argc, const char *argv[])
+int main(/*int argc, char *argv[]*/)
 {
     test();
 

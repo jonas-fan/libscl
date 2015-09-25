@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 2.8)
 project(test C)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -g -O2 -std=c99")
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../bin/test)
 
 add_definitions("-D_GNU_SOURCE")
 
@@ -13,7 +14,7 @@ add_executable(vector_test
 )
 
 target_link_libraries(vector_test
-    simplecontainer
+    ${TARGET_LIB_STATIC}
 )
 
 add_executable(list_test
@@ -21,7 +22,7 @@ add_executable(list_test
 )
 
 target_link_libraries(list_test
-    simplecontainer
+    ${TARGET_LIB_STATIC}
 )
 
 add_executable(queue_test
@@ -29,7 +30,7 @@ add_executable(queue_test
 )
 
 target_link_libraries(queue_test
-    simplecontainer
+    ${TARGET_LIB_STATIC}
 )
 
 add_executable(stack_test
@@ -37,5 +38,5 @@ add_executable(stack_test
 )
 
 target_link_libraries(stack_test
-    simplecontainer
+    ${TARGET_LIB_STATIC}
 )

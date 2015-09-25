@@ -9,10 +9,11 @@ before_script:
 script: make
 
 after_script:
-    - ./test/vector_test
-    - ./test/list_test
-    - ./test/queue_test
-    - ./test/stack_test
+    - cd ../bin/test/
+    - ./vector_test
+    - ./list_test
+    - ./queue_test
+    - ./stack_test
 
 notifications:
     email:

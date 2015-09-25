@@ -8,11 +8,12 @@ Implement container in C
 $ git clone https://github.com/yjfan/simple-container.git
 $ cd simple-container/build
 $ cmake ..
-$ make
-$ ./test/vector_test
-$ ./test/list_test
-$ ./test/queue_test
-$ ./test/stack_test
+$ make -j4
+$ cd ../bin/test/
+$ ./vector_test
+$ ./list_test
+$ ./queue_test
+$ ./stack_test
 ```
 
 ## Container
@@ -23,7 +24,7 @@ $ ./test/stack_test
 
 ## Example
 ```cpp
-Vector *vector = vector_create();
+vector_t *vector = vector_create();
 
 vector_push_back(vector, "Hello");
 vector_push_back(vector, "World");
@@ -32,8 +33,9 @@ vector_push_back(vector, "This is simple STL");
 vector_push_back(vector, "OTZ");
 
 unsigned int index;
+const unsigned int size = vector_size(vector);
 
-for (index = 0; index < vector_size(vector); ++index) {
+for (index = 0; index < size; ++index) {
     const char *element = (const char *)vector_at(vector, index);
 
     printf("%s\n", element);
