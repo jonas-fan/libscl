@@ -8,35 +8,34 @@ extern "C" {
 #include <stdbool.h>
 
 /**
- *    Simple List
+ *    Doubly linked list
  *
- *    @version 0.1.2
- *    @date    2015/03/13
+ *    @date    2015/09/25
  *    @author  Jian <jianfan.tw@gmail.com>
  */
 
-typedef struct list_t List;
+typedef struct list_t list_t;
 
-List * list_create(void);
-void list_destroy(List *list);
+list_t * list_create(void);
+void list_destroy(list_t *list);
 
-unsigned int list_size(const List *list);
+unsigned int list_size(const list_t *list);
 
-void * list_at(const List *list, unsigned int index);
-void * list_front(const List *list);
-void * list_back(const List *list);
+void * list_at(const list_t *list, unsigned int index);
+void * list_front(const list_t *list);
+void * list_back(const list_t *list);
 
-void list_insert(List *list, unsigned int index, const void *data);
-void list_erase(List *list, unsigned int index);
-void list_push_front(List *list, const void *data);
-void list_pop_front(List *list);
-void list_push_back(List *list, const void *data);
-void list_pop_back(List *list);
+int list_insert(list_t *list, unsigned int index, const void *data);
+int list_erase(list_t *list, unsigned int index);
+int list_push_front(list_t *list, const void *data);
+int list_pop_front(list_t *list);
+int list_push_back(list_t *list, const void *data);
+int list_pop_back(list_t *list);
 
-void * list_find(const List *list, const void *item);
-void * list_find_if(const List *list,
-                    const void *item,
-                    bool (*predicate)(const void *item, const void *element));
+void * list_find(const list_t *list, const void *data);
+void * list_find_if(const list_t *list,
+                    const void *data,
+                    bool (*compare)(const void *node_data, const void *data));
 
 #ifdef __cplusplus
 }

@@ -15,7 +15,7 @@ extern "C" {
  *    @author  Jian <jianfan.tw@gmail.com>
  */
 
-typedef List queue_t;
+typedef list_t queue_t;
 
 typedef queue_t Queue;
 

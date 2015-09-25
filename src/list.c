@@ -1,5 +1,4 @@
 #include <list.h>
-#include <list_element.h>
 
 #include <stdlib.h>
 #include <string.h>
@@ -9,200 +8,248 @@
  *    Private
  */
 
+typedef struct list_node_t list_node_t;
+
+struct list_node_t
+{
+    const void *data;
+    list_node_t *previous;
+    list_node_t *next;
+};
+
 struct list_t
 {
     unsigned int size;
-    ListElement *head;
-    ListElement *tail;
+    list_node_t *head;
+    list_node_t *tail;
 };
 
-static ListElement * list_at_(const List *list, unsigned int index);
+static inline list_node_t * list_element_create(const void *data)
+{
+    list_node_t *node = (list_node_t *)malloc(sizeof(list_node_t));
+
+    if (node) {
+        memset(node, 0, sizeof(*node));
+
+        node->data = data;
+    }
+
+    return node;
+}
+
+static inline void list_element_destroy(list_node_t *node)
+{
+    free(node);
+}
+
+static inline list_node_t * list_at_(const list_t *list, unsigned int index)
+{
+    if (index >= list->size) {
+        return NULL;
+    }
+
+    list_node_t *node = list->head;
+
+    while (index--) {
+        node = node->next;
+    }
+
+    return node;
+}
 
 
 /**
  *    Public methods
  */
 
-List * list_create(void)
+list_t * list_create(void)
 {
-    List *list = (List *)malloc(sizeof(List));
+    list_t *list = (list_t *)malloc(sizeof(list_t));
 
     if (list) {
         memset(list, 0, sizeof(*list));
-
-        list->size = 0;
-        list->head = NULL;
-        list->tail = NULL;
     }
 
     return list;
 }
 
-void list_destroy(List *list)
+void list_destroy(list_t *list)
 {
-    while (list->size) {
-        list_pop_back(list);
+    list_node_t *node = list->head;
+
+    while (node) {
+        list_node_t *next = node->next;
+
+        list_element_destroy(node);
+
+        node = next;
     }
 
     free(list);
 }
 
-unsigned int list_size(const List *list)
+unsigned int list_size(const list_t *list)
 {
     return list->size;
 }
 
-void * list_at(const List *list, unsigned int index)
+void * list_at(const list_t *list, unsigned int index)
 {
-    const ListElement *element = list_at_(list, index);
+    const list_node_t *node = list_at_(list, index);
 
-    if (element) {
-        return element->data;
-    }
-
-    return NULL;
+    return (node)?  (void *)node->data : NULL;
 }
 
-void * list_front(const List *list)
+void * list_front(const list_t *list)
 {
-    return list_at(list, 0);
+    return (void *)list->head->data;
 }
 
-void * list_back(const List *list)
+void * list_back(const list_t *list)
 {
-    return list_at(list, list->size - 1);
+    return (void *)list->tail->data;
 }
 
-void list_insert(List *list, unsigned int index, const void *data)
+int list_insert(list_t *list, unsigned int index, const void *data)
 {
-    ListElement *current_element = list_at_(list, index);
+    list_node_t *node = list_at_(list, index);
 
-    if (!current_element) {
-        return;
+    if (!node) {
+        return -1;
     }
 
-    ListElement *new_element = list_element_create(data);
+    list_node_t *new_node = list_element_create(data);
 
-    if (!new_element) {
-        return;
+    if (!new_node) {
+        return -1;
     }
 
-    new_element->next = current_element;
-    new_element->previous = current_element->previous;
+    new_node->next = node;
+    new_node->previous = node->previous;
 
-    if (list->head == current_element) {
-        list->head = new_element;
+    if (list->head == node) {
+        list->head = new_node;
     }
     else {
-        current_element->previous->next = new_element;
+        node->previous->next = new_node;
     }
 
-    current_element->previous = new_element;
+    node->previous = new_node;
 
     ++list->size;
+
+    return 0;
 }
 
-void list_erase(List *list, unsigned int index)
+int list_erase(list_t *list, unsigned int index)
 {
-    ListElement *current_element = list_at_(list, index);
+    list_node_t *node = list_at_(list, index);
 
-    if (!current_element) {
-        return;
+    if (!node) {
+        return -1;
     }
 
     if (list->head == list->tail) {
         list->head = NULL;
         list->tail = NULL;
     }
-    else if (current_element == list->head) {
-        current_element->next->previous = NULL;
-        list->head = current_element->next;
+    else if (node == list->head) {
+        node->next->previous = NULL;
+        list->head = node->next;
     }
-    else if (current_element == list->tail) {
-        current_element->previous->next = NULL;
-        list->tail = current_element->previous;
+    else if (node == list->tail) {
+        node->previous->next = NULL;
+        list->tail = node->previous;
     }
     else {
-        current_element->next->previous = current_element->previous;
-        current_element->previous->next = current_element->next;
+        node->next->previous = node->previous;
+        node->previous->next = node->next;
     }
 
     --list->size;
 
-    list_element_destroy(current_element);
+    list_element_destroy(node);
+
+    return 0;
 }
 
-void list_push_front(List *list, const void *data)
+int list_push_front(list_t *list, const void *data)
 {
-    ListElement *new_element = list_element_create(data);
+    list_node_t *new_node = list_element_create(data);
 
-    if (!new_element) {
-        return;
+    if (!new_node) {
+        return -1;
     }
 
     if (list->head) {
-        new_element->next = list->head;
-        list->head->previous = new_element;
-        list->head = new_element;
+        new_node->next = list->head;
+        list->head->previous = new_node;
+        list->head = new_node;
     }
     else {
-        list->head = new_element;
-        list->tail = new_element;
+        list->head = new_node;
+        list->tail = new_node;
     }
 
     ++list->size;
+
+    return 0;
 }
 
-void list_pop_front(List *list)
+int list_pop_front(list_t *list)
 {
     if (!list->size) {
-        return;
+        return -1;
     }
 
-    ListElement *element = list->head;
+    list_node_t *node = list->head;
 
     if (list->head == list->tail) {
         list->head = NULL;
         list->tail = NULL;
     }
     else {
-        list->head = element->next;
+        list->head = node->next;
         list->head->previous = NULL;
     }
 
     --list->size;
 
-    list_element_destroy(element);
+    list_element_destroy(node);
+
+    return 0;
 }
 
-void list_push_back(List *list, const void *data)
+int list_push_back(list_t *list, const void *data)
 {
-    ListElement *new_element = list_element_create(data);
+    list_node_t *new_node = list_element_create(data);
 
-    if (!new_element) {
-        return;
+    if (!new_node) {
+        return -1;
     }
 
     if (list->tail) {
-        new_element->previous = list->tail;
-        list->tail->next = new_element;
-        list->tail = new_element;
+        new_node->previous = list->tail;
+        list->tail->next = new_node;
+        list->tail = new_node;
     }
     else {
-        list->head = new_element;
-        list->tail = new_element;
+        list->head = new_node;
+        list->tail = new_node;
     }
 
     ++list->size;
+
+    return 0;
 }
 
-void list_pop_back(List *list)
+int list_pop_back(list_t *list)
 {
     if (!list->size) {
-        return;
+        return -1;
     }
 
-    ListElement *element = list->tail;
+    list_node_t *element = list->tail;
 
     if (list->head == list->tail) {
         list->head = NULL;
@@ -216,56 +263,34 @@ void list_pop_back(List *list)
     --list->size;
 
     list_element_destroy(element);
+
+    return 0;
 }
 
-void * list_find(const List *list, const void *item)
+void * list_find(const list_t *list, const void *data)
 {
-    for (unsigned int index = 0; index < list->size; ++index) {
-        void *element = list_at(list, index);
+    list_node_t *node = list->head;
 
-        if (item == element) {
-            return element;
-        }
+    while (node && (node->data != data)) {
+        node = node->next;
     }
 
-    return NULL;
+    return (node)?  (void *)node->data : NULL;
 }
 
-void * list_find_if(const List *list,
-                    const void *item,
-                    bool (*predicate)(const void *item, const void *element))
+void * list_find_if(const list_t *list,
+                    const void *data,
+                    bool (*compare)(const void *node_data, const void *data))
 {
-    if (!predicate) {
+    if (!compare) {
         return NULL;
     }
 
-    for (unsigned int index = 0; index < list->size; ++index) {
-        void *element = list_at(list, index);
+    list_node_t *node = list->head;
 
-        if (predicate(item, element)) {
-            return element;
-        }
+    while (node && !compare(node->data, data)) {
+        node = node->next;
     }
 
-    return NULL;
-}
-
-
-/**
- *    Private methods
- */
-
-static ListElement * list_at_(const List *list, unsigned int index)
-{
-    if (index >= list->size) {
-        return NULL;
-    }
-
-    ListElement *element = list->head;
-
-    while (index--) {
-        element = element->next;
-    }
-
-    return element;
+    return (node)?  (void *)node->data : NULL;
 }

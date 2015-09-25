@@ -19,10 +19,10 @@ char * int2string(int number)
     return strdup(buffer);
 }
 
-bool equal(const void *item, const void *element)
+bool equal(const void *container_data, const void *data)
 {
-    const char *lhs = (const char *)item;
-    const char *rhs = (const char *)element;
+    const char *lhs = (const char *)container_data;
+    const char *rhs = (const char *)data;
 
     return !strcasecmp(lhs, rhs);
 }

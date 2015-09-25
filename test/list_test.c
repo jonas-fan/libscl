@@ -8,7 +8,7 @@
 
 #define TEST_SIZE 10
 
-static void dump(List *list)
+static void dump(list_t *list)
 {
     printf("List => [");
 
@@ -29,7 +29,7 @@ static void dump(List *list)
 
 static void test()
 {
-    List *list = list_create();
+    list_t *list = list_create();
 
     for (unsigned int index = 0; index < TEST_SIZE; ++index) {
         list_push_back(list, int2string(index));
@@ -47,7 +47,7 @@ static void test()
 
     element = list_find_if(list, search, equal);
 
-    assert(element);
+    assert(!strcasecmp((char *)element, search));
 
     element = list_find_if(list, search, NULL);
 

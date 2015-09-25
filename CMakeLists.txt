@@ -9,7 +9,6 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 add_library(simplecontainer STATIC
     ./src/vector.c
     ./src/list.c
-    ./src/list_element.c
     ./src/queue.c
     ./src/stack.c
 )
