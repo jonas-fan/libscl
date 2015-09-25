@@ -6,9 +6,9 @@
 #include <string.h>
 #include <assert.h>
 
-#define TEST_SIZE 10
+#define TEST_SIZE 16
 
-void dump(Stack *stack)
+static void dump(stack_t *stack)
 {
     printf("Stack => [");
 
@@ -27,9 +27,9 @@ void dump(Stack *stack)
     printf("]\n");
 }
 
-void test()
+static void test()
 {
-    Stack *stack = stack_create();
+    stack_t *stack = stack_create();
 
     for (unsigned int index = 0; index < TEST_SIZE; ++index) {
         stack_push(stack, int2string(index));

@@ -6,7 +6,7 @@
 #include <string.h>
 #include <assert.h>
 
-#define TEST_SIZE 10
+#define TEST_SIZE 16
 
 static void dump(list_t *list)
 {

@@ -280,7 +280,7 @@ void * list_find(const list_t *list, const void *data)
 
 void * list_find_if(const list_t *list,
                     const void *data,
-                    bool (*compare)(const void *node_data, const void *data))
+                    int (*compare)(const void *element, const void *data))
 {
     if (!compare) {
         return NULL;
@@ -288,7 +288,7 @@ void * list_find_if(const list_t *list,
 
     list_node_t *node = list->head;
 
-    while (node && !compare(node->data, data)) {
+    while (node && compare(node->data, data)) {
         node = node->next;
     }
 

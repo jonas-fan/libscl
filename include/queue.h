@@ -8,33 +8,30 @@ extern "C" {
 #include <list.h>
 
 /**
- *    Simple Queue (List based)
+ *    Queue (List based)
  *
- *    @version 0.1.1
- *    @date    2015/03/13
+ *    @date    2015/09/25
  *    @author  Jian <jianfan.tw@gmail.com>
  */
 
 typedef list_t queue_t;
 
-typedef queue_t Queue;
+queue_t * queue_create(void);
+void queue_destroy(queue_t *queue);
 
-Queue * queue_create(void);
-void queue_destroy(Queue *queue);
+unsigned int queue_size(const queue_t *queue);
 
-unsigned int queue_size(const Queue *queue);
+void * queue_at(const queue_t *queue, unsigned int index);
+void * queue_front(const queue_t *queue);
+void * queue_back(const queue_t *queue);
 
-void * queue_at(const Queue *queue, unsigned int index);
-void * queue_front(const Queue *queue);
-void * queue_back(const Queue *queue);
+int queue_push(queue_t *queue, const void *data);
+int queue_pop(queue_t *queue);
 
-void queue_push(Queue *queue, const void *data);
-void queue_pop(Queue *queue);
-
-void * queue_find(const Queue *queue, const void *item);
-void * queue_find_if(const Queue *queue,
-                     const void *item,
-                     bool (*predicate)(const void *item, const void *element));
+void * queue_find(const queue_t *queue, const void *data);
+void * queue_find_if(const queue_t *queue,
+                     const void *data,
+                     int (*compare)(const void *element, const void *data));
 
 #ifdef __cplusplus
 }

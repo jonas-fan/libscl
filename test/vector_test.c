@@ -6,9 +6,9 @@
 #include <string.h>
 #include <assert.h>
 
-#define TEST_SIZE 10
+#define TEST_SIZE 16
 
-static void dump(Vector *vector)
+static void dump(vector_t *vector)
 {
     printf("Vector => [");
 
@@ -29,7 +29,7 @@ static void dump(Vector *vector)
 
 static void test()
 {
-    Vector *vector = vector_create();
+    vector_t *vector = vector_create();
 
     for (unsigned int index = 0; index < TEST_SIZE; ++index) {
         vector_push_back(vector, int2string(index));

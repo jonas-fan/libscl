@@ -5,13 +5,11 @@
 extern "C" {
 #endif
 
-#include <stdbool.h>
-
 /**
  *    Doubly linked list
  *
- *    @date    2015/09/25
- *    @author  Jian <jianfan.tw@gmail.com>
+ *    @date   2015/09/25
+ *    @author Jian <jianfan.tw@gmail.com>
  */
 
 typedef struct list_t list_t;
@@ -35,7 +33,7 @@ int list_pop_back(list_t *list);
 void * list_find(const list_t *list, const void *data);
 void * list_find_if(const list_t *list,
                     const void *data,
-                    bool (*compare)(const void *node_data, const void *data));
+                    int (*compare)(const void *element, const void *data));
 
 #ifdef __cplusplus
 }

@@ -5,37 +5,37 @@
 extern "C" {
 #endif
 
-#include <stdbool.h>
-
 /**
- *    Simple Vector
+ *    Vector
  *
- *    @version 0.1.2
- *    @date    2015/03/13
+ *    @date    2015/09/25
  *    @author  Jian <jianfan.tw@gmail.com>
  */
 
-typedef struct vector_t Vector;
+typedef struct vector_t vector_t;
 
-Vector * vector_create(void);
-void vector_destroy(Vector *vector);
+vector_t * vector_create(void);
+void vector_destroy(vector_t *vector);
 
-unsigned int vector_size(const Vector *vector);
-unsigned int vector_capacity(const Vector *vector);
+unsigned int vector_size(const vector_t *vector);
+unsigned int vector_capacity(const vector_t *vector);
 
-void * vector_at(const Vector *vector, unsigned int index);
-void * vector_front(const Vector *vector);
-void * vector_back(const Vector *vector);
-void ** vector_begin(const Vector *vector);
-void ** vector_end(const Vector *vector);
+void * vector_at(const vector_t *vector, unsigned int index);
+void * vector_front(const vector_t *vector);
+void * vector_back(const vector_t *vector);
+void ** vector_begin(const vector_t *vector);
+void ** vector_end(const vector_t *vector);
 
-void vector_push_back(Vector *vector, const void *element);
-void vector_pop_back(Vector *vector);
+int vector_push_back(vector_t *vector, const void *data);
+int vector_pop_back(vector_t *vector);
 
-void * vector_find(const Vector *vector, const void *item);
-void * vector_find_if(const Vector *vector,
-                      const void *item,
-                      bool (*predicate)(const void *item, const void *element));
+void * vector_find(const vector_t *vector, const void *data);
+void * vector_find_if(const vector_t *vector,
+                      const void *data,
+                      int (*compare)(const void *element, const void *data));
+
+#define vector_for_each(iterator, end, vector) \
+    for (iterator = vector_begin(vector), end = vector_end(vector); iterator != end; ++iterator)
 
 #ifdef __cplusplus
 }

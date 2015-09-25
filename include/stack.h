@@ -8,33 +8,30 @@ extern "C" {
 #include <vector.h>
 
 /**
- *    Simple Stack (Vector based)
+ *    Stack (Vector based)
  *
- *    @version 0.1.0
- *    @date    2015/03/27
+ *    @date    2015/09/25
  *    @author  Jian <jianfan.tw@gmail.com>
  */
 
-typedef Vector stack_t;
+typedef vector_t stack_t;
 
-typedef stack_t Stack;
+stack_t * stack_create(void);
+void stack_destroy(stack_t *stack);
 
-Stack * stack_create(void);
-void stack_destroy(Stack *stack);
+unsigned int stack_size(const stack_t *stack);
 
-unsigned int stack_size(const Stack *stack);
+void * stack_at(const stack_t *stack, unsigned int index);
+void * stack_front(const stack_t *stack);
+void * stack_back(const stack_t *stack);
 
-void * stack_at(const Stack *stack, unsigned int index);
-void * stack_front(const Stack *stack);
-void * stack_back(const Stack *stack);
+int stack_push(stack_t *stack, const void *data);
+int stack_pop(stack_t *stack);
 
-void stack_push(Stack *stack, const void *data);
-void stack_pop(Stack *stack);
-
-void * stack_find(const Stack *stack, const void *item);
-void * stack_find_if(const Stack *stack,
-                     const void *item,
-                     bool (*predicate)(const void *item, const void *element));
+void * stack_find(const stack_t *stack, const void *data);
+void * stack_find_if(const stack_t *stack,
+                     const void *data,
+                     int (*compare)(const void *element, const void *data));
 
 #ifdef __cplusplus
 }

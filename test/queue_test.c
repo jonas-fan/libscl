@@ -6,9 +6,9 @@
 #include <string.h>
 #include <assert.h>
 
-#define TEST_SIZE 10
+#define TEST_SIZE 16
 
-void dump(Queue *queue)
+static void dump(queue_t *queue)
 {
     printf("Queue => [");
 
@@ -27,9 +27,9 @@ void dump(Queue *queue)
     printf("]\n");
 }
 
-void test()
+static void test()
 {
-    Queue *queue = queue_create();
+    queue_t *queue = queue_create();
 
     for (unsigned int index = 0; index < TEST_SIZE; ++index) {
         queue_push(queue, int2string(index));

@@ -15,43 +15,7 @@ struct vector_t
     unsigned int capacity;
 };
 
-
-/**
- *    Public methods
- */
-
-Vector * vector_create(void)
-{
-    Vector *vector = (Vector *)malloc(sizeof(Vector));
-
-    if (vector) {
-        memset(vector, 0, sizeof(*vector));
-
-        vector->data = NULL;
-        vector->size = 0;
-        vector->capacity = 0;
-    }
-
-    return vector;
-}
-
-void vector_destroy(Vector *vector)
-{
-    free(vector->data);
-    free(vector);
-}
-
-unsigned int vector_size(const Vector *vector)
-{
-    return vector->size;
-}
-
-unsigned int vector_capacity(const Vector *vector)
-{
-    return vector->capacity;
-}
-
-void * vector_at(const Vector *vector, unsigned int index)
+static inline void * vector_at_(const vector_t *vector, unsigned int index)
 {
     if (index < vector->size) {
         return vector->data[index];
@@ -60,27 +24,64 @@ void * vector_at(const Vector *vector, unsigned int index)
     return NULL;
 }
 
-void * vector_front(const Vector *vector)
+
+/**
+ *    Public methods
+ */
+
+vector_t * vector_create(void)
 {
-    return vector_at(vector, 0);
+    vector_t *vector = (vector_t *)malloc(sizeof(vector_t));
+
+    if (vector) {
+        memset(vector, 0, sizeof(*vector));
+    }
+
+    return vector;
 }
 
-void * vector_back(const Vector *vector)
+void vector_destroy(vector_t *vector)
 {
-    return vector_at(vector, vector->size - 1);
+    free(vector->data);
+    free(vector);
 }
 
-void ** vector_begin(const Vector *vector)
+unsigned int vector_size(const vector_t *vector)
+{
+    return vector->size;
+}
+
+unsigned int vector_capacity(const vector_t *vector)
+{
+    return vector->capacity;
+}
+
+void * vector_at(const vector_t *vector, unsigned int index)
+{
+    return vector_at_(vector, index);
+}
+
+void * vector_front(const vector_t *vector)
+{
+    return vector_at_(vector, 0);
+}
+
+void * vector_back(const vector_t *vector)
+{
+    return vector_at_(vector, vector->size - 1);
+}
+
+void ** vector_begin(const vector_t *vector)
 {
     return vector->data;
 }
 
-void ** vector_end(const Vector *vector)
+void ** vector_end(const vector_t *vector)
 {
     return vector->data + vector->size;
 }
 
-void vector_push_back(Vector *vector, const void *element)
+int vector_push_back(vector_t *vector, const void *data)
 {
     if (vector->size >= vector->capacity) {
         vector->capacity = (vector->capacity)?  (vector->capacity << 1) : 1;
@@ -93,58 +94,60 @@ void vector_push_back(Vector *vector, const void *element)
         else {
             vector->data = (void **)malloc(data_size);
         }
+
+        if (!vector->data) {
+            vector->size = 0;
+            vector->capacity = 0;
+
+            return -1;
+        }
     }
 
-    if (!vector->data) {
-        vector->size = 0;
-        vector->capacity = 0;
+    vector->data[vector->size++] = (void *)data;
 
-        return;
-    }
-
-    vector->data[vector->size++] = (void *)element;
+    return 0;
 }
 
-void vector_pop_back(Vector *vector)
+int vector_pop_back(vector_t *vector)
 {
-    if (vector->size) {
-        vector->data[--vector->size] = NULL;
+    if (!vector->size) {
+        return -1;
     }
+
+    vector->data[--vector->size] = NULL;
+
+    return 0;
 }
 
-void * vector_find(const Vector *vector, const void *item)
+void * vector_find(const vector_t *vector, const void *data)
 {
-    void **end = vector_end(vector);
-    void **iterator = vector_begin(vector);
+    void **iterator;
+    void **end;
 
-    while (iterator != end) {
-        if (item == *iterator) {
+    vector_for_each(iterator, end, vector) {
+        if (data == *iterator) {
             return *iterator;
         }
-
-        ++iterator;
     }
 
     return NULL;
 }
 
-void * vector_find_if(const Vector *vector,
-                      const void *item,
-                      bool (*predicate)(const void *item, const void *element))
+void * vector_find_if(const vector_t *vector,
+                      const void *data,
+                      int (*compare)(const void *element, const void *data))
 {
-    if (!predicate) {
+    if (!compare) {
         return NULL;
     }
 
-    void **end = vector_end(vector);
-    void **iterator = vector_begin(vector);
+    void **iterator;
+    void **end;
 
-    while (iterator != end) {
-        if (predicate(item, *iterator)) {
+    vector_for_each(iterator, end, vector) {
+        if (!compare(*iterator, data)) {
             return *iterator;
         }
-
-        ++iterator;
     }
 
     return NULL;

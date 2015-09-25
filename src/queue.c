@@ -5,54 +5,54 @@
  *    Public methods
  */
 
-Queue * queue_create(void)
+queue_t * queue_create(void)
 {
     return list_create();
 }
 
-void queue_destroy(Queue *queue)
+void queue_destroy(queue_t *queue)
 {
     list_destroy(queue);
 }
 
-unsigned int queue_size(const Queue *queue)
+unsigned int queue_size(const queue_t *queue)
 {
     return list_size(queue);
 }
 
-void * queue_at(const Queue *queue, unsigned int index)
+void * queue_at(const queue_t *queue, unsigned int index)
 {
     return list_at(queue, index);
 }
 
-void * queue_front(const Queue *queue)
+void * queue_front(const queue_t *queue)
 {
     return list_front(queue);
 }
 
-void * queue_back(const Queue *queue)
+void * queue_back(const queue_t *queue)
 {
     return list_back(queue);
 }
 
-void queue_push(Queue *queue, const void *data)
+int queue_push(queue_t *queue, const void *data)
 {
-    list_push_back(queue, data);
+    return list_push_back(queue, data);
 }
 
-void queue_pop(Queue *queue)
+int queue_pop(queue_t *queue)
 {
-    list_pop_front(queue);
+    return list_pop_front(queue);
 }
 
-void * queue_find(const Queue *queue, const void *item)
+void * queue_find(const queue_t *queue, const void *data)
 {
-    return list_find(queue, item);
+    return list_find(queue, data);
 }
 
-void * queue_find_if(const Queue *queue,
-                     const void *item,
-                     bool (*predicate)(const void *item, const void *element))
+void * queue_find_if(const queue_t *queue,
+                     const void *data,
+                     int (*compare)(const void *element, const void *data))
 {
-    return list_find_if(queue, item, predicate);
+    return list_find_if(queue, data, compare);
 }
