@@ -1,4 +1,11 @@
 #include <queue.h>
+#include <list.h>
+#include <stdlib.h>
+
+struct queue_t
+{
+    list_t *list;
+};
 
 
 /**
@@ -7,52 +14,41 @@
 
 queue_t * queue_create(void)
 {
-    return list_create();
+    queue_t *queue = (queue_t *)malloc(sizeof(queue_t));
+
+    if (queue) {
+        queue->list = list_create();
+
+        if (!queue->list) {
+            free(queue);
+
+            return NULL;
+        }
+    }
+
+    return queue;
 }
 
 void queue_destroy(queue_t *queue)
 {
-    list_destroy(queue);
+    list_destroy(queue->list);
+
+    free(queue);
 }
 
 unsigned int queue_size(const queue_t *queue)
 {
-    return list_size(queue);
+    return list_size(queue->list);
 }
 
-void * queue_at(const queue_t *queue, unsigned int index)
+int queue_push(queue_t *queue, const void *data, unsigned data_size)
 {
-    return list_at(queue, index);
+    return list_push_back(queue->list, data, data_size);
 }
 
-void * queue_front(const queue_t *queue)
+int queue_pop(queue_t *queue, void *data, unsigned data_size)
 {
-    return list_front(queue);
-}
+    list_front(queue->list, data, data_size);
 
-void * queue_back(const queue_t *queue)
-{
-    return list_back(queue);
-}
-
-int queue_push(queue_t *queue, const void *data)
-{
-    return list_push_back(queue, data);
-}
-
-int queue_pop(queue_t *queue)
-{
-    return list_pop_front(queue);
-}
-
-void * queue_find(const queue_t *queue, const void *data)
-{
-    return list_find(queue, data);
-}
-
-void * queue_find_if(const queue_t *queue,
-                     const void *data,
-                     int (*compare)(const void *element, const void *data))
-{
-    return list_find_if(queue, data, compare);
+    return list_pop_front(queue->list);
 }
