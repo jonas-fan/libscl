@@ -19,14 +19,6 @@ char * int2string(int number)
     return strdup(buffer);
 }
 
-int equal(const void *container_data, const void *data)
-{
-    const char *lhs = (const char *)container_data;
-    const char *rhs = (const char *)data;
-
-    return strcasecmp(lhs, rhs);
-}
-
 #ifdef __cplusplus
 }
 #endif

@@ -1,16 +1,12 @@
 #include <queue.h>
 #include <list.h>
+
 #include <stdlib.h>
 
 struct queue_t
 {
     list_t *list;
 };
-
-
-/**
- *    Public methods
- */
 
 queue_t * queue_create(void)
 {

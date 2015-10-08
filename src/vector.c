@@ -3,11 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
-/**
- *    Private
- */
-
 struct vector_t
 {
     void **data;
@@ -23,11 +18,6 @@ static inline void * vector_at_(const vector_t *vector, unsigned int index)
 
     return NULL;
 }
-
-
-/**
- *    Public methods
- */
 
 vector_t * vector_create(void)
 {
@@ -84,23 +74,27 @@ void ** vector_end(const vector_t *vector)
 int vector_push_back(vector_t *vector, const void *data)
 {
     if (vector->size >= vector->capacity) {
-        vector->capacity = (vector->capacity)?  (vector->capacity << 1) : 1;
-
-        const size_t data_size = sizeof(void *) * vector->capacity;
+        const unsigned int new_capacity = (vector->capacity)?  (vector->capacity << 1) : 1;
+        const size_t data_size = sizeof(void *) * new_capacity;
 
         if (vector->data) {
-            vector->data = (void **)realloc(vector->data, data_size);
+            void **new_data = (void **)realloc(vector->data, data_size);
+
+            if (!new_data) {
+                return -1;
+            }
+
+            vector->data = new_data;
         }
         else {
             vector->data = (void **)malloc(data_size);
+
+            if (!vector->data) {
+                return -1;
+            }
         }
 
-        if (!vector->data) {
-            vector->size = 0;
-            vector->capacity = 0;
-
-            return -1;
-        }
+        vector->capacity = new_capacity;
     }
 
     vector->data[vector->size++] = (void *)data;

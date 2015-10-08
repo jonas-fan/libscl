@@ -6,25 +6,14 @@
 #include <string.h>
 #include <assert.h>
 
-#define TEST_SIZE 16
+#define TEST_SIZE 4096
 
-static void dump(vector_t *vector)
+static inline int equal(const void *container_data, const void *data)
 {
-    printf("Vector => [");
+    const char *lhs = (const char *)container_data;
+    const char *rhs = (const char *)data;
 
-    const unsigned int size = vector_size(vector);
-
-    unsigned int index;
-
-    for (index = 0; index < size; ++index) {
-        const char *delimiter = (!index)?  "" : ", ";
-
-        void *element = vector_at(vector, index);
-
-        printf("%s\"%s\"", delimiter, (const char *)element);
-    }
-
-    printf("]\n");
+    return strcasecmp(lhs, rhs);
 }
 
 static void test()
@@ -36,8 +25,6 @@ static void test()
     }
 
     assert(vector_size(vector) == TEST_SIZE);
-
-    dump(vector);
 
     const char *search = "3";
 

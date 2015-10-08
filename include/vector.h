@@ -8,7 +8,7 @@ extern "C" {
 /**
  *    Vector
  *
- *    @date    2015/09/25
+ *    @date    2015/10/07
  *    @author  Jian <jianfan.tw@gmail.com>
  */
 

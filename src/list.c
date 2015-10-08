@@ -4,10 +4,6 @@
 #include <stdint.h>
 #include <string.h>
 
-/**
- *    Private
- */
-
 typedef struct list_node_t list_node_t;
 
 struct list_node_t

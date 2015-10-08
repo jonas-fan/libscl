@@ -6,26 +6,7 @@
 #include <string.h>
 #include <assert.h>
 
-#define TEST_SIZE 16
-
-static void dump(stack_t *stack)
-{
-    printf("Stack => [");
-
-    const unsigned int size = stack_size(stack);
-
-    unsigned int index;
-
-    for (index = 0; index < size; ++index) {
-        const char *delimiter = (!index)?  "" : ", ";
-
-        void *element = stack_at(stack, index);
-
-        printf("%s\"%s\"", delimiter, (const char *)element);
-    }
-
-    printf("]\n");
-}
+#define TEST_SIZE 4096
 
 static void test()
 {
@@ -37,38 +18,18 @@ static void test()
 
     assert(stack_size(stack) == TEST_SIZE);
 
-    dump(stack);
+    void *data;
 
-    const char *search = "3";
+    stack_pop(stack, &data);
 
-    void *element = stack_find(stack, (void *)search);
-
-    assert(!element);
-
-    element = stack_find_if(stack, (void *)search, equal);
-
-    assert(element);
-
-    element = stack_find_if(stack, (void *)search, NULL);
-
-    assert(!element);
-
-    char *last_element = (char *)stack_back(stack);
-
-    assert(atoi(last_element) == TEST_SIZE - 1);
-
-    stack_pop(stack);
-
-    free(last_element);
+    free(data);
 
     assert(stack_size(stack) == (TEST_SIZE - 1));
 
     while (stack_size(stack)) {
-        char *element = (char *)stack_back(stack);
+        stack_pop(stack, &data);
 
-        stack_pop(stack);
-
-        free(element);
+        free(data);
     }
 
     assert(stack_size(stack) == 0);
