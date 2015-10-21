@@ -1,5 +1,4 @@
 #include <list.h>
-#include "utils.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,7 +7,7 @@
 
 #define TEST_SIZE 4096
 
-static inline void iterator(unsigned int index, void *data, unsigned int data_size, void *user_data)
+static inline void iterator(unsigned int index, void *data, unsigned int data_size, void *user_data __attribute__((unused)))
 {
     assert(memcmp(data, &index, data_size) == 0);
 }

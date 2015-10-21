@@ -57,11 +57,6 @@ static inline list_node_t * list_at_(const list_t *list, unsigned int index)
     return node;
 }
 
-
-/**
- *    Public methods
- */
-
 list_t * list_create(void)
 {
     list_t *list = (list_t *)malloc(sizeof(list_t));

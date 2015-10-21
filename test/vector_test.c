@@ -1,5 +1,4 @@
 #include <vector.h>
-#include "utils.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,54 +7,53 @@
 
 #define TEST_SIZE 4096
 
-static inline int equal(const void *container_data, const void *data)
+static inline void iterator(unsigned int index, void *data, unsigned int data_size, void *user_data __attribute__((unused)))
 {
-    const char *lhs = (const char *)container_data;
-    const char *rhs = (const char *)data;
+    assert(memcmp(data, &index, data_size) == 0);
+}
 
-    return strcasecmp(lhs, rhs);
+static inline int compare(const void *data, unsigned int data_size,
+                          const void *search, unsigned int search_size)
+{
+    if (data_size != search_size) {
+        return -1;
+    }
+
+    return memcmp(data, search, data_size);
 }
 
 static void test()
 {
-    vector_t *vector = vector_create();
+    vector_t *vector = vector_create(sizeof(unsigned int));
 
     for (unsigned int index = 0; index < TEST_SIZE; ++index) {
-        vector_push_back(vector, int2string(index));
+        vector_push_back(vector, &index);
     }
 
     assert(vector_size(vector) == TEST_SIZE);
 
-    const char *search = "3";
+    vector_for_each(vector, iterator, NULL);
 
-    void *element = vector_find(vector, search);
+    int search = TEST_SIZE + 1;
+    assert(vector_find(vector, &search) < 0);
 
-    assert(!element);
+    search = TEST_SIZE >> 1;
+    assert(vector_find(vector, &search) == search);
 
-    element = vector_find_if(vector, search, equal);
+    search = TEST_SIZE >> 3;
+    assert(vector_find_if(vector, &search, sizeof(search), compare) == search);
 
-    assert(element);
-
-    element = vector_find_if(vector, search, NULL);
-
-    assert(!element);
-
-    char *last_element = (char *)vector_back(vector);
-
-    assert(atoi(last_element) == (TEST_SIZE - 1));
-
-    vector_pop_back(vector);
-
-    free(last_element);
-
-    assert(vector_size(vector) == (TEST_SIZE - 1));
+    unsigned int data;
+    unsigned int index = TEST_SIZE - 1;
 
     while (vector_size(vector)) {
-        char *element = (char *)vector_back(vector);
+        vector_back(vector, &data);
+
+        assert(data == index);
 
         vector_pop_back(vector);
 
-        free(element);
+        --index;
     }
 
     assert(vector_size(vector) == 0);

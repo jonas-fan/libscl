@@ -5,26 +5,31 @@
 
 struct vector_t
 {
-    void **data;
+    unsigned char *data;
+    unsigned int data_size;
     unsigned int size;
     unsigned int capacity;
 };
 
-static inline void * vector_at_(const vector_t *vector, unsigned int index)
+static inline int vector_at_(const vector_t *vector, unsigned int index, void *data)
 {
-    if (index < vector->size) {
-        return vector->data[index];
+    if (index >= vector->size) {
+        return -1;
     }
 
-    return NULL;
+    memcpy(data, vector->data + (index * vector->data_size), vector->data_size);
+
+    return 0;
 }
 
-vector_t * vector_create(void)
+vector_t * vector_create(unsigned int data_size)
 {
     vector_t *vector = (vector_t *)malloc(sizeof(vector_t));
 
     if (vector) {
         memset(vector, 0, sizeof(*vector));
+
+        vector->data_size = data_size;
     }
 
     return vector;
@@ -46,39 +51,29 @@ unsigned int vector_capacity(const vector_t *vector)
     return vector->capacity;
 }
 
-void * vector_at(const vector_t *vector, unsigned int index)
+int vector_at(const vector_t *vector, unsigned int index, void *data)
 {
-    return vector_at_(vector, index);
+    return vector_at_(vector, index, data);
 }
 
-void * vector_front(const vector_t *vector)
+int vector_front(const vector_t *vector, void *data)
 {
-    return vector_at_(vector, 0);
+    return vector_at_(vector, 0, data);
 }
 
-void * vector_back(const vector_t *vector)
+int vector_back(const vector_t *vector, void *data)
 {
-    return vector_at_(vector, vector->size - 1);
-}
-
-void ** vector_begin(const vector_t *vector)
-{
-    return vector->data;
-}
-
-void ** vector_end(const vector_t *vector)
-{
-    return vector->data + vector->size;
+    return vector_at_(vector, vector->size - 1, data);
 }
 
 int vector_push_back(vector_t *vector, const void *data)
 {
     if (vector->size >= vector->capacity) {
         const unsigned int new_capacity = (vector->capacity)?  (vector->capacity << 1) : 1;
-        const size_t data_size = sizeof(void *) * new_capacity;
+        const size_t data_size = vector->data_size * new_capacity;
 
         if (vector->data) {
-            void **new_data = (void **)realloc(vector->data, data_size);
+            unsigned char *new_data = (unsigned char *)realloc(vector->data, data_size);
 
             if (!new_data) {
                 return -1;
@@ -87,7 +82,7 @@ int vector_push_back(vector_t *vector, const void *data)
             vector->data = new_data;
         }
         else {
-            vector->data = (void **)malloc(data_size);
+            vector->data = (unsigned char *)malloc(data_size);
 
             if (!vector->data) {
                 return -1;
@@ -97,7 +92,9 @@ int vector_push_back(vector_t *vector, const void *data)
         vector->capacity = new_capacity;
     }
 
-    vector->data[vector->size++] = (void *)data;
+    memcpy(vector->data + (vector->size * vector->data_size), data, vector->data_size);
+
+    ++vector->size;
 
     return 0;
 }
@@ -108,41 +105,61 @@ int vector_pop_back(vector_t *vector)
         return -1;
     }
 
-    vector->data[--vector->size] = NULL;
+    --vector->size;
 
     return 0;
 }
 
-void * vector_find(const vector_t *vector, const void *data)
+int vector_find(const vector_t *vector, const void *data)
 {
-    void **iterator;
-    void **end;
+    unsigned char *iterator = vector->data;
 
-    vector_for_each(iterator, end, vector) {
-        if (data == *iterator) {
-            return *iterator;
+    for (unsigned int index = 0; index < vector->size; ++index) {
+        if (!memcmp(iterator, data, vector->data_size)) {
+            return (int)index;
         }
+
+        iterator += vector->data_size;
     }
 
-    return NULL;
+    return -1;
 }
 
-void * vector_find_if(const vector_t *vector,
-                      const void *data,
-                      int (*compare)(const void *element, const void *data))
+int vector_find_if(const vector_t *vector,
+                   const void *search,
+                   unsigned int search_size,
+                   int (*compare)(const void *data, unsigned int data_size, const void *search, unsigned int search_size))
 {
     if (!compare) {
-        return NULL;
+        return -1;
     }
 
-    void **iterator;
-    void **end;
+    unsigned char *iterator = vector->data;
 
-    vector_for_each(iterator, end, vector) {
-        if (!compare(*iterator, data)) {
-            return *iterator;
+    for (unsigned int index = 0; index < vector->size; ++index) {
+        if (!compare(iterator, vector->data_size, search, search_size)) {
+            return (int)index;
         }
+
+        iterator += vector->data_size;
     }
 
-    return NULL;
+    return -1;
+}
+
+void vector_for_each(vector_t *vector,
+                     void (*func)(unsigned int index, void *data, unsigned int data_size, void *user_data),
+                     void *user_data)
+{
+    if (!func) {
+        return;
+    }
+
+    unsigned char *iterator = vector->data;
+
+    for (unsigned int index = 0; index < vector->size; ++index) {
+        func(index, iterator, vector->data_size, user_data);
+
+        iterator += vector->data_size;
+    }
 }
