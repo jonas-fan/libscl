@@ -13,23 +13,20 @@ static void test()
     stack_t *stack = stack_create();
 
     for (unsigned int index = 0; index < TEST_SIZE; ++index) {
-        stack_push(stack, int2string(index));
+        stack_push(stack, &index, sizeof(index));
     }
 
     assert(stack_size(stack) == TEST_SIZE);
 
-    void *data;
-
-    stack_pop(stack, &data);
-
-    free(data);
-
-    assert(stack_size(stack) == (TEST_SIZE - 1));
+    unsigned int index = TEST_SIZE - 1;
+    unsigned int data;
 
     while (stack_size(stack)) {
-        stack_pop(stack, &data);
+        stack_pop(stack, &data, sizeof(data));
 
-        free(data);
+        assert(data == index);
+
+        --index;
     }
 
     assert(stack_size(stack) == 0);

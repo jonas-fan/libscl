@@ -6,9 +6,9 @@ extern "C" {
 #endif
 
 /**
- *    Stack (Vector based)
+ *    Stack (List based)
  *
- *    @date    2015/10/08
+ *    @date    2015/10/21
  *    @author  Jian <jianfan.tw@gmail.com>
  */
 
@@ -19,8 +19,8 @@ void stack_destroy(stack_t *stack);
 
 unsigned int stack_size(const stack_t *stack);
 
-int stack_push(stack_t *stack, const void *data);
-int stack_pop(stack_t *stack, void **data);
+int stack_push(stack_t *stack, const void *data, unsigned int data_size);
+int stack_pop(stack_t *stack, void *data, unsigned int data_size);
 
 #ifdef __cplusplus
 }
