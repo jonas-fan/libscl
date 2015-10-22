@@ -24,24 +24,32 @@ $ ./stack_test
 
 ## Example
 ```cpp
-vector_t *vector = vector_create();
+vector_t *vector = vector_create(sizeof(int));
 
-vector_push_back(vector, "Hello");
-vector_push_back(vector, "World");
-vector_push_back(vector, "Very simple");
-vector_push_back(vector, "This is simple STL");
-vector_push_back(vector, "OTZ");
+for (int index = 0; index < 8; ++index) {
+    vector_push_back(vector, &index);
+}
 
-unsigned int index;
-const unsigned int size = vector_size(vector);
+int data;
 
-for (index = 0; index < size; ++index) {
-    const char *element = (const char *)vector_at(vector, index);
+for (int index = 0; index < 8; ++index) {
+    vector_at(vector, index, &data);
 
-    printf("%s\n", element);
+    printf("vector[%d] => %d\n", index, data);
 }
 
 vector_destroy(vector);
+```
+
+```
+vector[0] => 0
+vector[1] => 1
+vector[2] => 2
+vector[3] => 3
+vector[4] => 4
+vector[5] => 5
+vector[6] => 6
+vector[7] => 7
 ```
 
 ## License
