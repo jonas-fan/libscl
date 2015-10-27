@@ -40,3 +40,12 @@ add_executable(stack_test
 target_link_libraries(stack_test
     ${TARGET_LIB_STATIC}
 )
+
+add_executable(ring_buffer_test
+    ./ring_buffer_test.c
+)
+
+target_link_libraries(ring_buffer_test
+    ${TARGET_LIB_STATIC}
+    pthread
+)

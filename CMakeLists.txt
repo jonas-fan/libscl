@@ -5,8 +5,8 @@ project(simple-container C)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O2 -Wall -Wextra -std=gnu99 -pedantic")
 set(INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/bin/)
 
-set(HEADER ./include/vector.h ./include/list.h ./include/queue.h ./include/stack.h)
-set(SOURCE ./src/vector.c ./src/list.c ./src/queue.c ./src/stack.c)
+set(HEADER ./include/vector.h ./include/list.h ./include/queue.h ./include/stack.h ./include/ring_buffer.h)
+set(SOURCE ./src/vector.c ./src/list.c ./src/queue.c ./src/stack.c ./src/ring_buffer.c)
 
 set(TARGET_LIB simplecontainer)
 set(TARGET_LIB_STATIC ${TARGET_LIB}_static)
