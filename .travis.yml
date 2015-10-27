@@ -14,6 +14,7 @@ after_script:
     - ./list_test
     - ./queue_test
     - ./stack_test
+    - ./ring_buffer_test
 
 notifications:
     email:

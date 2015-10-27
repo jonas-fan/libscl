@@ -14,6 +14,7 @@ $ ./vector_test
 $ ./list_test
 $ ./queue_test
 $ ./stack_test
+$ ./ring_buffer_test
 ```
 
 ## Container
@@ -21,6 +22,7 @@ $ ./stack_test
 - List
 - Queue
 - Stack
+- Ring buffer
 
 ## Example
 ```cpp
