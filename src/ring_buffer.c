@@ -3,7 +3,6 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-#include <pthread.h>
 
 #define MIN(lhs, rhs) ((lhs) < (rhs)?  (lhs) : (rhs))
 
@@ -13,7 +12,6 @@ struct ringbuffer_t
     unsigned char *buffer;
     unsigned int in;
     unsigned int out;
-    pthread_mutex_t mutex;
 };
 
 static inline unsigned int roundup_pow_of_two(unsigned int number)
@@ -51,8 +49,6 @@ ringbuffer_t * ringbuffer_create(unsigned int size)
 
         ring_buffer->size = size;
         ring_buffer->buffer = (uint8_t *)ring_buffer + sizeof(ringbuffer_t);
-
-        pthread_mutex_init(&(ring_buffer->mutex), NULL);
     }
 
     return ring_buffer;
@@ -60,15 +56,11 @@ ringbuffer_t * ringbuffer_create(unsigned int size)
 
 void ringbuffer_destroy(ringbuffer_t *ring_buffer)
 {
-    pthread_mutex_destroy(&(ring_buffer->mutex));
-
     free(ring_buffer);
 }
 
 int ringbuffer_push(ringbuffer_t *ring_buffer, void *data, unsigned int data_size)
 {
-    pthread_mutex_lock(&(ring_buffer->mutex));
-
     const unsigned int available_size = ring_buffer->size - ring_buffer->in + ring_buffer->out;
 
     data_size = MIN(data_size, available_size);
@@ -84,15 +76,11 @@ int ringbuffer_push(ringbuffer_t *ring_buffer, void *data, unsigned int data_siz
 
     ring_buffer->in += data_size;
 
-    pthread_mutex_unlock(&(ring_buffer->mutex));
-
     return data_size;
 }
 
 int ringbuffer_pop(ringbuffer_t *ring_buffer, void *data, unsigned int data_size)
 {
-    pthread_mutex_lock(&(ring_buffer->mutex));
-
     const unsigned int used_size = ring_buffer->in - ring_buffer->out;
 
     data_size = MIN(data_size, used_size);
@@ -107,8 +95,6 @@ int ringbuffer_pop(ringbuffer_t *ring_buffer, void *data, unsigned int data_size
     }
 
     ring_buffer->out += data_size;
-
-    pthread_mutex_unlock(&(ring_buffer->mutex));
 
     return data_size;
 }
