@@ -22,14 +22,14 @@ static inline unsigned int roundup_pow_of_two(unsigned int number)
 
     --number;
 
-    unsigned int shift = 0;
+    unsigned int retval = 1;
 
     while (number) {
         number >>= 1;
-        ++shift;
+        retval <<= 1;
     }
 
-    return (1 << shift);
+    return retval;
 }
 
 ringbuffer_t * ringbuffer_create(unsigned int size)

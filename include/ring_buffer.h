@@ -7,7 +7,7 @@ extern "C" {
 
 typedef struct ringbuffer_t ringbuffer_t;
 
-// Known issue: The size must be the pow of tow.
+// Known issue: The size must be the pow of two.
 ringbuffer_t * ringbuffer_create(unsigned int size);
 void ringbuffer_destroy(ringbuffer_t *ring_buffer);
 
