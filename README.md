@@ -32,12 +32,14 @@ for (int index = 0; index < 8; ++index) {
     vector_push_back(vector, &index);
 }
 
+const unsigned int length = vector_size(vector);
+
 int data;
 
-for (int index = 0; index < 8; ++index) {
+for (unsigned int index = 0; index < length; ++index) {
     vector_at(vector, index, &data);
 
-    printf("vector[%d] => %d\n", index, data);
+    printf("vector[%u] => %d\n", index, data);
 }
 
 vector_destroy(vector);
