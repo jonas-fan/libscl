@@ -9,7 +9,7 @@ typedef struct list_node_t list_node_t;
 struct list_node_t
 {
     void *data;
-    unsigned int data_size;
+    unsigned int size;
     list_node_t *previous;
     list_node_t *next;
 };
@@ -21,17 +21,17 @@ struct list_t
     list_node_t *tail;
 };
 
-static inline list_node_t * list_element_create(const void *data, unsigned int data_size)
+static inline list_node_t * list_element_create(const void *data, unsigned int size)
 {
-    list_node_t *node = (list_node_t *)malloc(sizeof(list_node_t) + data_size);
+    list_node_t *node = (list_node_t *)malloc(sizeof(list_node_t) + size);
 
     if (node) {
-        memset(node, 0, sizeof(*node));
+        memset(node, 0, sizeof(list_node_t));
 
         node->data = (uint8_t *)node + sizeof(list_node_t);
-        node->data_size = data_size;
+        node->size = size;
 
-        memcpy(node->data, data, data_size);
+        memcpy(node->data, data, size);
     }
 
     return node;
@@ -62,7 +62,7 @@ list_t * list_create(void)
     list_t *list = (list_t *)malloc(sizeof(list_t));
 
     if (list) {
-        memset(list, 0, sizeof(*list));
+        memset(list, 0, sizeof(list_t));
     }
 
     return list;
@@ -88,7 +88,7 @@ unsigned int list_size(const list_t *list)
     return list->size;
 }
 
-int list_at(const list_t *list, unsigned int index, void *data, unsigned int data_size)
+int list_at(const list_t *list, unsigned int index, void *data, unsigned int size)
 {
     const list_node_t *node = list_at_(list, index);
 
@@ -96,34 +96,34 @@ int list_at(const list_t *list, unsigned int index, void *data, unsigned int dat
         return -1;
     }
 
-    memcpy(data, node->data, data_size);
+    memcpy(data, node->data, size);
 
     return 0;
 }
 
-int list_front(const list_t *list, void *data, unsigned int data_size)
+int list_front(const list_t *list, void *data, unsigned int size)
 {
     if (!list->head) {
         return -1;
     }
 
-    memcpy(data, list->head->data, data_size);
+    memcpy(data, list->head->data, size);
 
     return 0;
 }
 
-int list_back(const list_t *list, void *data, unsigned int data_size)
+int list_back(const list_t *list, void *data, unsigned int size)
 {
     if (!list->tail) {
         return -1;
     }
 
-    memcpy(data, list->tail->data, data_size);
+    memcpy(data, list->tail->data, size);
 
     return 0;
 }
 
-int list_insert(list_t *list, unsigned int index, const void *data, unsigned int data_size)
+int list_insert(list_t *list, unsigned int index, const void *data, unsigned int size)
 {
     list_node_t *node = list_at_(list, index);
 
@@ -131,7 +131,7 @@ int list_insert(list_t *list, unsigned int index, const void *data, unsigned int
         return -1;
     }
 
-    list_node_t *new_node = list_element_create(data, data_size);
+    list_node_t *new_node = list_element_create(data, size);
 
     if (!new_node) {
         return -1;
@@ -186,9 +186,9 @@ int list_erase(list_t *list, unsigned int index)
     return 0;
 }
 
-int list_push_front(list_t *list, const void *data, unsigned int data_size)
+int list_push_front(list_t *list, const void *data, unsigned int size)
 {
-    list_node_t *new_node = list_element_create(data, data_size);
+    list_node_t *new_node = list_element_create(data, size);
 
     if (!new_node) {
         return -1;
@@ -233,9 +233,9 @@ int list_pop_front(list_t *list)
     return 0;
 }
 
-int list_push_back(list_t *list, const void *data, unsigned int data_size)
+int list_push_back(list_t *list, const void *data, unsigned int size)
 {
-    list_node_t *new_node = list_element_create(data, data_size);
+    list_node_t *new_node = list_element_create(data, size);
 
     if (!new_node) {
         return -1;
@@ -280,13 +280,13 @@ int list_pop_back(list_t *list)
     return 0;
 }
 
-int list_find(const list_t *list, const void *data, unsigned int data_size)
+int list_find(const list_t *list, const void *data, unsigned int size)
 {
     int index = 0;
 
     list_node_t *node = list->head;
 
-    while (node && memcmp(node->data, data, data_size)) {
+    while (node && memcmp(node->data, data, size)) {
         node = node->next;
 
         ++index;
@@ -298,7 +298,7 @@ int list_find(const list_t *list, const void *data, unsigned int data_size)
 int list_find_if(const list_t *list,
                  const void *search,
                  unsigned int search_size,
-                 int (*compare)(const void *data, unsigned int data_size, const void *search, unsigned int search_size))
+                 int (*compare)(const void *data, unsigned int size, const void *search, unsigned int search_size))
 {
     if (!compare) {
         return -1;
@@ -308,7 +308,7 @@ int list_find_if(const list_t *list,
 
     list_node_t *node = list->head;
 
-    while (node && compare(node->data, node->data_size, search, search_size)) {
+    while (node && compare(node->data, node->size, search, search_size)) {
         node = node->next;
 
         ++index;
@@ -318,7 +318,7 @@ int list_find_if(const list_t *list,
 }
 
 void list_for_each(list_t *list,
-                   void (*func)(unsigned index, void *data, unsigned int data_size, void *user_data),
+                   void (*func)(unsigned index, void *data, unsigned int size, void *user_data),
                    void *user_data)
 {
     if (!func) {
@@ -330,7 +330,7 @@ void list_for_each(list_t *list,
     list_node_t *node = list->head;
 
     while (node) {
-        func(index, node->data, node->data_size, user_data);
+        func(index, node->data, node->size, user_data);
 
         node = node->next;
 
