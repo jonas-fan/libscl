@@ -1,5 +1,5 @@
-#ifndef SIMPLE_CONTAINER_LIST_H_
-#define SIMPLE_CONTAINER_LIST_H_
+#ifndef SCL_LIST_H_
+#define SCL_LIST_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -8,7 +8,7 @@ extern "C" {
 /**
  *    Doubly linked list
  *
- *    @date   2015/10/07
+ *    @date   2016/03/02
  *    @author Jian <jianfan.tw@gmail.com>
  */
 
@@ -38,11 +38,11 @@ int list_find_if(const list_t *list,
                  int (*compare)(const void *data, unsigned int size, const void *search, unsigned int search_size));
 
 void list_for_each(list_t *list,
-                   void (*func)(unsigned int index, void *data, unsigned int size, void *user_data),
+                   void (*callback)(unsigned int index, void *data, unsigned int size, void *user_data),
                    void *user_data);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif  /* SIMPLE_CONTAINER_LIST_H_ */
+#endif  /* SCL_LIST_H_ */

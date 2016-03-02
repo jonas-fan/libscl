@@ -3,18 +3,20 @@ language: c
 compiler: gcc
 
 before_script:
+    - mkdir build/
     - cd build/
     - cmake ..
 
-script: make
+script:
+    - make -j4
+    - make install
 
 after_script:
-    - cd ../bin/test/
-    - ./vector_test
-    - ./list_test
-    - ./queue_test
-    - ./stack_test
-    - ./ring_buffer_test
+    - ./test/vector_test
+    - ./test/list_test
+    - ./test/queue_test
+    - ./test/stack_test
+    - ./test/ring_buffer_test
 
 notifications:
     email:

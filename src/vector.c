@@ -27,7 +27,7 @@ vector_t * vector_create(unsigned int data_size)
     vector_t *vector = (vector_t *)malloc(sizeof(vector_t));
 
     if (vector) {
-        memset(vector, 0, sizeof(*vector));
+        memset(vector, 0, sizeof(vector_t));
 
         vector->data_size = data_size;
     }
@@ -70,10 +70,10 @@ int vector_push_back(vector_t *vector, const void *data)
 {
     if (vector->size >= vector->capacity) {
         const unsigned int new_capacity = (vector->capacity)?  (vector->capacity << 1) : 1;
-        const size_t data_size = vector->data_size * new_capacity;
+        const size_t total_size = vector->data_size * new_capacity;
 
         if (vector->data) {
-            unsigned char *new_data = (unsigned char *)realloc(vector->data, data_size);
+            unsigned char *new_data = (unsigned char *)realloc(vector->data, total_size);
 
             if (!new_data) {
                 return -1;
@@ -82,7 +82,7 @@ int vector_push_back(vector_t *vector, const void *data)
             vector->data = new_data;
         }
         else {
-            vector->data = (unsigned char *)malloc(data_size);
+            vector->data = (unsigned char *)malloc(total_size);
 
             if (!vector->data) {
                 return -1;
@@ -148,17 +148,17 @@ int vector_find_if(const vector_t *vector,
 }
 
 void vector_for_each(vector_t *vector,
-                     void (*func)(unsigned int index, void *data, unsigned int data_size, void *user_data),
+                     void (*callback)(unsigned int index, void *data, unsigned int data_size, void *user_data),
                      void *user_data)
 {
-    if (!func) {
+    if (!callback) {
         return;
     }
 
     unsigned char *iterator = vector->data;
 
     for (unsigned int index = 0; index < vector->size; ++index) {
-        func(index, iterator, vector->data_size, user_data);
+        callback(index, iterator, vector->data_size, user_data);
 
         iterator += vector->data_size;
     }
