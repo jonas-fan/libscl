@@ -14,19 +14,27 @@ static void test()
     assert(queue_empty(queue) == true);
 
     for (unsigned int index = 0; index < TEST_SIZE; ++index) {
-        queue_push(queue, &index, sizeof(index));
+        unsigned int *data = (unsigned int *)malloc(sizeof(unsigned int));
+
+        assert(data != NULL);
+
+        *data = index;
+
+        queue_push(queue, data);
     }
 
     assert(queue_empty(queue) == false);
     assert(queue_size(queue) == TEST_SIZE);
 
     unsigned int index = 0;
-    unsigned int data;
 
     while (!queue_empty(queue)) {
-        queue_pop(queue, &data, sizeof(data));
+        unsigned int *data = (unsigned int *)queue_pop(queue);
 
-        assert(data == index);
+        assert(data != NULL);
+        assert(*data == index);
+
+        free(data);
 
         ++index;
     }

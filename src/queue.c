@@ -32,24 +32,26 @@ void queue_destroy(queue_t *queue)
     free(queue);
 }
 
-bool queue_empty(const queue_t *queue)
+bool queue_empty(queue_t *queue)
 {
     return list_empty(queue->list);
 }
 
-unsigned int queue_size(const queue_t *queue)
+unsigned int queue_size(queue_t *queue)
 {
     return list_size(queue->list);
 }
 
-int queue_push(queue_t *queue, const void *data, unsigned data_size)
+int queue_push(queue_t *queue, const void *data)
 {
-    return list_push_back(queue->list, data, data_size);
+    return list_push_back(queue->list, data);
 }
 
-int queue_pop(queue_t *queue, void *data, unsigned data_size)
+void * queue_pop(queue_t *queue)
 {
-    list_front(queue->list, data, data_size);
+    void *data = list_front(queue->list);
 
-    return list_pop_front(queue->list);
+    list_pop_front(queue->list);
+
+    return data;
 }

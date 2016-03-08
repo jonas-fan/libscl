@@ -14,19 +14,27 @@ static void test()
     assert(stack_empty(stack) == true);
 
     for (unsigned int index = 0; index < TEST_SIZE; ++index) {
-        stack_push(stack, &index, sizeof(index));
+        unsigned int *data = (unsigned int *)malloc(sizeof(unsigned int));
+
+        assert(data != NULL);
+
+        *data = index;
+
+        stack_push(stack, data);
     }
 
     assert(stack_empty(stack) == false);
     assert(stack_size(stack) == TEST_SIZE);
 
     unsigned int index = TEST_SIZE - 1;
-    unsigned int data;
 
     while (!stack_empty(stack)) {
-        stack_pop(stack, &data, sizeof(data));
+        unsigned int *data = (unsigned int *)stack_pop(stack);
 
-        assert(data == index);
+        assert(data != NULL);
+        assert(*data == index);
+
+        free(data);
 
         --index;
     }

@@ -32,24 +32,26 @@ void stack_destroy(stack_t *stack)
     free(stack);
 }
 
-bool stack_empty(const stack_t *stack)
+bool stack_empty(stack_t *stack)
 {
     return list_empty(stack->list);
 }
 
-unsigned int stack_size(const stack_t *stack)
+unsigned int stack_size(stack_t *stack)
 {
     return list_size(stack->list);
 }
 
-int stack_push(stack_t *stack, const void *data, unsigned int data_size)
+int stack_push(stack_t *stack, const void *data)
 {
-    return list_push_back(stack->list, data, data_size);
+    return list_push_back(stack->list, data);
 }
 
-int stack_pop(stack_t *stack, void *data, unsigned int data_size)
+void * stack_pop(stack_t *stack)
 {
-    list_back(stack->list, data, data_size);
+    void *data = list_back(stack->list);
 
-    return list_pop_back(stack->list);
+    list_pop_back(stack->list);
+
+    return data;
 }

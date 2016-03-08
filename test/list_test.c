@@ -7,19 +7,21 @@
 
 #define TEST_SIZE 4096
 
-static inline void iterator(unsigned int index, void *data, unsigned int data_size, void *user_data __attribute__((unused)))
+static inline void iterator(unsigned int index, const void *data, void *user_data __attribute__((unused)))
 {
-    assert(memcmp(data, &index, data_size) == 0);
+    assert(data != NULL);
+    assert(*((unsigned int *)data) == index);
 }
 
-static inline int compare(const void *data, unsigned int data_size,
-                          const void *search, unsigned int search_size)
+static inline int compare(const void *data, const void *search, void *user_data __attribute__((unused)))
 {
-    if (data_size != search_size) {
-        return -1;
+    assert(data != NULL);
+
+    if (*((unsigned int *)data) == *((unsigned int *)search)) {
+        return 0;
     }
 
-    return memcmp(data, search, data_size);
+    return -1;
 }
 
 static void test()
@@ -29,7 +31,13 @@ static void test()
     assert(list_empty(list) == true);
 
     for (unsigned int index = 0; index < TEST_SIZE; ++index) {
-        list_push_back(list, &index, sizeof(index));
+        unsigned int *data = (unsigned int *)malloc(sizeof(unsigned int));
+
+        assert(data != NULL);
+
+        *data = index;
+
+        list_push_back(list, data);
     }
 
     assert(list_empty(list) == false);
@@ -37,24 +45,24 @@ static void test()
 
     list_for_each(list, iterator, NULL);
 
-    int search = TEST_SIZE + 1;
-    assert(list_find(list, &search, sizeof(search)) < 0);
+    unsigned int search = TEST_SIZE >> 1;
 
-    search = TEST_SIZE >> 1;
-    assert(list_find(list, &search, sizeof(search)) == search);
+    assert(list_find(list, &search) < 0);
+    assert(list_find_if(list, &search, compare, NULL) >= 0);
 
-    search = TEST_SIZE >> 3;
-    assert(list_find_if(list, &search, sizeof(search), compare) == search);
-
-    unsigned int data;
-    list_back(list, &data, sizeof(data));
-    assert(data == (TEST_SIZE - 1));
-
-    list_pop_front(list);
-    assert(list_size(list) == (TEST_SIZE - 1));
+    unsigned int index = TEST_SIZE - 1;
 
     while (!list_empty(list)) {
+        unsigned int *data = (unsigned int *)list_back(list);
+
+        assert(data != NULL);
+        assert(*data == index);
+
         list_pop_back(list);
+
+        free(data);
+
+        --index;
     }
 
     assert(list_empty(list) == true);

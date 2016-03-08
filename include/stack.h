@@ -19,11 +19,11 @@ typedef struct stack_t stack_t;
 stack_t * stack_create(void);
 void stack_destroy(stack_t *stack);
 
-bool stack_empty(const stack_t *stack);
-unsigned int stack_size(const stack_t *stack);
+bool stack_empty(stack_t *stack);
+unsigned int stack_size(stack_t *stack);
 
-int stack_push(stack_t *stack, const void *data, unsigned int data_size);
-int stack_pop(stack_t *stack, void *data, unsigned int data_size);
+int stack_push(stack_t *stack, const void *data);
+void * stack_pop(stack_t *stack);
 
 #ifdef __cplusplus
 }
