@@ -1,7 +1,8 @@
 # libscl
 [![Build Status](https://travis-ci.org/yjfan/libscl.svg?branch=master)](https://travis-ci.org/yjfan/libscl)
 
-The simple container library for C
+The simple container library for C.
+All containers are implemented with **Non thread-safe** and **Design by Contract** style.
 
 ## Build
 ```
@@ -40,6 +41,14 @@ while (!list_empty(list)) {
 }
 
 list_destroy(list);
+```
+
+The output is
+
+```
+hello
+libscl
+doubly linked list
 ```
 
 ## License
