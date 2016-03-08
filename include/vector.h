@@ -8,15 +8,18 @@ extern "C" {
 /**
  *    Vector
  *
- *    @date    2016/03/02
+ *    @date    2016/03/08
  *    @author  Jian <jianfan.tw@gmail.com>
  */
+
+#include <stdbool.h>
 
 typedef struct vector_t vector_t;
 
 vector_t * vector_create(unsigned int data_size);
 void vector_destroy(vector_t *vector);
 
+bool vector_empty(const vector_t *vector);
 unsigned int vector_size(const vector_t *vector);
 unsigned int vector_capacity(const vector_t *vector);
 

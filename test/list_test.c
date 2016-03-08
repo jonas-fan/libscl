@@ -26,10 +26,13 @@ static void test()
 {
     list_t *list = list_create();
 
+    assert(list_empty(list) == true);
+
     for (unsigned int index = 0; index < TEST_SIZE; ++index) {
         list_push_back(list, &index, sizeof(index));
     }
 
+    assert(list_empty(list) == false);
     assert(list_size(list) == TEST_SIZE);
 
     list_for_each(list, iterator, NULL);
@@ -49,6 +52,13 @@ static void test()
 
     list_pop_front(list);
     assert(list_size(list) == (TEST_SIZE - 1));
+
+    while (!list_empty(list)) {
+        list_pop_back(list);
+    }
+
+    assert(list_empty(list) == true);
+    assert(list_size(list) == 0);
 
     list_destroy(list);
 

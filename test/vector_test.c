@@ -26,10 +26,13 @@ static void test()
 {
     vector_t *vector = vector_create(sizeof(unsigned int));
 
+    assert(vector_empty(vector) == true);
+
     for (unsigned int index = 0; index < TEST_SIZE; ++index) {
         vector_push_back(vector, &index);
     }
 
+    assert(vector_empty(vector) == false);
     assert(vector_size(vector) == TEST_SIZE);
 
     vector_for_each(vector, iterator, NULL);
@@ -46,7 +49,7 @@ static void test()
     unsigned int data;
     unsigned int index = TEST_SIZE - 1;
 
-    while (vector_size(vector)) {
+    while (!vector_empty(vector)) {
         vector_back(vector, &data);
 
         assert(data == index);
@@ -56,6 +59,7 @@ static void test()
         --index;
     }
 
+    assert(vector_empty(vector) == true);
     assert(vector_size(vector) == 0);
 
     vector_destroy(vector);

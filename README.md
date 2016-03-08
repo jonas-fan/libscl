@@ -17,8 +17,8 @@ $ make install
 ## Container
 - List
 - Vector
-- Queue
-- Stack
+- Queue (List based)
+- Stack (List based)
 - Ring buffer
 
 ## License

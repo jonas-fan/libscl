@@ -11,16 +11,19 @@ static void test()
 {
     queue_t *queue = queue_create();
 
+    assert(queue_empty(queue) == true);
+
     for (unsigned int index = 0; index < TEST_SIZE; ++index) {
         queue_push(queue, &index, sizeof(index));
     }
 
+    assert(queue_empty(queue) == false);
     assert(queue_size(queue) == TEST_SIZE);
 
     unsigned int index = 0;
     unsigned int data;
 
-    while (queue_size(queue)) {
+    while (!queue_empty(queue)) {
         queue_pop(queue, &data, sizeof(data));
 
         assert(data == index);
@@ -28,6 +31,7 @@ static void test()
         ++index;
     }
 
+    assert(queue_empty(queue) == true);
     assert(queue_size(queue) == 0);
 
     queue_destroy(queue);

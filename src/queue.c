@@ -32,6 +32,11 @@ void queue_destroy(queue_t *queue)
     free(queue);
 }
 
+bool queue_empty(const queue_t *queue)
+{
+    return list_empty(queue->list);
+}
+
 unsigned int queue_size(const queue_t *queue)
 {
     return list_size(queue->list);

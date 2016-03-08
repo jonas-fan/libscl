@@ -32,6 +32,11 @@ void stack_destroy(stack_t *stack)
     free(stack);
 }
 
+bool stack_empty(const stack_t *stack)
+{
+    return list_empty(stack->list);
+}
+
 unsigned int stack_size(const stack_t *stack)
 {
     return list_size(stack->list);

@@ -11,16 +11,19 @@ static void test()
 {
     stack_t *stack = stack_create();
 
+    assert(stack_empty(stack) == true);
+
     for (unsigned int index = 0; index < TEST_SIZE; ++index) {
         stack_push(stack, &index, sizeof(index));
     }
 
+    assert(stack_empty(stack) == false);
     assert(stack_size(stack) == TEST_SIZE);
 
     unsigned int index = TEST_SIZE - 1;
     unsigned int data;
 
-    while (stack_size(stack)) {
+    while (!stack_empty(stack)) {
         stack_pop(stack, &data, sizeof(data));
 
         assert(data == index);
@@ -28,6 +31,7 @@ static void test()
         --index;
     }
 
+    assert(stack_empty(stack) == true);
     assert(stack_size(stack) == 0);
 
     stack_destroy(stack);

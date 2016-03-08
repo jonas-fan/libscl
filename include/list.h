@@ -8,15 +8,18 @@ extern "C" {
 /**
  *    Doubly linked list
  *
- *    @date   2016/03/02
+ *    @date   2016/03/08
  *    @author Jian <jianfan.tw@gmail.com>
  */
+
+#include <stdbool.h>
 
 typedef struct list_t list_t;
 
 list_t * list_create(void);
 void list_destroy(list_t *list);
 
+bool list_empty(const list_t *list);
 unsigned int list_size(const list_t *list);
 
 int list_at(const list_t *list, unsigned int index, void *data, unsigned int size);

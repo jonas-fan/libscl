@@ -41,6 +41,11 @@ void vector_destroy(vector_t *vector)
     free(vector);
 }
 
+bool vector_empty(const vector_t *vector)
+{
+    return !vector->size;
+}
+
 unsigned int vector_size(const vector_t *vector)
 {
     return vector->size;

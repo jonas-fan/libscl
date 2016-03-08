@@ -83,6 +83,11 @@ void list_destroy(list_t *list)
     free(list);
 }
 
+bool list_empty(const list_t *list)
+{
+    return !list->size;
+}
+
 unsigned int list_size(const list_t *list)
 {
     return list->size;
@@ -188,20 +193,20 @@ int list_erase(list_t *list, unsigned int index)
 
 int list_push_front(list_t *list, const void *data, unsigned int size)
 {
-    list_node_t *new_node = list_node_create(data, size);
+    list_node_t *node = list_node_create(data, size);
 
-    if (!new_node) {
+    if (!node) {
         return -1;
     }
 
     if (list->head) {
-        new_node->next = list->head;
-        list->head->previous = new_node;
-        list->head = new_node;
+        node->next = list->head;
+        list->head->previous = node;
+        list->head = node;
     }
     else {
-        list->head = new_node;
-        list->tail = new_node;
+        list->head = node;
+        list->tail = node;
     }
 
     ++list->size;
@@ -235,20 +240,20 @@ int list_pop_front(list_t *list)
 
 int list_push_back(list_t *list, const void *data, unsigned int size)
 {
-    list_node_t *new_node = list_node_create(data, size);
+    list_node_t *node = list_node_create(data, size);
 
-    if (!new_node) {
+    if (!node) {
         return -1;
     }
 
     if (list->tail) {
-        new_node->previous = list->tail;
-        list->tail->next = new_node;
-        list->tail = new_node;
+        node->previous = list->tail;
+        list->tail->next = node;
+        list->tail = node;
     }
     else {
-        list->head = new_node;
-        list->tail = new_node;
+        list->head = node;
+        list->tail = node;
     }
 
     ++list->size;
