@@ -8,7 +8,7 @@ extern "C" {
 /**
  *    Vector
  *
- *    @date    2016/03/08
+ *    @date    2016/03/12
  *    @author  Jian <jianfan.tw@gmail.com>
  */
 
@@ -16,7 +16,7 @@ extern "C" {
 
 typedef struct vector_t vector_t;
 
-vector_t * vector_create();
+vector_t * vector_create(void);
 void vector_destroy(vector_t *vector);
 
 bool vector_empty(vector_t *vector);
@@ -27,6 +27,8 @@ void * vector_at(vector_t *vector, unsigned int index);
 void * vector_front(vector_t *vector);
 void * vector_back(vector_t *vector);
 
+int vector_push_front(vector_t *vector, const void *data);
+int vector_pop_front(vector_t *vector);
 int vector_push_back(vector_t *vector, const void *data);
 int vector_pop_back(vector_t *vector);
 

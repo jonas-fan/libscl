@@ -68,6 +68,37 @@ static void test()
     assert(vector_empty(vector) == true);
     assert(vector_size(vector) == 0);
 
+    for (unsigned int index = 0; index < TEST_SIZE; ++index) {
+        unsigned int *data = (unsigned int *)malloc(sizeof(unsigned int));
+
+        assert(data != NULL);
+
+        *data = index;
+
+        vector_push_front(vector, data);
+    }
+
+    assert(vector_empty(vector) == false);
+    assert(vector_size(vector) == TEST_SIZE);
+
+    index = TEST_SIZE - 1;
+
+    while (!vector_empty(vector)) {
+        unsigned int *data = (unsigned int *)vector_front(vector);
+
+        assert(data != NULL);
+        assert(*data == index);
+
+        vector_pop_front(vector);
+
+        free(data);
+
+        --index;
+    }
+
+    assert(vector_empty(vector) == true);
+    assert(vector_size(vector) == 0);
+
     vector_destroy(vector);
 
     printf("[\033[32mOK\033[m]\n");
