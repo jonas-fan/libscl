@@ -88,6 +88,55 @@ void * vector_back(vector_t *vector)
     return vector_at_(vector, vector->size - 1);
 }
 
+int vector_insert(vector_t *vector, unsigned int index, const void *data)
+{
+    if (index > vector->size) {
+        return -1;
+    }
+
+    if (vector->size >= vector->capacity) {
+        const unsigned int new_capacity = (vector->capacity)?  (vector->capacity << 1) : 1;
+        const size_t new_total_size = sizeof(void *) * new_capacity;
+
+        if (vector_resize_(vector, new_total_size) < 0) {
+            return -1;
+        }
+
+        vector->capacity = new_capacity;
+    }
+
+    const unsigned int copy_count = vector->size - index;
+
+    for (unsigned int count = 0; count < copy_count; ++count) {
+        const unsigned offset = vector->size - count;
+
+        vector->data[offset] = vector->data[offset - 1];
+    }
+
+    vector->data[index] = (void *)data;
+
+    ++vector->size;
+
+    return 0;
+}
+
+int vector_erase(vector_t *vector, unsigned int index)
+{
+    if (index >= vector->size) {
+        return -1;
+    }
+
+    while (index < (vector->size - 1)) {
+        vector->data[index] = vector->data[index + 1];
+
+        ++index;
+    }
+
+    --vector->size;
+
+    return 0;
+}
+
 int vector_push_front(vector_t *vector, const void *data)
 {
     if (vector->size >= vector->capacity) {
@@ -118,7 +167,7 @@ int vector_pop_front(vector_t *vector)
         return -1;
     }
 
-    for (unsigned int index = 0; index < vector->size - 1; ++index) {
+    for (unsigned int index = 0; index < (vector->size - 1); ++index) {
         vector->data[index] = vector->data[index + 1];
     }
 

@@ -27,6 +27,9 @@ void * vector_at(vector_t *vector, unsigned int index);
 void * vector_front(vector_t *vector);
 void * vector_back(vector_t *vector);
 
+int vector_insert(vector_t *vector, unsigned int index, const void *data);
+int vector_erase(vector_t *vector, unsigned int index);
+
 int vector_push_front(vector_t *vector, const void *data);
 int vector_pop_front(vector_t *vector);
 int vector_push_back(vector_t *vector, const void *data);
