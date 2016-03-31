@@ -8,7 +8,7 @@ extern "C" {
 /**
  *    Vector
  *
- *    @date    2016/03/12
+ *    @date    2016/03/31
  *    @author  Jian <jianfan.tw@gmail.com>
  */
 
@@ -35,15 +35,21 @@ int vector_pop_front(vector_t *vector);
 int vector_push_back(vector_t *vector, const void *data);
 int vector_pop_back(vector_t *vector);
 
+void vector_for_each(vector_t *vector,
+                     void (*callback)(unsigned int index, const void *data, void *user_data),
+                     void *user_data);
+
+void vector_for_each_reverse(vector_t *vector,
+                             void (*callback)(unsigned int index, const void *data, void *user_data),
+                             void *user_data);
+
+void vector_reverse(vector_t *vector);
+
 int vector_find(vector_t *vector, const void *search);
 int vector_find_if(vector_t *vector,
                    const void *search,
                    int (*compare)(const void *data, const void *search, void *user_data),
                    void *user_data);
-
-void vector_for_each(vector_t *vector,
-                     void (*callback)(unsigned int index, const void *data, void *user_data),
-                     void *user_data);
 
 #ifdef __cplusplus
 }

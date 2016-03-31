@@ -41,6 +41,14 @@ static inline void * vector_at_(vector_t *vector, unsigned int index)
     return vector->data[index];
 }
 
+static inline void vector_swap_(void **lhs, void **rhs)
+{
+    void *address = *lhs;
+
+    *lhs = *rhs;
+    *rhs = address;
+}
+
 vector_t * vector_create(void)
 {
     vector_t *vector = (vector_t *)malloc(sizeof(vector_t));
@@ -205,6 +213,43 @@ int vector_pop_back(vector_t *vector)
     return 0;
 }
 
+void vector_for_each(vector_t *vector,
+                     void (*callback)(unsigned int index, const void *data, void *user_data),
+                     void *user_data)
+{
+    if (!callback) {
+        return;
+    }
+
+    for (unsigned int index = 0; index < vector->size; ++index) {
+        callback(index, vector->data[index], user_data);
+    }
+}
+
+void vector_for_each_reverse(vector_t *vector,
+                             void (*callback)(unsigned int index, const void *data, void *user_data),
+                             void *user_data)
+{
+    if (!callback) {
+        return;
+    }
+
+    unsigned int index = vector->size;
+
+    while (index--) {
+        callback(index, vector->data[index], user_data);
+    }
+}
+
+void vector_reverse(vector_t *vector)
+{
+    const unsigned int half_size = vector->size >> 1;
+
+    for (unsigned int index = 0; index < half_size; ++index) {
+        vector_swap_(vector->data + index, vector->data + vector->size - index - 1);
+    }
+}
+
 int vector_find(vector_t *vector, const void *search)
 {
     for (unsigned int index = 0; index < vector->size; ++index) {
@@ -232,17 +277,4 @@ int vector_find_if(vector_t *vector,
     }
 
     return -1;
-}
-
-void vector_for_each(vector_t *vector,
-                     void (*callback)(unsigned int index, const void *data, void *user_data),
-                     void *user_data)
-{
-    if (!callback) {
-        return;
-    }
-
-    for (unsigned int index = 0; index < vector->size; ++index) {
-        callback(index, vector->data[index], user_data);
-    }
 }

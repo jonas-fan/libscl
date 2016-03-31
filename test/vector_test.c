@@ -43,7 +43,11 @@ static void test()
     assert(vector_empty(vector) == false);
     assert(vector_size(vector) == TEST_SIZE);
 
+    vector_reverse(vector);
+    vector_reverse(vector);
+
     vector_for_each(vector, iterator, NULL);
+    vector_for_each_reverse(vector, iterator, NULL);
 
     unsigned int search = TEST_SIZE >> 1;
 
