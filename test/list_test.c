@@ -5,7 +5,7 @@
 #include <string.h>
 #include <assert.h>
 
-#define TEST_SIZE 4096
+#define TEST_SIZE 8
 
 static inline void iterator(unsigned int index, const void *data, void *user_data __attribute__((unused)))
 {
@@ -43,7 +43,11 @@ static void test()
     assert(list_empty(list) == false);
     assert(list_size(list) == TEST_SIZE);
 
+    list_reverse(list);
+    list_reverse(list);
+
     list_for_each(list, iterator, NULL);
+    list_for_each_reverse(list, iterator, NULL);
 
     unsigned int search = TEST_SIZE >> 1;
 

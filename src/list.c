@@ -275,6 +275,70 @@ int list_pop_back(list_t *list)
     return 0;
 }
 
+void list_for_each(list_t *list,
+                   void (*callback)(unsigned index, const void *data, void *user_data),
+                   void *user_data)
+{
+    if (!callback) {
+        return;
+    }
+
+    unsigned int index = 0;
+
+    list_node_t *node = list->head;
+
+    while (node) {
+        callback(index, node->data, user_data);
+
+        node = node->next;
+
+        ++index;
+    }
+}
+
+void list_for_each_reverse(list_t *list,
+                           void (*callback)(unsigned int index, const void *data, void *user_data),
+                           void *user_data)
+{
+    if (!callback) {
+        return;
+    }
+
+    unsigned int index = list->size - 1;
+
+    list_node_t *node = list->tail;
+
+    while (node) {
+        callback(index, node->data, user_data);
+
+        node = node->previous;
+
+        --index;
+    }
+}
+
+void list_reverse(list_t *list)
+{
+    if (list->head == list->tail) {
+        return;
+    }
+
+    list_node_t *node = list->head;
+
+    while (node) {
+        list_node_t *previous = node->previous;
+
+        node->previous = node->next;
+        node->next = previous;
+
+        node = node->previous;
+    }
+
+    node = list->head;
+    list->head = list->tail;
+    list->tail = node;
+}
+
 int list_find(list_t *list, const void *search)
 {
     int index = 0;
@@ -310,25 +374,4 @@ int list_find_if(list_t *list,
     }
 
     return (node)?  index : -1;
-}
-
-void list_for_each(list_t *list,
-                   void (*callback)(unsigned index, const void *data, void *user_data),
-                   void *user_data)
-{
-    if (!callback) {
-        return;
-    }
-
-    unsigned int index = 0;
-
-    list_node_t *node = list->head;
-
-    while (node) {
-        callback(index, node->data, user_data);
-
-        node = node->next;
-
-        ++index;
-    }
 }
