@@ -10,7 +10,7 @@ $ git clone https://github.com/yjfan/libscl.git
 $ cd libscl/
 $ mkdir build/
 $ cd build/
-$ cmake ..
+$ cmake .. -DCMAKE_BUILD_TYPE=<Release|Debug> -DCMAKE_INSTALL_PREFIX=<prefix>
 $ make -j4
 $ make install
 ```
@@ -24,23 +24,32 @@ $ make install
 
 ## Example
 ```cpp
-list_t *list = list_create();
+#include <stdio.h>
+#include <string.h>
+#include <list.h>
 
-list_push_back(list, (void *)strdup("hello"));
-list_push_back(list, (void *)strdup("libscl"));
-list_push_back(list, (void *)strdup("doubly linked list"));
+int main(int argc, char *argv[])
+{
+    list_t *list = list_create();
 
-while (!list_empty(list)) {
-    char *string = (char *)list_front(list);
+    list_push_back(list, (void *)strdup("hello"));
+    list_push_back(list, (void *)strdup("libscl"));
+    list_push_back(list, (void *)strdup("doubly linked list"));
 
-    printf("%s\n", string);
+    while (!list_empty(list)) {
+        char *string = (char *)list_front(list);
 
-    list_pop_front(list);
+        printf("%s\n", string);
 
-    free(string);
+        list_pop_front(list);
+
+        free(string);
+    }
+
+    list_destroy(list);
+
+    return 0;
 }
-
-list_destroy(list);
 ```
 
 The output is
