@@ -6,18 +6,18 @@
 
 typedef struct list_node_t list_node_t;
 
-struct list_node_t
-{
-    void *data;
-    list_node_t *previous;
-    list_node_t *next;
-};
-
 struct list_t
 {
     unsigned int size;
     list_node_t *head;
     list_node_t *tail;
+};
+
+struct list_node_t
+{
+    void *data;
+    list_node_t *previous;
+    list_node_t *next;
 };
 
 static inline list_node_t * list_node_create(const void *data)
@@ -26,7 +26,6 @@ static inline list_node_t * list_node_create(const void *data)
 
     if (node) {
         memset(node, 0, sizeof(list_node_t));
-
         node->data = (void *)data;
     }
 
@@ -38,7 +37,7 @@ static inline void list_node_destroy(list_node_t *node)
     free(node);
 }
 
-static inline list_node_t * list_at_(list_t *list, unsigned int index)
+static inline list_node_t * __list_at(list_t *list, unsigned int index)
 {
     if (index >= list->size) {
         return NULL;
@@ -79,19 +78,19 @@ void list_destroy(list_t *list)
     free(list);
 }
 
-bool list_empty(list_t *list)
+bool list_empty(const list_t *list)
 {
-    return !list->size;
+    return !list_size(list);
 }
 
-unsigned int list_size(list_t *list)
+unsigned int list_size(const list_t *list)
 {
     return list->size;
 }
 
 void * list_at(list_t *list, unsigned int index)
 {
-    const list_node_t *node = list_at_(list, index);
+    const list_node_t *node = __list_at(list, index);
 
     if (!node) {
         return NULL;
@@ -102,7 +101,7 @@ void * list_at(list_t *list, unsigned int index)
 
 void * list_front(list_t *list)
 {
-    if (!list->head) {
+    if (list_empty(list)) {
         return NULL;
     }
 
@@ -111,74 +110,11 @@ void * list_front(list_t *list)
 
 void * list_back(list_t *list)
 {
-    if (!list->tail) {
+    if (list_empty(list)) {
         return NULL;
     }
 
     return list->tail->data;
-}
-
-int list_insert(list_t *list, unsigned int index, const void *data)
-{
-    list_node_t *node = list_at_(list, index);
-
-    if (!node) {
-        return -1;
-    }
-
-    list_node_t *new_node = list_node_create(data);
-
-    if (!new_node) {
-        return -1;
-    }
-
-    new_node->next = node;
-    new_node->previous = node->previous;
-
-    if (list->head == node) {
-        list->head = new_node;
-    }
-    else {
-        node->previous->next = new_node;
-    }
-
-    node->previous = new_node;
-
-    ++list->size;
-
-    return 0;
-}
-
-int list_erase(list_t *list, unsigned int index)
-{
-    list_node_t *node = list_at_(list, index);
-
-    if (!node) {
-        return -1;
-    }
-
-    if (list->head == list->tail) {
-        list->head = NULL;
-        list->tail = NULL;
-    }
-    else if (node == list->head) {
-        node->next->previous = NULL;
-        list->head = node->next;
-    }
-    else if (node == list->tail) {
-        node->previous->next = NULL;
-        list->tail = node->previous;
-    }
-    else {
-        node->next->previous = node->previous;
-        node->previous->next = node->next;
-    }
-
-    --list->size;
-
-    list_node_destroy(node);
-
-    return 0;
 }
 
 int list_push_front(list_t *list, const void *data)
@@ -266,6 +202,69 @@ int list_pop_back(list_t *list)
     else {
         list->tail = node->previous;
         list->tail->next = NULL;
+    }
+
+    --list->size;
+
+    list_node_destroy(node);
+
+    return 0;
+}
+
+int list_insert(list_t *list, unsigned int index, const void *data)
+{
+    list_node_t *node = __list_at(list, index);
+
+    if (!node) {
+        return -1;
+    }
+
+    list_node_t *new_node = list_node_create(data);
+
+    if (!new_node) {
+        return -1;
+    }
+
+    new_node->next = node;
+    new_node->previous = node->previous;
+
+    if (list->head == node) {
+        list->head = new_node;
+    }
+    else {
+        node->previous->next = new_node;
+    }
+
+    node->previous = new_node;
+
+    ++list->size;
+
+    return 0;
+}
+
+int list_erase(list_t *list, unsigned int index)
+{
+    list_node_t *node = __list_at(list, index);
+
+    if (!node) {
+        return -1;
+    }
+
+    if (list->head == list->tail) {
+        list->head = NULL;
+        list->tail = NULL;
+    }
+    else if (node == list->head) {
+        node->next->previous = NULL;
+        list->head = node->next;
+    }
+    else if (node == list->tail) {
+        node->previous->next = NULL;
+        list->tail = node->previous;
+    }
+    else {
+        node->next->previous = node->previous;
+        node->previous->next = node->next;
     }
 
     --list->size;
