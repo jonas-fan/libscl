@@ -1,26 +1,16 @@
 # libscl
-[![Build Status](https://travis-ci.org/yjfan/libscl.svg?branch=master)](https://travis-ci.org/yjfan/libscl)
+[![Build Status](https://travis-ci.org/jonas-fan/libscl.svg?branch=master)](https://travis-ci.org/jonas-fan/libscl)
 
-The simple container library for C.
-All containers are implemented with **Non thread-safe** and **Design by Contract** style.
+The simple container library in C.
 
 ## Build
 ```
-$ git clone https://github.com/yjfan/libscl.git
 $ cd libscl/
 $ mkdir build/
 $ cd build/
-$ cmake .. -DCMAKE_BUILD_TYPE=<Release|Debug> -DCMAKE_INSTALL_PREFIX=<prefix>
+$ cmake ..
 $ make -j4
-$ make install
 ```
-
-## Container
-- List
-- Vector
-- Queue (List based)
-- Stack (List based)
-- Ring buffer
 
 ## Example
 ```cpp
@@ -52,7 +42,7 @@ int main(int argc, char *argv[])
 }
 ```
 
-The output is
+Output:
 
 ```
 hello
