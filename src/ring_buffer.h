@@ -1,5 +1,5 @@
-#ifndef SCL_RING_BUFFER_
-#define SCL_RING_BUFFER_
+#ifndef __LIBSCL_RING_BUFFER_H__
+#define __LIBSCL_RING_BUFFER_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -18,4 +18,4 @@ int ringbuffer_pop(ringbuffer_t *ring_buffer, void *data, unsigned int data_size
 }
 #endif
 
-#endif  // SCL_RING_BUFFER_
+#endif  // __LIBSCL_RING_BUFFER_H__

@@ -1,16 +1,9 @@
-#ifndef SCL_VECTOR_H_
-#define SCL_VECTOR_H_
+#ifndef __LIBSCL_VECTOR_H__
+#define __LIBSCL_VECTOR_H__
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-/**
- *    Vector
- *
- *    @date    2016/03/31
- *    @author  Jian <jianfan.tw@gmail.com>
- */
 
 #include <stdbool.h>
 
@@ -55,4 +48,4 @@ int vector_find_if(vector_t *vector,
 }
 #endif
 
-#endif  /* SCL_VECTOR_H_ */
+#endif  /* __LIBSCL_VECTOR_H__ */

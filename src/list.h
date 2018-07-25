@@ -1,16 +1,9 @@
-#ifndef SCL_LIST_H_
-#define SCL_LIST_H_
+#ifndef __LIBSCL_LIST_H__
+#define __LIBSCL_LIST_H__
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-/**
- *    Doubly linked list
- *
- *    @date   2016/03/31
- *    @author Jian <jianfan.tw@gmail.com>
- */
 
 #include <stdbool.h>
 
@@ -54,4 +47,4 @@ int list_find_if(list_t *list,
 }
 #endif
 
-#endif  /* SCL_LIST_H_ */
+#endif  /* __LIBSCL_LIST_H__ */

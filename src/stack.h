@@ -1,16 +1,9 @@
-#ifndef SCL_STACK_H_
-#define SCL_STACK_H_
+#ifndef __LIBSCL_STACK_H__
+#define __LIBSCL_STACK_H__
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-/**
- *    Stack (List based)
- *
- *    @date    2016/03/08
- *    @author  Jian <jianfan.tw@gmail.com>
- */
 
 #include <stdbool.h>
 
@@ -29,4 +22,4 @@ void * stack_pop(stack_t *stack);
 }
 #endif
 
-#endif  /* SCL_STACK_H_ */
+#endif  /* __LIBSCL_STACK_H__ */

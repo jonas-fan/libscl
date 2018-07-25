@@ -1,16 +1,9 @@
-#ifndef SCL_QUEUE_H_
-#define SCL_QUEUE_H_
+#ifndef __LIBSCL_QUEUE_H__
+#define __LIBSCL_QUEUE_H__
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-/**
- *    Queue (List based)
- *
- *    @date    2016/03/08
- *    @author  Jian <jianfan.tw@gmail.com>
- */
 
 #include <stdbool.h>
 
@@ -29,4 +22,4 @@ void * queue_pop(queue_t *queue);
 }
 #endif
 
-#endif  /* SCL_QUEUE_H_ */
+#endif  /* __LIBSCL_QUEUE_H__ */

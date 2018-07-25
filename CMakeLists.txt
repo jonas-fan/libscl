@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8)
 project(libscl C)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 -Wall -Wextra -pedantic -std=c99")
-set(INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/)
+set(INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/install/)
 
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Debug")
@@ -19,7 +19,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
 endif ()
 
-set(HEADER ./include/vector.h ./include/list.h ./include/queue.h ./include/stack.h ./include/ring_buffer.h)
+set(HEADER ./src/vector.h ./src/list.h ./src/queue.h ./src/stack.h ./src/ring_buffer.h)
 set(SOURCE ./src/vector.c ./src/list.c ./src/queue.c ./src/stack.c ./src/ring_buffer.c)
 
 set(TARGET_LIB scl)
