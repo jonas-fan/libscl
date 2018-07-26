@@ -20,8 +20,8 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
 endif ()
 
 set(HEADER ./src/vector.h ./src/list.h ./src/queue.h ./src/stack.h ./src/ring_buffer.h)
-set(SOURCE ./src/vector.c ./src/list.c ./src/queue.c ./src/stack.c ./src/ring_buffer.c)
-
+#set(SOURCE ./src/vector.c ./src/list.c ./src/queue.c ./src/stack.c ./src/ring_buffer.c)
+set(SOURCE ./src/list.c)
 set(TARGET_LIB scl)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
