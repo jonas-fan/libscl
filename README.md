@@ -1,9 +1,10 @@
 # libsimplecntr
+
 [![Build Status](https://travis-ci.org/jonas-fan/libsimplecntr.svg?branch=master)](https://travis-ci.org/jonas-fan/libsimplecntr)
 
-`libsimplecntr` provides implementation of data structure, which makes organizing data easier.
+The `libsimplecntr` is an easy-to-use C++-style container library in C, which provides implementation of non-intrusive data structures.
 
-Current data structure support:
+Supported:
 
 - `list`
 - `vector`
@@ -20,7 +21,7 @@ $ make -j4
 
 ## Example
 
-Here is a sample for `vector`, considering code snippet as below:
+Here is an example for `vector`, considering the following code snippet:
 
 ```c
 #include "vector.h"
@@ -57,7 +58,7 @@ int main(int argc, char *argv[])
 And the output will be:
 
 ```
-$ ./vector_test_for_each hello world 0123456789
+$ ./vector_test_echo hello world 0123456789
 hello
 world
 0123456789
