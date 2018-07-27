@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 
-project(libsimplecon-test C)
+project(libsimplecntr-test C)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 -Wall -Wextra -Wno-unused-parameter -pedantic -std=c99 -g")
 

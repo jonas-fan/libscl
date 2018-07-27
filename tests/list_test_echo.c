@@ -1,6 +1,6 @@
 #define _GNU_SOURCE
 
-#include "../src/list.h"
+#include "../lib/list.h"
 
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,9 +1,0 @@
-set(HEADER
-    ${CMAKE_CURRENT_SOURCE_DIR}/list.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/vector.h
-    PARENT_SCOPE)
-
-set(SOURCE
-    ${CMAKE_CURRENT_SOURCE_DIR}/list.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/vector.c
-    PARENT_SCOPE)
