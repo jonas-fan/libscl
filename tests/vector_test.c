@@ -1,5 +1,4 @@
 #include "../src/vector.h"
-const int **number;
 
 #include <stdio.h>
 #include <stdlib.h>
