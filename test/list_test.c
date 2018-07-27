@@ -4,8 +4,6 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#define ARRAY_SIZE(array) (sizeof(array) / sizeof(array[0]))
-
 #define TEST(str) printf("# Test %03u " str "\n", ++count)
 
 static unsigned int count = 0;
@@ -17,12 +15,12 @@ int main(int argc, char *argv[])
     struct list_entry *entry2;
     struct list_entry *entry3;
     struct list_entry *next;
-    int number1 = 1;
-    int number2 = 2;
-    int number3 = 3;
-    int *numbers[] = {&number1, &number2, &number3};
-    int rc = 0;
-    unsigned int index = 0;
+    const int number1 = 1;
+    const int number2 = 2;
+    const int number3 = 3;
+    const int *numbers[] = {&number1, &number2, &number3};
+    const int **number;
+    int rc;
 
     TEST("list_init");
     list_init(&list);
@@ -40,6 +38,7 @@ int main(int argc, char *argv[])
     assert(entry1->next == entry1);
     assert(entry1->data == &number1);
     entry2 = list_insert(&list, list.head, &number2);
+    assert(entry2);
     assert(entry2 == list.head);
     assert(entry2->previous == entry1);
     assert(entry2->next == entry1);
@@ -71,14 +70,19 @@ int main(int argc, char *argv[])
     assert(next->previous == entry1);
     assert(next->next == entry1);
     assert(next->data == &number1);
+    rc = list_empty(&list);
+    assert(rc == 0);
     next = list_erase(&list, next);
     assert(next == NULL);
     assert(list.head == NULL);
+    rc = list_empty(&list);
+    assert(rc == 1);
 
     TEST("list_insert * n");
     entry1 = list_insert(&list, list.head, &number1);
     entry2 = list_insert(&list, list.head, &number2);
     entry3 = list_insert(&list, list.head, &number3);
+    assert(entry3);
     assert(entry3 == list.head);
     assert(entry3->previous == entry1);
     assert(entry3->next == entry2);
@@ -90,6 +94,7 @@ int main(int argc, char *argv[])
     assert(entry1->next == entry3);
     assert(entry1->data == &number1);
     next = list_erase(&list, entry2);
+    assert(next);
     assert(next == entry1);
     assert(entry3 == list.head);
     assert(entry3->previous == entry1);
@@ -99,6 +104,7 @@ int main(int argc, char *argv[])
     assert(entry1->next == entry3);
     assert(entry1->data == &number1);
     next = list_erase(&list, next);
+    assert(next);
     assert(next == entry3);
     assert(entry3 == list.head);
     assert(entry3->previous == entry3);
@@ -106,14 +112,13 @@ int main(int argc, char *argv[])
     assert(entry3->data == &number3);
     next = list_erase(&list, next);
     assert(next == NULL);
-    rc = list_empty(&list);
-    assert(rc == 1);
 
     TEST("list_push_front + list_pop_front");
     list_push_front(&list, &number1);
     list_push_front(&list, &number2);
     entry2 = list_front(&list);
     entry1 = list_back(&list);
+    assert(entry2);
     assert(entry2 == list.head);
     assert(entry2->previous == entry1);
     assert(entry2->next == entry1);
@@ -122,6 +127,7 @@ int main(int argc, char *argv[])
     assert(entry1->next == entry2);
     assert(entry1->data == &number1);
     list_pop_front(&list);
+    assert(entry1);
     assert(entry1 == list.head);
     assert(entry1->previous == entry1);
     assert(entry1->next == entry1);
@@ -135,6 +141,7 @@ int main(int argc, char *argv[])
     list_push_front(&list, &number2);
     entry2 = list_front(&list);
     entry1 = list_back(&list);
+    assert(entry2);
     assert(entry2 == list.head);
     assert(entry2->previous == entry1);
     assert(entry2->next == entry1);
@@ -143,6 +150,7 @@ int main(int argc, char *argv[])
     assert(entry1->next == entry2);
     assert(entry1->data == &number1);
     list_pop_back(&list);
+    assert(entry2);
     assert(entry2 == list.head);
     assert(entry2->previous == entry2);
     assert(entry2->next == entry2);
@@ -156,6 +164,7 @@ int main(int argc, char *argv[])
     list_push_back(&list, &number2);
     entry1 = list_front(&list);
     entry2 = list_back(&list);
+    assert(entry1);
     assert(entry1 == list.head);
     assert(entry1->previous == entry2);
     assert(entry1->next == entry2);
@@ -164,6 +173,7 @@ int main(int argc, char *argv[])
     assert(entry2->next == entry1);
     assert(entry2->data == &number2);
     list_pop_front(&list);
+    assert(entry2);
     assert(entry2 == list.head);
     assert(entry2->previous == entry2);
     assert(entry2->next == entry2);
@@ -177,6 +187,7 @@ int main(int argc, char *argv[])
     list_push_back(&list, &number2);
     entry1 = list_front(&list);
     entry2 = list_back(&list);
+    assert(entry1);
     assert(entry1 == list.head);
     assert(entry1->previous == entry2);
     assert(entry1->next == entry2);
@@ -185,6 +196,7 @@ int main(int argc, char *argv[])
     assert(entry2->next == entry1);
     assert(entry2->data == &number2);
     list_pop_back(&list);
+    assert(entry1);
     assert(entry1 == list.head);
     assert(entry1->previous == entry1);
     assert(entry1->next == entry1);
@@ -198,10 +210,11 @@ int main(int argc, char *argv[])
     list_push_back(&list, numbers[1]);
     list_push_back(&list, numbers[2]);
 
-    index = 0;
+    number = numbers;
 
     list_for_each(&list, entry1) {
-        assert(entry1->data == numbers[index++]);
+        assert(entry1->data == *number);
+        ++number;
     }
 
     list_pop_back(&list);
@@ -213,10 +226,11 @@ int main(int argc, char *argv[])
     list_push_back(&list, numbers[1]);
     list_push_back(&list, numbers[2]);
 
-    index = ARRAY_SIZE(numbers) - 1;
+    number = numbers + 2;
 
     list_for_each_reverse(&list, entry1) {
-        assert(entry1->data == numbers[index--]);
+        assert(entry1->data == *number);
+        --number;
     }
 
     list_pop_back(&list);
