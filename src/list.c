@@ -72,10 +72,12 @@ static inline struct list_entry * __list_insert(struct list *list,
 struct list_entry * list_insert(struct list *list, struct list_entry *position,
     const void *data)
 {
-    struct list_entry *entry = __list_entry_init(data);
+    if (position || (position == list->head)) {
+        struct list_entry *entry = __list_entry_init(data);
 
-    if (entry) {
-        return __list_insert(list, position, entry);
+        if (entry) {
+            return __list_insert(list, position, entry);
+        }
     }
 
     return NULL;
