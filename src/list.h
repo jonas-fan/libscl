@@ -14,9 +14,8 @@ struct list_t
     void *data;
 };
 
-list_t * list_new(void *data);
-void list_delete(list_t **head);
 int list_insert(list_t **head, void *data);
+void list_delete(list_t **head, list_t *entry);
 int list_push_front(list_t **head, void *data);
 int list_push_back(list_t **head, void *data);
 void list_pop_front(list_t **head);

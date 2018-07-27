@@ -17,20 +17,7 @@ list_t * list_new(void *data)
     return node;
 }
 
-void list_delete(list_t **head)
-{
-    list_t *node = *head;
-    list_t *next = (node == node->next) ? NULL : node->next;
-
-    node->next->previous = node->previous;
-    node->previous->next = node->next;
-
-    free(node);
-
-    *head = next;
-}
-
-int list_insert(list_t **head, void *data)
+int list_insert(list_t **node, void *data)
 {
     list_t *newer = list_new(data);
 
@@ -38,16 +25,31 @@ int list_insert(list_t **head, void *data)
         return 0;
     }
 
-    list_t *previous = (*head)->previous;
+    if (*node) {
+        list_t *previous = (*node)->previous;
 
-    newer->previous = previous;
-    newer->next = previous->next;
-    previous->next->previous = newer;
-    previous->next = newer;
+        newer->previous = previous;
+        newer->next = previous->next;
+        previous->next->previous = newer;
+        previous->next = newer;
+    }
 
-    *head = newer;
+    *node = newer;
 
     return 1;
+}
+
+void list_delete(list_t **head, list_t *entry)
+{
+    entry->next->previous = entry->previous;
+    entry->previous->next = entry->next;
+
+    if (*head == entry) {
+        list_t *next = (*head)->next;
+        *head = (*head == next) ? NULL : next;
+    }
+
+    free(entry);
 }
 
 int list_push_front(list_t **head, void *data)
@@ -68,14 +70,10 @@ int list_push_back(list_t **head, void *data)
 
 void list_pop_front(list_t **head)
 {
-    list_delete(head);
+    list_delete(head, *head);
 }
 
 void list_pop_back(list_t **head)
 {
-    list_t *previous = (*head)->previous;
-
-    list_delete(&previous);
-
-    *head = previous;
+    list_delete(head, (*head)->previous);
 }
