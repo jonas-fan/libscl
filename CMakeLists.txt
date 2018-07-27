@@ -17,7 +17,7 @@ add_library(${OUTPUT_LIB} STATIC ${SOURCE})
 
 ### tests
 
-add_subdirectory(test)
+add_subdirectory(tests)
 
 ### installation
 
