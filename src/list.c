@@ -1,6 +1,5 @@
 #include "list.h"
 
-#include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -25,7 +24,16 @@ static inline void __list_entry_term(struct list_entry *entry)
 
 void list_init(struct list *list)
 {
-    list->head = NULL;
+    memset(list, 0, sizeof(struct list));
+}
+
+void list_term(struct list *list)
+{
+    if (!list_empty(list)) {
+        abort();
+    }
+
+    memset(list, 0, sizeof(struct list));
 }
 
 int list_empty(struct list *list)

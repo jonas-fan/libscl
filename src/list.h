@@ -20,6 +20,9 @@ struct list
 /* initialize the list */
 void list_init(struct list *list);
 
+/* finalize the list */
+void list_term(struct list *list);
+
 /* check to see if the list is empty */
 int list_empty(struct list *list);
 

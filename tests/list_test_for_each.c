@@ -32,5 +32,7 @@ int main(int argc, char *argv[])
         list_pop_front(&list);
     }
 
+    list_term(&list);
+
     return 0;
 }

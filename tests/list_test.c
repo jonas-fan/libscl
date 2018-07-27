@@ -26,6 +26,12 @@ int main(int argc, char *argv[])
     list_init(&list);
     assert(list.head == NULL);
 
+    TEST("list_term");
+    list_term(&list);
+    assert(list.head == NULL);
+
+    list_init(&list);
+
     TEST("list_empty");
     rc = list_empty(&list);
     assert(rc == 1);
@@ -236,6 +242,8 @@ int main(int argc, char *argv[])
     list_pop_back(&list);
     list_pop_back(&list);
     list_pop_back(&list);
+
+    list_term(&list);
 
     printf("[OK]\n");
 
