@@ -54,7 +54,10 @@ int main(int argc, char *argv[])
 
     TEST("vector_erase");
     next = vector_erase(&vector, 0);
-    assert(next == entry1);
+    assert(next);
+    assert(next->data == &number1);
+    rc = vector_empty(&vector);
+    assert(rc == 0);
     next = vector_erase(&vector, 0);
     assert(next == NULL);
     rc = vector_empty(&vector);
