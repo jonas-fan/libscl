@@ -4,7 +4,9 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#define TEST(str) printf("# Test " str "\n")
+static unsigned int count = 0;
+
+#define TEST(str) printf("# Test %03u " str "\n", ++count)
 
 int main(int argc, char *argv[])
 {
@@ -21,7 +23,7 @@ int main(int argc, char *argv[])
 
     list_t *head = NULL;
 
-    TEST("001");
+    TEST("list_insert + list_delete");
     list_insert(&head, number + 0);
     assert(head);
     assert(head == head->previous);
@@ -30,60 +32,43 @@ int main(int argc, char *argv[])
     list_delete(&head, head);
     assert(head == NULL);
 
-    TEST("002");
-    list_push_front(&head, number + 0);
-    assert(head);
-    assert(head == head->previous);
-    assert(head == head->next);
-    assert(head->data == number + 0);
-    list_pop_front(&head);
-    assert(head == NULL);
+    // TEST("list_push_front + list_pop_front");
+    // list_push_front(&head, number + 0);
+    // assert(head);
+    // assert(head == head->previous);
+    // assert(head == head->next);
+    // assert(head->data == number + 0);
+    // list_pop_front(&head);
+    // assert(head == NULL);
 
-    TEST("003");
-    list_push_front(&head, number + 0);
-    assert(head);
-    assert(head == head->previous);
-    assert(head == head->next);
-    assert(head->data == number + 0);
-    list_pop_back(&head);
-    assert(head == NULL);
+    // TEST("list_push_front + list_pop_back");
+    // list_push_front(&head, number + 0);
+    // assert(head);
+    // assert(head == head->previous);
+    // assert(head == head->next);
+    // assert(head->data == number + 0);
+    // list_pop_back(&head);
+    // assert(head == NULL);
 
-    TEST("004");
-    list_push_back(&head, number + 0);
-    assert(head);
-    assert(head == head->previous);
-    assert(head == head->next);
-    assert(head->data == number + 0);
-    list_pop_front(&head);
-    assert(head == NULL);
+    // TEST("list_push_back + list_pop_front");
+    // list_push_back(&head, number + 0);
+    // assert(head);
+    // assert(head == head->previous);
+    // assert(head == head->next);
+    // assert(head->data == number + 0);
+    // list_pop_front(&head);
+    // assert(head == NULL);
 
-    TEST("005");
-    list_push_back(&head, number + 0);
-    assert(head);
-    assert(head == head->previous);
-    assert(head == head->next);
-    assert(head->data == number + 0);
-    list_pop_back(&head);
-    assert(head == NULL);
+    // TEST("list_push_back + list_pop_back");
+    // list_push_back(&head, number + 0);
+    // assert(head);
+    // assert(head == head->previous);
+    // assert(head == head->next);
+    // assert(head->data == number + 0);
+    // list_pop_back(&head);
+    // assert(head == NULL);
 
-    TEST("006");
-    list_push_front(&head, number + 0);
-    list_push_front(&head, number + 1);
-    assert(head);
-    assert(head != head->previous);
-    assert(head != head->next);
-    assert(head->previous == head->next);
-    assert(head->data == number + 1);
-    assert(head->next->data == number + 0);
-    list_pop_front(&head);
-    assert(head);
-    assert(head == head->previous);
-    assert(head == head->next);
-    assert(head->data == number + 0);
-    list_pop_front(&head);
-    assert(head == NULL);
-
-    TEST("007");
+    TEST("list_push_front + list_pop_front");
     list_push_front(&head, number + 0);
     list_push_front(&head, number + 1);
     assert(head);
@@ -92,6 +77,23 @@ int main(int argc, char *argv[])
     assert(head->previous == head->next);
     assert(head->data == number + 1);
     assert(head->next->data == number + 0);
+    list_pop_front(&head);
+    assert(head);
+    assert(head == head->previous);
+    assert(head == head->next);
+    assert(head->data == number + 0);
+    list_pop_front(&head);
+    assert(head == NULL);
+
+    TEST("list_push_front + list_pop_back");
+    list_push_front(&head, number + 0);
+    list_push_front(&head, number + 1);
+    assert(head);
+    assert(head != head->previous);
+    assert(head != head->next);
+    assert(head->previous == head->next);
+    assert(head->data == number + 1);
+    assert(head->next->data == number + 0);
     list_pop_back(&head);
     assert(head);
     assert(head == head->previous);
@@ -100,7 +102,7 @@ int main(int argc, char *argv[])
     list_pop_back(&head);
     assert(head == NULL);
 
-    TEST("008");
+    TEST("list_push_back + list_pop_front");
     list_push_back(&head, number + 0);
     list_push_back(&head, number + 1);
     assert(head);
@@ -117,7 +119,7 @@ int main(int argc, char *argv[])
     list_pop_front(&head);
     assert(head == NULL);
 
-    TEST("009");
+    TEST("list_push_back + list_pop_back");
     list_push_back(&head, number + 0);
     list_push_back(&head, number + 1);
     assert(head);
@@ -134,7 +136,7 @@ int main(int argc, char *argv[])
     list_pop_back(&head);
     assert(head == NULL);
 
-    TEST("010");
+    TEST("list_push_back + list_delete");
     list_push_back(&head, number + 0);
     list_push_back(&head, number + 1);
     list_push_back(&head, number + 2);
@@ -149,7 +151,7 @@ int main(int argc, char *argv[])
     list_delete(&head, head);
     assert(head == NULL);
 
-    TEST("011");
+    TEST("list_for_each");
     list_push_back(&head, number + 0);
     list_push_back(&head, number + 1);
     list_push_back(&head, number + 2);
