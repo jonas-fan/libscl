@@ -1,5 +1,5 @@
-#ifndef __LIBSCL_LIST_H__
-#define __LIBSCL_LIST_H__
+#ifndef __LIBSIMPLECNTR_LIST_H__
+#define __LIBSIMPLECNTR_LIST_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -50,4 +50,4 @@ void list_pop_back(struct list *list);
 }
 #endif
 
-#endif  /* __LIBSCL_LIST_H__ */
+#endif /* __LIBSIMPLECNTR_LIST_H__ */

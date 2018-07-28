@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 
-project(libscl C)
+project(libsimplecntr C)
 
 ### build configuration
 
@@ -9,7 +9,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/)
 
 set(HEADER "")
 set(SOURCE "")
-set(OUTPUT_LIB scl)
+set(OUTPUT_LIB simplecntr)
 set(INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/install/)
 
 add_subdirectory(src)
