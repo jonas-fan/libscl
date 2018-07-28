@@ -14,12 +14,15 @@ struct list_t
     void *data;
 };
 
-int list_insert(list_t **head, void *data);
-void list_delete(list_t **head, list_t *entry);
+int list_insert(list_t **position, void *data);
+void list_delete(list_t **head, list_t *node);
 int list_push_front(list_t **head, void *data);
 int list_push_back(list_t **head, void *data);
 void list_pop_front(list_t **head);
 void list_pop_back(list_t **head);
+
+#define list_for_each(head, entry) \
+    for ((entry) = (head); (entry); (entry) = ((entry)->next == (head)) ? NULL : (entry)->next)
 
 #ifdef __cplusplus
 }

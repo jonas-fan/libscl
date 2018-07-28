@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-list_t * list_new(void *data)
+static inline list_t * __list_new(void *data)
 {
     list_t *node = (list_t *)malloc(sizeof(list_t));
 
@@ -17,39 +17,37 @@ list_t * list_new(void *data)
     return node;
 }
 
-int list_insert(list_t **node, void *data)
+int list_insert(list_t **position, void *data)
 {
-    list_t *newer = list_new(data);
+    list_t *newer = __list_new(data);
 
-    if (!newer) {
-        return 0;
+    if (newer) {
+        list_t *indirect = *position;
+
+        if (indirect) {
+            newer->previous = indirect->previous;
+            newer->next = indirect;
+            indirect->previous->next = newer;
+            indirect->previous = newer;
+        }
+
+        *position = newer;
     }
 
-    if (*node) {
-        list_t *previous = (*node)->previous;
-
-        newer->previous = previous;
-        newer->next = previous->next;
-        previous->next->previous = newer;
-        previous->next = newer;
-    }
-
-    *node = newer;
-
-    return 1;
+    return (*position == newer);
 }
 
-void list_delete(list_t **head, list_t *entry)
+void list_delete(list_t **head, list_t *node)
 {
-    entry->next->previous = entry->previous;
-    entry->previous->next = entry->next;
+    node->next->previous = node->previous;
+    node->previous->next = node->next;
 
-    if (*head == entry) {
+    if (*head == node) {
         list_t *next = (*head)->next;
         *head = (*head == next) ? NULL : next;
     }
 
-    free(entry);
+    free(node);
 }
 
 int list_push_front(list_t **head, void *data)

@@ -8,7 +8,16 @@
 
 int main(int argc, char *argv[])
 {
-    static int number[] = {0, 1, 2, 3};
+    static int number[] = {
+        1 << 0,
+        1 << 1,
+        1 << 2,
+        1 << 3,
+        1 << 4,
+        1 << 5,
+        1 << 6,
+        1 << 7,
+    };
 
     list_t *head = NULL;
 
@@ -139,6 +148,21 @@ int main(int argc, char *argv[])
     assert(head->data == number + 2);
     list_delete(&head, head);
     assert(head == NULL);
+
+    TEST("011");
+    list_push_back(&head, number + 0);
+    list_push_back(&head, number + 1);
+    list_push_back(&head, number + 2);
+    list_push_back(&head, number + 3);
+    list_push_back(&head, number + 4);
+
+    unsigned int index = 0;
+    list_t *entry;
+
+    list_for_each(head, entry) {
+        assert(entry->data == number + index);
+        ++index;
+    }
 
     printf("[\033[32mOK\033[m] looks good\n");
 
