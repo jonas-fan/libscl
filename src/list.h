@@ -1,50 +1,67 @@
-#ifndef __LIBSCL_LIST_H__
-#define __LIBSCL_LIST_H__
+#ifndef __LIBSIMPLECNTR_LIST_H__
+#define __LIBSIMPLECNTR_LIST_H__
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include <stdbool.h>
+struct list_entry
+{
+    struct list_entry *previous;
+    struct list_entry *next;
+    void *data;
+};
 
-typedef struct list_t list_t;
+struct list
+{
+    struct list_entry *head;
+};
 
-list_t * list_create(void);
-void list_destroy(list_t *list);
+/* initialize the list */
+void list_init(struct list *list);
 
-bool list_empty(const list_t *list);
-unsigned int list_size(const list_t *list);
+/* check to see if the list is empty */
+int list_empty(struct list *list);
 
-void * list_at(list_t *list, unsigned int index);
-void * list_front(list_t *list);
-void * list_back(list_t *list);
+/* return the first entry of the list */
+struct list_entry * list_front(struct list *list);
 
-int list_push_front(list_t *list, const void *data);
-int list_pop_front(list_t *list);
-int list_push_back(list_t *list, const void *data);
-int list_pop_back(list_t *list);
+/* return the last entry of the list */
+struct list_entry * list_back(struct list *list);
 
-int list_insert(list_t *list, unsigned int index, const void *data);
-int list_erase(list_t *list, unsigned int index);
+/* insert an element into the list, return the entry pointing to the element */
+struct list_entry * list_insert(struct list *list, struct list_entry *postion,
+    const void *data);
 
-void list_for_each(list_t *list,
-                   void (*callback)(unsigned int index, const void *data, void *user_data),
-                   void *user_data);
+/* remove the entry from the list, return next entry */
+struct list_entry * list_erase(struct list *list, struct list_entry *entry);
 
-void list_for_each_reverse(list_t *list,
-                           void (*callback)(unsigned int index, const void *data, void *user_data),
-                           void *user_data);
+/* add an element at the begining of the list, return 1 on success, 0 otherwise */
+int list_push_front(struct list *list, const void *data);
 
-void list_reverse(list_t *list);
+/* add an element at the end of the list, return 1 on success, 0 otherwise */
+int list_push_back(struct list *list, const void *data);
 
-int list_find(list_t *list, const void *search);
-int list_find_if(list_t *list,
-                 const void *search,
-                 int (*compare)(const void *data, const void *search, void *user_data),
-                 void *user_data);
+/* remove the first entry of the list */
+void list_pop_front(struct list *list);
+
+/* remove the last entry of the list */
+void list_pop_back(struct list *list);
+
+/* traverse the list */
+#define list_for_each(list, entry) \
+    for (entry = (list)->head; \
+         entry; \
+         entry = ((entry)->next == (list)->head) ? NULL : (entry)->next)
+
+/* traverse the list in reverse order */
+#define list_for_each_reverse(list, entry) \
+    for (entry = (list)->head ? (list)->head->previous : NULL; \
+         entry; \
+         entry = ((entry)->previous == (list)->head->previous) ? NULL : (entry)->previous)
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif  /* __LIBSCL_LIST_H__ */
+#endif /* __LIBSIMPLECNTR_LIST_H__ */

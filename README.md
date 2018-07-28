@@ -1,11 +1,18 @@
-# libscl
-[![Build Status](https://travis-ci.org/jonas-fan/libscl.svg?branch=master)](https://travis-ci.org/jonas-fan/libscl)
+# libsimplecntr
+[![Build Status](https://travis-ci.org/jonas-fan/libsimplecntr.svg?branch=master)](https://travis-ci.org/jonas-fan/libsimplecntr)
 
-The simple container library in C.
+A simple container library in C.
 
-## Build
+`libsimplecntr` provides data structure implementations, which makes organizing data easier.
+
+Data structure support:
+
+- `list`
+
+## Building
+
 ```
-$ cd libscl/
+$ cd libsimplecntr/
 $ mkdir build/
 $ cd build/
 $ cmake ..
@@ -13,42 +20,46 @@ $ make -j4
 ```
 
 ## Example
-```cpp
-#include <stdio.h>
-#include <string.h>
-#include <list.h>
 
+For `list`, considering code snippet as below:
+
+```c
 int main(int argc, char *argv[])
 {
-    list_t *list = list_create();
+    struct list list;
+    struct list_entry *entry;
+    int index;
+    char *str;
 
-    list_push_back(list, (void *)strdup("hello"));
-    list_push_back(list, (void *)strdup("libscl"));
-    list_push_back(list, (void *)strdup("doubly linked list"));
+    list_init(&list);
 
-    while (!list_empty(list)) {
-        char *string = (char *)list_front(list);
-
-        printf("%s\n", string);
-
-        list_pop_front(list);
-
-        free(string);
+    for (index = 1; index < argc; ++index) {
+        str = strdup(argv[index]);
+        list_push_back(&list, str);
     }
 
-    list_destroy(list);
+    list_for_each(&list, entry) {
+        printf("%s\n", (char *)entry->data);
+    }
+
+    while ((entry = list_front(&list)) != NULL) {
+        free(entry->data);
+        list_pop_front(&list);
+    }
 
     return 0;
 }
 ```
 
-Output:
+And the output will be:
 
 ```
+$ ./list_test_for_each hello world 12345
 hello
-libscl
-doubly linked list
+world
+12345
 ```
 
 ## License
+
 The MIT License (MIT)

@@ -5,18 +5,13 @@ compiler: gcc
 before_script:
     - mkdir build/
     - cd build/
-    - cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../output/
+    - cmake ..
 
 script:
     - make -j4
-    - make install
 
 after_script:
-    - ./test/vector_test
     - ./test/list_test
-    - ./test/queue_test
-    - ./test/stack_test
-    - ./test/ring_buffer_test
 
 notifications:
     email:

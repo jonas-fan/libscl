@@ -1,37 +1,27 @@
 cmake_minimum_required(VERSION 2.8)
 
-project(libscl C)
+project(libsimplecntr C)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 -Wall -Wextra -pedantic -std=c99")
+### build configuration
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 -Wall -Wextra -pedantic -std=c99 -g")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/)
+
+set(HEADER "")
+set(SOURCE "")
+set(OUTPUT_LIB simplecntr)
 set(INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/install/)
 
-if (NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE "Debug")
-else ()
-    if (NOT CMAKE_BUILD_TYPE STREQUAL "Release")
-        if (NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
-            set(CMAKE_BUILD_TYPE "Debug")
-        endif ()
-    endif ()
-endif ()
+add_subdirectory(src)
+add_library(${OUTPUT_LIB} STATIC ${SOURCE})
 
-if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
-endif ()
-
-set(HEADER ./src/vector.h ./src/list.h ./src/queue.h ./src/stack.h ./src/ring_buffer.h)
-set(SOURCE ./src/vector.c ./src/list.c ./src/queue.c ./src/stack.c ./src/ring_buffer.c)
-
-set(TARGET_LIB scl)
-
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
-
-add_library(${TARGET_LIB} STATIC ${SOURCE})
-
-install(FILES ${HEADER} DESTINATION ${INSTALL_DIR}/include)
-install(TARGETS ${TARGET_LIB} DESTINATION ${INSTALL_DIR}/lib)
-
-message("Build type: ${CMAKE_BUILD_TYPE}")
-message("Install dir: ${INSTALL_DIR}")
+### tests
 
 add_subdirectory(test)
+
+### installation
+
+message("Install directory: ${INSTALL_DIR}")
+
+install(FILES ${HEADER} DESTINATION ${INSTALL_DIR}/include)
+install(TARGETS ${OUTPUT_LIB} ARCHIVE DESTINATION ${INSTALL_DIR}/lib)
