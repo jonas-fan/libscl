@@ -1,77 +1,75 @@
 #include "list.h"
 
-#include <stdlib.h>
-#include <string.h>
+#include <stddef.h>
 
-static inline list_t * __list_new(void *data)
+void list_entry_init(struct list_entry *entry, void *data)
 {
-    list_t *node = (list_t *)malloc(sizeof(list_t));
+    entry->previous = entry;
+    entry->next = entry;
+    entry->data = data;
+}
 
-    if (node) {
-        memset(node, 0, sizeof(list_t));
-        node->data = data;
-        node->previous = node;
-        node->next = node;
+void list_init(struct list *list)
+{
+    list->head = NULL;
+}
+
+int list_empty(struct list *list)
+{
+    return (list->head == NULL);
+}
+
+void list_insert(struct list *list, struct list_entry *position,
+    struct list_entry *entry)
+{
+    struct list_entry **indirect = (!position || position == list->head) ?
+        &list->head : &position;
+
+    if (*indirect) {
+        entry->previous = (*indirect)->previous;
+        entry->next = *indirect;
+        (*indirect)->previous->next = entry;
+        (*indirect)->previous = entry;
     }
 
-    return node;
+    *indirect = entry;   
 }
 
-int list_insert(list_t **position, void *data)
+void list_erase(struct list *list, struct list_entry *entry)
 {
-    list_t *newer = __list_new(data);
+    entry->previous->next = entry->next;
+    entry->next->previous = entry->previous;
 
-    if (newer) {
-        list_t *indirect = *position;
-
-        if (indirect) {
-            newer->previous = indirect->previous;
-            newer->next = indirect;
-            indirect->previous->next = newer;
-            indirect->previous = newer;
-        }
-
-        *position = newer;
+    if (entry == list->head) {
+        list->head = (entry->next == list->head) ? NULL : entry->next;
     }
 
-    return (*position == newer);
+    entry->previous = entry;
+    entry->next = entry;
 }
 
-void list_delete(list_t **head, list_t *node)
+void list_push_front(struct list *list, struct list_entry *entry)
 {
-    node->next->previous = node->previous;
-    node->previous->next = node->next;
+    list_insert(list, list->head, entry);
+}
 
-    if (*head == node) {
-        list_t *next = (*head)->next;
-        *head = (*head == next) ? NULL : next;
+void list_push_back(struct list *list, struct list_entry *entry)
+{
+    list_insert(list, list->head, entry);
+    list->head = list->head->next;
+}
+
+void list_pop_front(struct list *list)
+{
+    if (!list_empty(list)) {
+        list_erase(list, list->head);
     }
-
-    free(node);
 }
 
-int list_push_front(list_t **head, void *data)
+void list_pop_back(struct list *list)
 {
-    return list_insert(head, data);
-}
-
-int list_push_back(list_t **head, void *data)
-{
-    if (!list_insert(head, data)) {
-        return 0;
+    if (!list_empty(list)) {
+        list->head = list->head->next;
+        list_erase(list, list->head);
     }
-
-    *head = (*head)->next;
-
-    return 1;
-}
-
-void list_pop_front(list_t **head)
-{
-    list_delete(head, *head);
-}
-
-void list_pop_back(list_t **head)
-{
-    list_delete(head, (*head)->previous);
 }

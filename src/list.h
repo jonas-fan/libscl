@@ -5,24 +5,46 @@
 extern "C" {
 #endif
 
-typedef struct list_t list_t;
-
-struct list_t
+struct list_entry
 {
-    struct list_t *previous;
-    struct list_t *next;
+    struct list_entry *previous;
+    struct list_entry *next;
     void *data;
 };
 
-int list_insert(list_t **position, void *data);
-void list_delete(list_t **head, list_t *node);
-int list_push_front(list_t **head, void *data);
-int list_push_back(list_t **head, void *data);
-void list_pop_front(list_t **head);
-void list_pop_back(list_t **head);
+struct list
+{
+    struct list_entry *head;
+};
 
-#define list_for_each(head, entry) \
-    for ((entry) = (head); (entry); (entry) = ((entry)->next == (head)) ? NULL : (entry)->next)
+void list_entry_init(struct list_entry *entry, void *data);
+
+void list_init(struct list *list);
+
+int list_empty(struct list *list);
+
+void list_insert(struct list *list, struct list_entry *postion,
+    struct list_entry *entry);
+
+void list_erase(struct list *list, struct list_entry *entry);
+
+void list_push_front(struct list *list, struct list_entry *entry);
+
+void list_push_back(struct list *list, struct list_entry *entry);
+
+void list_pop_front(struct list *list);
+
+void list_pop_back(struct list *list);
+
+#define list_for_each(list, entry) \
+    for (entry = (list)->head; \
+         entry; \
+         entry = ((entry)->next == (list)->head) ? NULL : (entry)->next)
+
+#define list_for_each_reverse(list, entry) \
+    for (entry = (list)->head ? (list)->head->previous : NULL; \
+         entry; \
+         entry = ((entry)->previous == (list)->head->previous) ? NULL : (entry)->previous)
 
 #ifdef __cplusplus
 }
