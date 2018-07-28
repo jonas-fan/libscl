@@ -1,12 +1,18 @@
-# libscl
-[![Build Status](https://travis-ci.org/jonas-fan/libscl.svg?branch=master)](https://travis-ci.org/jonas-fan/libscl)
+# libsimplecntr
+[![Build Status](https://travis-ci.org/jonas-fan/libsimplecntr.svg?branch=master)](https://travis-ci.org/jonas-fan/libsimplecntr)
 
-The simple container library in C.
+A simple container library in C.
 
-## Build
+The purpose of `libsimplecntr` is to make operating data structure easier, such as `list`.
+
+Data structure supported:
+
+- `list`
+
+## Building
 
 ```
-$ cd libscl/
+$ cd libsimplecntr/
 $ mkdir build/
 $ cd build/
 $ cmake ..
