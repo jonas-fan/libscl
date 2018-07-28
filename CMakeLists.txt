@@ -2,17 +2,26 @@ cmake_minimum_required(VERSION 2.8)
 
 project(libscl C)
 
+### build configuration
+
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 -Wall -Wextra -pedantic -std=c99 -g")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/)
+
+set(HEADER "")
+set(SOURCE "")
+set(OUTPUT_LIB scl)
 set(INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/install/)
-set(HEADER ./src/list.h)
-set(SOURCE ./src/list.c)
-set(TARGET_LIB scl)
 
-add_library(${TARGET_LIB} STATIC ${SOURCE})
+add_subdirectory(src)
+add_library(${OUTPUT_LIB} STATIC ${SOURCE})
 
-install(FILES ${HEADER} DESTINATION ${INSTALL_DIR}/include)
-install(TARGETS ${TARGET_LIB} DESTINATION ${INSTALL_DIR}/lib)
+### tests
+
+add_subdirectory(test)
+
+### installation
 
 message("Install directory: ${INSTALL_DIR}")
 
-add_subdirectory(test)
+install(FILES ${HEADER} DESTINATION ${INSTALL_DIR}/include)
+install(TARGETS ${OUTPUT_LIB} ARCHIVE DESTINATION ${INSTALL_DIR}/lib)
