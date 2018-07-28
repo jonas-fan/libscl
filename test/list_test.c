@@ -4,9 +4,9 @@
 #include <stdlib.h>
 #include <assert.h>
 
-static unsigned int count = 0;
-
 #define TEST(str) printf("# Test %03u " str "\n", ++count)
+
+static unsigned int count = 0;
 
 int main(int argc, char *argv[])
 {
@@ -31,42 +31,6 @@ int main(int argc, char *argv[])
     assert(head->data == number + 0);
     list_delete(&head, head);
     assert(head == NULL);
-
-    // TEST("list_push_front + list_pop_front");
-    // list_push_front(&head, number + 0);
-    // assert(head);
-    // assert(head == head->previous);
-    // assert(head == head->next);
-    // assert(head->data == number + 0);
-    // list_pop_front(&head);
-    // assert(head == NULL);
-
-    // TEST("list_push_front + list_pop_back");
-    // list_push_front(&head, number + 0);
-    // assert(head);
-    // assert(head == head->previous);
-    // assert(head == head->next);
-    // assert(head->data == number + 0);
-    // list_pop_back(&head);
-    // assert(head == NULL);
-
-    // TEST("list_push_back + list_pop_front");
-    // list_push_back(&head, number + 0);
-    // assert(head);
-    // assert(head == head->previous);
-    // assert(head == head->next);
-    // assert(head->data == number + 0);
-    // list_pop_front(&head);
-    // assert(head == NULL);
-
-    // TEST("list_push_back + list_pop_back");
-    // list_push_back(&head, number + 0);
-    // assert(head);
-    // assert(head == head->previous);
-    // assert(head == head->next);
-    // assert(head->data == number + 0);
-    // list_pop_back(&head);
-    // assert(head == NULL);
 
     TEST("list_push_front + list_pop_front");
     list_push_front(&head, number + 0);
