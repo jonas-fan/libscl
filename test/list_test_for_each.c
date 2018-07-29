@@ -12,15 +12,13 @@ int main(int argc, char *argv[])
     struct list list;
     struct list_entry *entry;
     int index;
-    int rc;
-    char *str;
 
     list_init(&list);
 
     for (index = 1; index < argc; ++index) {
-        str = strdup(argv[index]);
+        char *str = strdup(argv[index]);
         assert(str);
-        rc = list_push_back(&list, str);
+        int rc = list_push_back(&list, str);
         assert(rc == 1);
     }
 
@@ -28,7 +26,8 @@ int main(int argc, char *argv[])
         printf("%s\n", (char *)entry->data);
     }
 
-    while ((entry = list_front(&list)) != NULL) {
+    while (!list_empty(&list)) {
+        entry = list_front(&list);
         free(entry->data);
         list_pop_front(&list);
     }
