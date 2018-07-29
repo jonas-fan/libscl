@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
     struct vector_entry *entry1;
     struct vector_entry *entry2;
     struct vector_entry *entry3;
+    struct vector_entry *next;
     void *data;
     const int number1 = 1;
     const int number2 = 2;
@@ -39,6 +40,24 @@ int main(int argc, char *argv[])
     rc = vector_empty(&vector);
     assert(rc == 1);
 
+    TEST("vector_insert");
+    entry1 = vector_insert(&vector, 0, &number1);
+    assert(entry1);
+    assert(entry1->data == &number1);
+    assert(vector.capacity == 1);
+    size = vector_size(&vector);
+    assert(size == 1);
+    rc = vector_empty(&vector);
+    assert(rc == 0);
+
+    TEST("vector_erase");
+    entry1 = vector_erase(&vector, 0);
+    assert(entry1 == NULL);
+    size = vector_size(&vector);
+    assert(size == 0);
+    rc = vector_empty(&vector);
+    assert(rc == 1);
+
     TEST("vector_term");
     vector_term(&vector);
     assert(vector.entries == NULL);
@@ -53,14 +72,14 @@ int main(int argc, char *argv[])
     assert(vector.capacity == 1);
     size = vector_size(&vector);
     assert(size == 1);
-    rc = vector_empty(&vector);
-    assert(rc == 0);
-    vector_push_back(&vector, &number2);
+    vector_push_back(&vector, &number3);
     assert(vector.size == 2);
     assert(vector.capacity == 2);
     size = vector_size(&vector);
     assert(size == 2);
-    vector_push_back(&vector, &number3);
+    entry2 = vector_insert(&vector, 1, &number2);
+    assert(entry2);
+    assert(entry2->data == &number2);
     assert(vector.size == 3);
     assert(vector.capacity == 4);
     size = vector_size(&vector);
@@ -72,18 +91,20 @@ int main(int argc, char *argv[])
 
     TEST("vector_front");
     entry1 = vector_front(&vector);
+    assert(entry1);
     assert(entry1->data == &number1);
 
     TEST("vector_back");
     entry3 = vector_back(&vector);
+    assert(entry3);
     assert(entry3->data == &number3);
+    assert(entry2 - 1 == entry1);
+    assert(entry2 + 1 == entry3);
 
     TEST("vector_pop_back");
-    vector_pop_back(&vector);
-    entry2 = vector_back(&vector);
-    assert(entry2->data == &number2);
-    assert(vector.size == 2);
-    assert(vector.capacity == 4);
+    next = vector_erase(&vector, 1);
+    entry3 = vector_back(&vector);
+    assert(next == entry3);
     size = vector_size(&vector);
     assert(size == 2);
     vector_pop_back(&vector);

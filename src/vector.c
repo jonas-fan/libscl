@@ -80,22 +80,58 @@ static inline int __vector_enlarge(struct vector *vector)
     return __vector_resize(vector, capacity);
 }
 
-int vector_push_back(struct vector *vector, const void *data)
+struct vector_entry * vector_insert(struct vector *vector, unsigned int index,
+    const void *data)
 {
+    if (index > vector->size) {
+        return NULL;
+    }
+
     if (vector->size >= vector->capacity) {
         if (!__vector_enlarge(vector)) {
-            return 0;
+            return NULL;
         }
     }
 
-    vector->entries[vector->size++].data = (void *)data;
+    unsigned int copy_count = vector->size - index;
 
-    return 1;
+    while (copy_count) {
+        const unsigned int offset = index + copy_count;
+
+        vector->entries[offset].data = vector->entries[offset - 1].data;
+        --copy_count;
+    }
+
+    vector->entries[index].data = (void *)data;
+    ++vector->size;
+
+    return vector->entries + index;
+}
+
+struct vector_entry * vector_erase(struct vector *vector, unsigned int index)
+{
+    if (index >= vector->size) {
+        return NULL;
+    }
+
+    --vector->size;
+
+    struct vector_entry *next = __vector_at(vector, index);
+
+    while (index < vector->size) {
+        vector->entries[index].data = vector->entries[index + 1].data;
+        ++index;
+    }
+
+    return next;
+}
+
+int vector_push_back(struct vector *vector, const void *data)
+{
+    return (vector_insert(vector, vector->size, data) != NULL);
 }
 
 void vector_pop_back(struct vector *vector)
 {
-    if (!vector_empty(vector)) {
-        --vector->size;
-    }
+    vector_erase(vector, vector->size - 1);
 }
