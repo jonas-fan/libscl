@@ -131,6 +131,8 @@ int main(int argc, char *argv[])
     vector_pop_back(&vector);
     vector_pop_back(&vector);
 
+    vector_term(&vector);
+
     printf("[OK]\n");
 
     return 0;
