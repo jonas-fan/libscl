@@ -1,13 +1,12 @@
 # libsimplecntr
 [![Build Status](https://travis-ci.org/jonas-fan/libsimplecntr.svg?branch=master)](https://travis-ci.org/jonas-fan/libsimplecntr)
 
-A simple container library in C.
+`libsimplecntr` provides implementation of data structure, which makes organizing data easier.
 
-`libsimplecntr` provides data structure implementations, which makes organizing data easier.
-
-Data structure support:
+Current data structure support:
 
 - `list`
+- `vector`
 
 ## Building
 
@@ -21,31 +20,35 @@ $ make -j4
 
 ## Example
 
-For `list`, considering code snippet as below:
+Here is a sample for `vector`, considering code snippet as below:
 
 ```c
+#include "vector.h"
+
 int main(int argc, char *argv[])
 {
-    struct list list;
-    struct list_entry *entry;
+    struct vector vector;
+    struct vector_entry *entry;
     int index;
-    char *str;
 
-    list_init(&list);
+    vector_init(&vector);
 
     for (index = 1; index < argc; ++index) {
-        str = strdup(argv[index]);
-        list_push_back(&list, str);
+        char *str = strdup(argv[index]);
+        vector_push_back(&vector, str);
     }
 
-    list_for_each(&list, entry) {
+    vector_for_each(&vector, entry) {
         printf("%s\n", (char *)entry->data);
     }
 
-    while ((entry = list_front(&list)) != NULL) {
+    while (!vector_empty(&vector)) {
+        entry = vector_back(&vector);
         free(entry->data);
-        list_pop_front(&list);
+        vector_pop_back(&vector);
     }
+
+    vector_term(&vector);
 
     return 0;
 }
@@ -54,10 +57,10 @@ int main(int argc, char *argv[])
 And the output will be:
 
 ```
-$ ./list_test_for_each hello world 12345
+$ ./vector_test_for_each hello world 0123456789
 hello
 world
-12345
+0123456789
 ```
 
 ## License

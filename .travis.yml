@@ -12,6 +12,7 @@ script:
 
 after_script:
     - ./test/list_test
+    - ./test/vector_test
 
 notifications:
     email:
