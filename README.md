@@ -12,7 +12,6 @@ Supported:
 ## Building
 
 ```
-$ cd libsimplecntr/
 $ mkdir build/
 $ cd build/
 $ cmake ..

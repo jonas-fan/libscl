@@ -1,0 +1,14 @@
+set(HEADER
+    ${CMAKE_CURRENT_SOURCE_DIR}/list.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/vector.h
+)
+
+set(SOURCE
+    ${CMAKE_CURRENT_SOURCE_DIR}/list.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/vector.c
+)
+
+add_library(${TARGET} STATIC ${SOURCE})
+
+install(FILES ${HEADER} DESTINATION ${INSTALL_DIR}/include)
+install(TARGETS ${TARGET} ARCHIVE DESTINATION ${INSTALL_DIR}/lib)

@@ -1,6 +1,6 @@
 #define _GNU_SOURCE
 
-#include "../lib/vector.h"
+#include "../src/vector.h"
 
 #include <stdio.h>
 #include <stdlib.h>
